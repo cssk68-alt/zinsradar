@@ -26,3 +26,6 @@ docs/snapshots/
 *.swp
 Thumbs.db
 .DS_Store
+
+# Gebaute APKs
+*.apk

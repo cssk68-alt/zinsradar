@@ -1,6 +1,6 @@
 # Quellen-Status
 
-Erzeugt: 2026-09-01T20:29:45+00:00 | HTML-Parser: lexbor
+Erzeugt: 2026-09-01T20:35:58+00:00 | HTML-Parser: lexbor
 
 Erzeugt von `python scraper/bootstrap.py`. Dieser Bericht sagt, welche
 Angaben aus `sources.yaml` der Realitaet standhalten. Die Selektoren dort
@@ -77,7 +77,7 @@ der Pruefung.
 - Land/Typ/Rendering: DE / plattform / js_required (gerendert)
 - robots.txt live: **erlaubt** (keine robots.txt (HTTP 404))
 - YAML behauptet robots: `ja`
-- HTTP: 200 , 674575 Zeichen, 4.7s
+- HTTP: 200 , 674575 Zeichen, 4.3s
 - json_endpoint: 0 Treffer - HTTP 404
 - JSON-LD: 0 Treffer (3 ld+json-Block(s), 1 Kandidat(en))
 - container_selector `div.product-card-container, div[data-testid='product-card']`: **0 Knoten**
@@ -197,7 +197,7 @@ der Pruefung.
 - Land/Typ/Rendering: DE / portal / static_html
 - robots.txt live: **erlaubt** (robots.txt gelesen)
 - YAML behauptet robots: `ja`
-- HTTP: 200 , 5683102 Zeichen, 2.2s
+- HTTP: 200 , 5683102 Zeichen, 2.0s
 - JSON-LD: 0 Treffer (1 ld+json-Block(s), 0 Kandidat(en))
 - container_selector `div.table-row, div.product-card`: **0 Knoten**
 - Stufe 2 (konfiguriert): 0 Angebote - container_selector findet nichts
@@ -236,7 +236,7 @@ der Pruefung.
 - Land/Typ/Rendering: AT / portal / js_required (gerendert)
 - robots.txt live: **erlaubt** (robots.txt gelesen)
 - YAML behauptet robots: `ja`
-- HTTP: 200 , 416745 Zeichen, 4.1s
+- HTTP: 200 , 416745 Zeichen, 3.7s
 - json_endpoint: 0 Treffer - HTTP 404
 - JSON-LD: 0 Treffer (4 ld+json-Block(s), 0 Kandidat(en))
 - container_selector `div.result-card, tr.result-row`: **0 Knoten**
@@ -275,7 +275,7 @@ der Pruefung.
 - Land/Typ/Rendering: AT / portal / static_html
 - robots.txt live: **erlaubt** (keine robots.txt (HTTP 404))
 - YAML behauptet robots: `ja`
-- HTTP: 200 , 15682 Zeichen, 1.3s
+- HTTP: 200 , 15682 Zeichen, 1.9s
 - JSON-LD: 0 Treffer (kein <script type=application/ld+json> gefunden)
 - container_selector `table#sparzinsen-tabelle tbody tr`: **0 Knoten**
 - Stufe 2 (konfiguriert): 0 Angebote - container_selector findet nichts
@@ -329,7 +329,7 @@ der Pruefung.
 - Land/Typ/Rendering: NL / plattform / js_required (gerendert)
 - robots.txt live: **erlaubt** (keine robots.txt (HTTP 404))
 - YAML behauptet robots: `ja`
-- HTTP: 200 , 498887 Zeichen, 5.9s
+- HTTP: 200 , 498878 Zeichen, 6.1s
 - json_endpoint: 0 Treffer - HTTP 404
 - JSON-LD: 0 Treffer (2 ld+json-Block(s), 1 Kandidat(en))
 - container_selector `div.product-card`: **0 Knoten**
@@ -409,7 +409,7 @@ der Pruefung.
 - Land/Typ/Rendering: FR / plattform / js_required (gerendert)
 - robots.txt live: **erlaubt** (keine robots.txt (HTTP 404))
 - YAML behauptet robots: `ja`
-- HTTP: 200 , 528161 Zeichen, 5.5s
+- HTTP: 200 , 528171 Zeichen, 5.3s
 - json_endpoint: 0 Treffer - HTTP 404
 - JSON-LD: 0 Treffer (4 ld+json-Block(s), 1 Kandidat(en))
 - container_selector `div.product-item`: **0 Knoten**
@@ -469,7 +469,7 @@ der Pruefung.
 - Land/Typ/Rendering: ES / portal / static_html
 - robots.txt live: **erlaubt** (robots.txt gelesen)
 - YAML behauptet robots: `ja`
-- HTTP: 200 , 57683 Zeichen, 1.8s
+- HTTP: 200 , 57683 Zeichen, 1.9s
 - JSON-LD: 0 Treffer (1 ld+json-Block(s), 0 Kandidat(en))
 - container_selector `table.tablacomparativa tbody tr`: **0 Knoten**
 - Stufe 2 (konfiguriert): 0 Angebote - container_selector findet nichts
@@ -504,7 +504,7 @@ der Pruefung.
 - Land/Typ/Rendering: PL / portal / static_html
 - robots.txt live: **erlaubt** (robots.txt gelesen)
 - YAML behauptet robots: `ja`
-- HTTP: 200 , 516314 Zeichen, 2.0s
+- HTTP: 200 , 516353 Zeichen, 2.0s
 - JSON-LD: 0 Treffer (kein <script type=application/ld+json> gefunden)
 - container_selector `table.boxTable tbody tr`: **0 Knoten**
 - Stufe 2 (konfiguriert): 0 Angebote - container_selector findet nichts
@@ -618,7 +618,7 @@ der Pruefung.
 - Land/Typ/Rendering: DE / bank / static_html
 - robots.txt live: **erlaubt** (robots.txt gelesen)
 - YAML behauptet robots: `ja`
-- HTTP: 200 , 41566 Zeichen, 1.8s
+- HTTP: 200 , 41566 Zeichen, 2.0s
 - JSON-LD: 0 Treffer (kein <script type=application/ld+json> gefunden)
 - container_selector `div.stage-content, div.price-box`: **0 Knoten**
 - Stufe 2 (konfiguriert): 0 Angebote - container_selector findet nichts
@@ -654,7 +654,7 @@ der Pruefung.
 - Land/Typ/Rendering: DE / bank / static_html
 - robots.txt live: **erlaubt** (robots.txt gelesen)
 - YAML behauptet robots: `ja`
-- HTTP: 404 , 1230243 Zeichen, 2.0s
+- HTTP: 404 , 1229735 Zeichen, 2.1s
 - Fliesstext fuer LLM: 0 Zeichen
 
 **Probleme:**
@@ -692,7 +692,7 @@ der Pruefung.
 - Land/Typ/Rendering: DE / bank / static_html
 - robots.txt live: **erlaubt** (robots.txt gelesen)
 - YAML behauptet robots: `ja`
-- HTTP: 200 , 187424 Zeichen, 2.0s
+- HTTP: 200 , 187424 Zeichen, 1.8s
 - JSON-LD: 0 Treffer (1 ld+json-Block(s), 0 Kandidat(en))
 - container_selector `div.product-detail-stage`: **0 Knoten**
 - Stufe 2 (konfiguriert): 0 Angebote - container_selector findet nichts
@@ -729,7 +729,7 @@ der Pruefung.
 - Land/Typ/Rendering: ES / bank / js_required (gerendert)
 - robots.txt live: **erlaubt** (robots.txt gelesen)
 - YAML behauptet robots: `ja`
-- HTTP: 200 , 102984 Zeichen, 6.8s
+- HTTP: 200 , 103152 Zeichen, 6.6s
 - JSON-LD: 0 Treffer (kein <script type=application/ld+json> gefunden)
 - container_selector `div.hero-banner, div.product-card`: **0 Knoten**
 - Stufe 2 (konfiguriert): 0 Angebote - container_selector findet nichts
@@ -764,7 +764,7 @@ der Pruefung.
 - Land/Typ/Rendering: SE / bank / js_required
 - robots.txt live: **erlaubt** (robots.txt gelesen)
 - YAML behauptet robots: `ja`
-- HTTP: 200 , 728933 Zeichen, 4.2s
+- HTTP: 200 , 728933 Zeichen, 4.1s
 - json_endpoint: 0 Treffer - HTTP 404
 - JSON-LD: 0 Treffer (1 ld+json-Block(s), 0 Kandidat(en))
 - container_selector `div[data-testid='savings-rate-card']`: **0 Knoten**
