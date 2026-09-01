@@ -1,0 +1,108 @@
+name: Zinsen sammeln
+
+on:
+  schedule:
+    # 06:00 UTC taeglich. GitHub verschiebt Cron-Jobs bei Last um einige
+    # Minuten - das ist fuer Tageswerte unerheblich.
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+    inputs:
+      nur:
+        description: "Nur eine Quelle (ID oder URL-Teil), leer = alle"
+        required: false
+        default: ""
+      kein_llm:
+        description: "Stufe 3 (LLM) ueberspringen"
+        type: boolean
+        required: false
+        default: false
+
+# Der Lauf schreibt data/*.json zurueck ins Repo.
+permissions:
+  contents: write
+
+concurrency:
+  group: scrape
+  cancel-in-progress: false
+
+jobs:
+  sammeln:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Repo auschecken
+        uses: actions/checkout@v4
+
+      - name: Python 3.12 einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Abhaengigkeiten installieren
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-render.txt
+
+      - name: Chromium fuer Playwright
+        run: python -m playwright install --with-deps chromium
+
+      - name: Scraper laufen lassen
+        env:
+          # Ohne dieses Secret wird Stufe 3 uebersprungen, nicht abgebrochen.
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.nur }}" ]; then
+            ARGS="$ARGS --nur ${{ github.event.inputs.nur }}"
+          fi
+          if [ "${{ github.event.inputs.kein_llm }}" = "true" ]; then
+            ARGS="$ARGS --kein-llm"
+          fi
+          python scraper/run.py $ARGS
+
+      - name: Ergebnis zusammenfassen
+        if: always()
+        run: |
+          if [ -f data/zinsen.json ]; then
+            python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          with open("data/zinsen.json", encoding="utf-8") as f:
+              d = json.load(f)
+          s = d.get("statistik", {})
+          print(f"## Lauf {d.get('stand_datum')}\n")
+          print(f"- Angebote: **{s.get('angebote', 0)}**")
+          print(f"- davon veraltet: {s.get('stale', 0)}")
+          print(f"- Quellen mit Treffer: {s.get('quellen_erfolg', 0)}/{s.get('quellen_gesamt', 0)}")
+          print(f"- Laufzeit: {s.get('dauer_s', 0)} s\n")
+          print("| Quelle | Stufe | Methode | Treffer |")
+          print("| --- | :-: | --- | ---: |")
+          for q in d.get("quellen_status", []):
+              print(f"| {q['id']} | {q.get('tier') or '-'} | {q.get('methode') or '-'} | {q.get('treffer', 0)} |")
+          PY
+          fi
+
+      - name: Report als Artefakt sichern
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: report-${{ github.run_number }}
+          path: |
+            docs/report.md
+            data/zinsen.json
+          retention-days: 30
+          if-no-files-found: warn
+
+      - name: Aenderungen committen
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/zinsen.json data/referenz.json data/history docs/report.md 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "Keine Aenderungen - nichts zu committen."
+          else
+            ANZAHL=$(python -c "import json;print(len(json.load(open('data/zinsen.json',encoding='utf-8'))['angebote']))")
+            git commit -m "Zinsen $(date -u +%Y-%m-%d): ${ANZAHL} Angebote"
+            git push
+          fi

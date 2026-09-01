@@ -1,0 +1,127 @@
+apply plugin: 'com.android.application'
+
+android {
+    namespace "de.zinsradar.app"
+    compileSdk rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        applicationId "de.zinsradar.app"
+        minSdk rootProject.ext.minSdkVersion
+        targetSdk rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        resourceConfigurations += ['de', 'en']
+    }
+
+    // Signierung kommt aus Umgebungsvariablen (GitHub Actions) oder aus
+    // gradle.properties. Fehlt beides, faellt Release auf den Debug-Key
+    // zurueck - die APK ist dann trotzdem installierbar, aber nicht mit
+    // dem eigenen Schluessel signiert.
+    signingConfigs {
+        release {
+            def store = System.getenv("KEYSTORE_PATH") ?: project.findProperty("ZR_KEYSTORE_PATH")
+            def storePw = System.getenv("KEYSTORE_PASSWORD") ?: project.findProperty("ZR_KEYSTORE_PASSWORD")
+            def alias = System.getenv("KEY_ALIAS") ?: project.findProperty("ZR_KEY_ALIAS")
+            def keyPw = System.getenv("KEY_PASSWORD") ?: project.findProperty("ZR_KEY_PASSWORD")
+            if (store && file(store).exists()) {
+                storeFile file(store)
+                storePassword storePw
+                keyAlias alias
+                keyPassword keyPw
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            def store = System.getenv("KEYSTORE_PATH") ?: project.findProperty("ZR_KEYSTORE_PATH")
+            if (store && file(store).exists()) {
+                signingConfig signingConfigs.release
+            } else {
+                logger.lifecycle("Kein Keystore gefunden - Release wird mit dem Debug-Key signiert.")
+                signingConfig signingConfigs.debug
+            }
+        }
+        debug {
+            applicationIdSuffix ""
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/DEPENDENCIES', 'META-INF/LICENSE*', 'META-INF/NOTICE*']
+        }
+    }
+
+    lint {
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation "androidx.appcompat:appcompat:$rootProject.ext.androidxAppCompat"
+    implementation "androidx.core:core:$rootProject.ext.androidxCoreKtx"
+    implementation "androidx.webkit:webkit:$rootProject.ext.androidxWebkit"
+
+    // Capacitor aus Maven Central - kein node_modules noetig.
+    implementation "com.capacitorjs:core:$rootProject.ext.capacitorVersion"
+    implementation "com.capacitorjs:local-notifications:$rootProject.ext.capLocalNotif"
+}
+
+/* -------------------------------------------------------------------------
+ * Web-Assets in die App kopieren.
+ *
+ * Ersetzt `npx cap sync`: /app landet in assets/public, die aktuellen
+ * Zinsdaten aus /data kommen als Offline-Startbestand dazu.
+ * ------------------------------------------------------------------------- */
+def webQuelle = file("$rootDir/../app")
+def datenQuelle = file("$rootDir/../data")
+def webZiel = file("src/main/assets/public")
+
+tasks.register('syncWeb', Copy) {
+    description = 'Kopiert die PWA aus /app nach assets/public (Ersatz fuer cap sync)'
+    group = 'capacitor'
+
+    doFirst {
+        delete webZiel
+    }
+
+    from(webQuelle) {
+        exclude '**/*.map'
+    }
+    into webZiel
+
+    doLast {
+        // Zinsdaten als mitgelieferter Startbestand, damit die App auch
+        // beim allerersten Start ohne Netz etwas anzeigt.
+        copy {
+            from(datenQuelle) {
+                include 'zinsen.json'
+                include 'referenz.json'
+                include 'laender.json'
+                include 'withholding.json'
+            }
+            into file("$webZiel/data")
+        }
+        def zinsen = file("$webZiel/data/zinsen.json")
+        if (!zinsen.exists()) {
+            zinsen.parentFile.mkdirs()
+            zinsen.text = '{"version":1,"stand":null,"stand_datum":null,"angebote":[],' +
+                '"hinweis":"Noch keine Daten. Bitte scraper/run.py ausfuehren oder die Datenquelle in den Einstellungen pruefen.",' +
+                '"statistik":{"angebote":0},"referenz":{}}'
+            logger.lifecycle("data/zinsen.json fehlte - leerer Platzhalter erzeugt.")
+        }
+        logger.lifecycle("Web-Assets synchronisiert nach ${webZiel}")
+    }
+}
+
+preBuild.dependsOn syncWeb

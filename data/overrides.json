@@ -1,0 +1,17 @@
+{
+  "_hinweis": "Manuelle Korrekturen. Gewinnen IMMER gegen Scraper-Werte. Wird nie automatisch ueberschrieben.",
+  "_schluessel": "Der Schluessel ist 'bank|produkt|land', jeweils kleingeschrieben und getrimmt - genau der Dedupe-Schluessel aus normalize.py. Zum Nachschlagen: python scraper/run.py --keys",
+  "_beispiel": {
+    "beispielbank ag|tagesgeld|de": {
+      "_kommentar": "Beispiel. Nicht aktiv, weil der Schluessel mit '_' beginnt bzw. keine echte Bank ist - Eintraege unter '_beispiel' werden ignoriert.",
+      "zinssatz_pct": 3.25,
+      "aktionsdauer_monate": 6,
+      "folgezins_pct": 1.5,
+      "quelle_manuell": "https://www.beispielbank.de/tagesgeld",
+      "geprueft_am": "2026-09-01",
+      "notiz": "Aktion laut Preisaushang, Website zeigt veralteten Wert."
+    }
+  },
+
+  "eintraege": {}
+}

@@ -1,0 +1,275 @@
+/* Zinsradar - Vanilla CSS, kein Build-Step, keine externen Ressourcen.
+   Mobile-first. Dark Mode folgt dem System, per Knopf überschreibbar. */
+
+:root {
+  --bg: #f6f7f9;
+  --karte: #ffffff;
+  --karte-rand: #e3e6eb;
+  --text: #17202a;
+  --text-schwach: #5d6672;
+  --text-sehr-schwach: #8a929e;
+  --akzent: #0f6fd6;
+  --akzent-weich: #e8f1fd;
+  --gut: #12805c;
+  --gut-weich: #e2f4ec;
+  --mittel: #9a6b00;
+  --mittel-weich: #fbf0d8;
+  --schlecht: #b3261e;
+  --schlecht-weich: #fbe5e3;
+  --kopf-bg: #ffffff;
+  --schatten: 0 1px 2px rgba(16, 24, 40, .06), 0 1px 3px rgba(16, 24, 40, .08);
+  --radius: 14px;
+  --sicher-oben: env(safe-area-inset-top, 0px);
+  --sicher-unten: env(safe-area-inset-bottom, 0px);
+}
+
+html[data-theme="dark"], :root[data-theme="dark"] {
+  --bg: #0d1117;
+  --karte: #161b22;
+  --karte-rand: #262d38;
+  --text: #e6edf3;
+  --text-schwach: #9aa5b1;
+  --text-sehr-schwach: #6e7681;
+  --akzent: #58a6ff;
+  --akzent-weich: #10243e;
+  --gut: #3fb950;
+  --gut-weich: #10251a;
+  --mittel: #d29922;
+  --mittel-weich: #2b2209;
+  --schlecht: #f85149;
+  --schlecht-weich: #2d1213;
+  --kopf-bg: #0d1117;
+  --schatten: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    --bg: #0d1117; --karte: #161b22; --karte-rand: #262d38;
+    --text: #e6edf3; --text-schwach: #9aa5b1; --text-sehr-schwach: #6e7681;
+    --akzent: #58a6ff; --akzent-weich: #10243e;
+    --gut: #3fb950; --gut-weich: #10251a;
+    --mittel: #d29922; --mittel-weich: #2b2209;
+    --schlecht: #f85149; --schlecht-weich: #2d1213;
+    --kopf-bg: #0d1117; --schatten: none;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior-y: contain;
+}
+
+h1 { font-size: 1.3rem; margin: 0; letter-spacing: -.01em; }
+h2 { font-size: 1.1rem; margin: 0 0 .6rem; }
+h3 { font-size: .95rem; margin: 1.4rem 0 .5rem; color: var(--text-schwach); }
+
+/* ---------------------------------------------------------- Pull-to-Refresh */
+.ptr {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 0; overflow: hidden;
+  display: flex; align-items: center; justify-content: center; gap: .5rem;
+  background: var(--akzent-weich); color: var(--akzent);
+  font-size: .82rem; z-index: 60;
+  transition: height .15s ease;
+}
+.ptr.aktiv { height: 46px; }
+.ptr-spinner {
+  width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid currentColor; border-top-color: transparent;
+}
+.ptr.laedt .ptr-spinner { animation: dreh .8s linear infinite; }
+@keyframes dreh { to { transform: rotate(360deg); } }
+
+/* ------------------------------------------------------------------- Kopf */
+.kopf {
+  position: sticky; top: 0; z-index: 40;
+  background: var(--kopf-bg);
+  border-bottom: 1px solid var(--karte-rand);
+  padding: calc(.7rem + var(--sicher-oben)) .9rem .5rem;
+}
+.kopf-oben { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+.kopf-knoepfe { display: flex; gap: .3rem; }
+
+.ikon {
+  width: 38px; height: 38px; border-radius: 10px;
+  border: 1px solid var(--karte-rand); background: var(--karte);
+  color: var(--text); font-size: 1.1rem; cursor: pointer;
+  display: grid; place-items: center;
+}
+.ikon:active { background: var(--akzent-weich); }
+.ikon.dreht { animation: dreh .8s linear infinite; }
+
+.referenz {
+  display: flex; align-items: stretch; gap: .4rem;
+  margin: .6rem 0 .1rem; padding: .5rem .2rem;
+  background: var(--akzent-weich); border-radius: var(--radius);
+}
+.referenz-zelle { flex: 1; display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.referenz-trenner { width: 1px; background: var(--karte-rand); }
+.referenz-label { font-size: .68rem; color: var(--text-schwach); text-transform: uppercase; letter-spacing: .04em; }
+.referenz-wert { font-size: 1.02rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+.referenz-wert.klein { font-size: .88rem; }
+.referenz-sub { font-size: .68rem; color: var(--text-sehr-schwach); text-align: center;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.referenz-sub.steigend { color: var(--gut); }
+.referenz-sub.fallend { color: var(--schlecht); }
+
+.suchzeile { display: flex; gap: .5rem; margin-top: .6rem; }
+.suchzeile input {
+  flex: 1; min-width: 0; padding: .6rem .75rem; font-size: .95rem;
+  border: 1px solid var(--karte-rand); border-radius: 10px;
+  background: var(--karte); color: var(--text);
+}
+.filter-knopf {
+  padding: .6rem .8rem; border-radius: 10px; cursor: pointer;
+  border: 1px solid var(--karte-rand); background: var(--karte); color: var(--text);
+  font-size: .9rem; white-space: nowrap; display: flex; align-items: center; gap: .35rem;
+}
+.filter-knopf.aktiv { border-color: var(--akzent); color: var(--akzent); }
+.pill {
+  background: var(--akzent); color: #fff; border-radius: 999px;
+  font-size: .7rem; padding: .05rem .4rem; font-weight: 700;
+}
+
+.sortzeile { display: flex; gap: .35rem; margin-top: .55rem; overflow-x: auto; padding-bottom: .2rem; }
+.sortzeile::-webkit-scrollbar { display: none; }
+.sort {
+  border: 1px solid var(--karte-rand); background: var(--karte); color: var(--text-schwach);
+  padding: .35rem .7rem; border-radius: 999px; font-size: .82rem; cursor: pointer; white-space: nowrap;
+}
+.sort.aktiv { background: var(--akzent); border-color: var(--akzent); color: #fff; font-weight: 600; }
+
+/* ----------------------------------------------------------------- Filter */
+.filterbereich {
+  background: var(--karte); border-bottom: 1px solid var(--karte-rand);
+  padding: .8rem .9rem 1rem;
+}
+.filter-gitter { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+.feld { display: flex; flex-direction: column; gap: .25rem; font-size: .8rem; color: var(--text-schwach); }
+.feld select, .feld input {
+  padding: .5rem .6rem; font-size: .9rem; border-radius: 9px;
+  border: 1px solid var(--karte-rand); background: var(--bg); color: var(--text);
+}
+.filter-schalter { display: flex; flex-wrap: wrap; gap: .8rem; align-items: center; margin-top: .8rem; }
+.schalter { display: flex; align-items: center; gap: .4rem; font-size: .85rem; cursor: pointer; }
+.schalter.gross { align-items: flex-start; gap: .6rem; margin: .9rem 0; }
+.schalter.gross span { display: flex; flex-direction: column; gap: .15rem; }
+.schalter.gross em { font-style: normal; font-size: .78rem; color: var(--text-schwach); line-height: 1.35; }
+.schalter input { width: 18px; height: 18px; accent-color: var(--akzent); flex: none; margin-top: .1rem; }
+.text-knopf { background: none; border: none; color: var(--akzent); cursor: pointer; font-size: .85rem; padding: 0; }
+
+/* ------------------------------------------------------------------ Liste */
+main { padding: .8rem .9rem 2rem; }
+.lade, .leer { text-align: center; color: var(--text-schwach); padding: 2.5rem 1rem; font-size: .9rem; }
+
+.hinweis {
+  background: var(--mittel-weich); color: var(--mittel);
+  border: 1px solid currentColor; border-radius: 10px;
+  padding: .6rem .8rem; font-size: .84rem; margin-bottom: .8rem;
+}
+.hinweis.fehler { background: var(--schlecht-weich); color: var(--schlecht); }
+
+.liste { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .55rem; }
+
+.karte {
+  background: var(--karte); border: 1px solid var(--karte-rand);
+  border-radius: var(--radius); box-shadow: var(--schatten);
+  padding: .75rem .85rem; cursor: pointer; position: relative;
+}
+.karte:active { border-color: var(--akzent); }
+.karte.stale { opacity: .55; }
+.karte.watch { border-left: 3px solid var(--akzent); }
+
+.karte-kopf { display: flex; align-items: baseline; justify-content: space-between; gap: .6rem; }
+.bank { font-weight: 650; font-size: 1rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.zins { font-size: 1.32rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.zins small { font-size: .62em; font-weight: 600; color: var(--text-schwach); margin-left: .1em; }
+
+/* Feature 2: Netto-Zeile */
+.netto-zeile {
+  margin-top: .15rem; font-size: .86rem; color: var(--text-schwach);
+  display: flex; align-items: baseline; gap: .4rem; flex-wrap: wrap;
+}
+.netto-wert { font-weight: 600; color: var(--gut); font-variant-numeric: tabular-nums; }
+.netto-zeile .tipp { color: var(--akzent); font-size: .78rem; }
+
+.badges { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .5rem; }
+.badge {
+  font-size: .71rem; padding: .16rem .48rem; border-radius: 999px;
+  border: 1px solid transparent; white-space: nowrap; font-weight: 600;
+}
+.badge.gut { background: var(--gut-weich); color: var(--gut); border-color: currentColor; }
+.badge.mittel { background: var(--mittel-weich); color: var(--mittel); border-color: currentColor; }
+.badge.schlecht { background: var(--schlecht-weich); color: var(--schlecht); border-color: currentColor; }
+.badge.neutral { background: var(--bg); color: var(--text-schwach); border-color: var(--karte-rand); }
+.badge.info { background: var(--akzent-weich); color: var(--akzent); border-color: currentColor; }
+
+.karte-fuss {
+  margin-top: .45rem; display: flex; align-items: center; justify-content: space-between;
+  gap: .5rem; font-size: .74rem; color: var(--text-sehr-schwach);
+}
+.stern {
+  background: none; border: none; font-size: 1.15rem; line-height: 1; cursor: pointer;
+  color: var(--text-sehr-schwach); padding: .15rem .2rem;
+}
+.stern.an { color: #e8a70a; }
+
+/* ------------------------------------------------------------------ Sheet */
+.sheet { position: fixed; inset: 0; z-index: 80; display: flex; align-items: flex-end; }
+.sheet-hintergrund { position: absolute; inset: 0; background: rgba(3, 7, 18, .5); }
+.sheet-inhalt {
+  position: relative; width: 100%; max-height: 88vh; overflow-y: auto;
+  background: var(--karte); border-radius: 18px 18px 0 0;
+  padding: .5rem 1rem calc(1.4rem + var(--sicher-unten));
+  animation: hoch .18s ease-out;
+}
+@keyframes hoch { from { transform: translateY(14px); opacity: .6; } }
+@media (min-width: 640px) {
+  .sheet { align-items: center; justify-content: center; }
+  .sheet-inhalt { max-width: 560px; border-radius: 18px; max-height: 84vh; }
+}
+.sheet-griff { width: 40px; height: 4px; border-radius: 2px; background: var(--karte-rand); margin: .4rem auto 1rem; }
+.sheet-aktionen { display: flex; gap: .8rem; align-items: center; margin-top: 1.2rem; }
+.primaer {
+  background: var(--akzent); color: #fff; border: none; border-radius: 10px;
+  padding: .65rem 1.1rem; font-size: .95rem; font-weight: 600; cursor: pointer;
+}
+
+/* Rechnung im Detail */
+.rechnung { width: 100%; border-collapse: collapse; font-size: .88rem; margin: .3rem 0 .6rem; }
+.rechnung td { padding: .4rem 0; border-bottom: 1px solid var(--karte-rand); vertical-align: top; }
+.rechnung td:last-child { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: .6rem; }
+.rechnung tr.summe td { font-weight: 700; border-bottom: none; border-top: 2px solid var(--karte-rand); padding-top: .55rem; }
+.rechnung tr.zwischen td { color: var(--text-schwach); }
+.formel {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .74rem; color: var(--text-schwach); background: var(--bg);
+  padding: .5rem .6rem; border-radius: 8px; overflow-x: auto; white-space: pre-wrap; word-break: break-word;
+}
+.quellenliste { list-style: none; padding: 0; margin: .3rem 0 0; font-size: .82rem; }
+.quellenliste li { padding: .3rem 0; border-bottom: 1px solid var(--karte-rand); }
+.quellenliste a { color: var(--akzent); word-break: break-all; }
+
+/* ------------------------------------------------------------------- Fuss */
+.fuss {
+  padding: 1.2rem .9rem calc(1.6rem + var(--sicher-unten));
+  border-top: 1px solid var(--karte-rand);
+  color: var(--text-schwach); font-size: .8rem; background: var(--karte);
+}
+.fuss p { margin: .4rem 0; }
+.klein { font-size: .74rem; color: var(--text-sehr-schwach); }
+
+/* ------------------------------------------------------------------ Toast */
+.toast {
+  position: fixed; left: 50%; transform: translateX(-50%);
+  bottom: calc(1.2rem + var(--sicher-unten)); z-index: 90;
+  background: var(--text); color: var(--bg);
+  padding: .6rem 1rem; border-radius: 10px; font-size: .86rem;
+  max-width: 88vw; text-align: center; box-shadow: 0 6px 20px rgba(0,0,0,.25);
+}

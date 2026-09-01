@@ -1,0 +1,128 @@
+name: APK bauen
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      variante:
+        description: "Build-Variante"
+        type: choice
+        options: ["release", "debug"]
+        default: "release"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bauen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Repo auschecken
+        uses: actions/checkout@v4
+
+      - name: JDK 21 einrichten
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Android SDK einrichten
+        uses: android-actions/setup-android@v3
+
+      - name: Gradle-Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('android/**/*.gradle', 'android/gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: gradle-${{ runner.os }}-
+
+      - name: Aktuelle Zinsdaten in die App legen
+        run: |
+          # Die APK bringt den letzten Stand als Offline-Startbestand mit.
+          # Fehlt er, erzeugt der Gradle-Task einen leeren Platzhalter.
+          if [ -f data/zinsen.json ]; then
+            ANZAHL=$(python3 -c "import json;print(len(json.load(open('data/zinsen.json'))['angebote']))")
+            echo "Bundle enthaelt $ANZAHL Angebote."
+          else
+            echo "::warning::data/zinsen.json fehlt - APK startet ohne Daten."
+          fi
+
+      - name: Keystore aus Secret schreiben
+        if: ${{ github.event.inputs.variante != 'debug' }}
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "::warning::Secret KEYSTORE_BASE64 fehlt - es wird mit dem Debug-Key signiert."
+            exit 0
+          fi
+          echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/zinsradar.jks"
+          echo "KEYSTORE_PATH=$RUNNER_TEMP/zinsradar.jks" >> "$GITHUB_ENV"
+
+      - name: gradlew ausfuehrbar machen
+        run: chmod +x android/gradlew
+
+      - name: APK bauen
+        working-directory: android
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          if [ "${{ github.event.inputs.variante }}" = "debug" ]; then
+            ./gradlew assembleDebug --no-daemon --stacktrace
+          else
+            ./gradlew assembleRelease --no-daemon --stacktrace
+          fi
+
+      - name: APK umbenennen
+        id: apk
+        run: |
+          APK=$(find android/app/build/outputs/apk -name "*.apk" | head -1)
+          if [ -z "$APK" ]; then
+            echo "Keine APK gefunden"; exit 1
+          fi
+          VERSION="${GITHUB_REF_NAME}"
+          case "$VERSION" in
+            v*) : ;;
+            *) VERSION="dev-${GITHUB_RUN_NUMBER}" ;;
+          esac
+          ZIEL="zinsradar-${VERSION}.apk"
+          cp "$APK" "$ZIEL"
+          echo "pfad=$ZIEL" >> "$GITHUB_OUTPUT"
+          echo "groesse=$(du -h "$ZIEL" | cut -f1)" >> "$GITHUB_OUTPUT"
+          echo "APK: $ZIEL ($(du -h "$ZIEL" | cut -f1))" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: APK als Artefakt
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.apk.outputs.pfad }}
+          path: ${{ steps.apk.outputs.pfad }}
+          retention-days: 90
+
+      - name: Release anlegen
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.apk.outputs.pfad }}
+          generate_release_notes: true
+          body: |
+            ## Zinsradar ${{ github.ref_name }}
+
+            APK herunterladen, auf das Handy kopieren und installieren
+            (Android 7+ / API 24+, „Installation aus unbekannten Quellen" erlauben).
+
+            Die App holt ihre Daten aus `data/zinsen.json` in diesem Repo.
+            Die mitgelieferte Kopie im APK ist der Stand zum Zeitpunkt des Builds.
+
+            **Keine Anlageberatung. Alle Angaben ohne Gewähr.**

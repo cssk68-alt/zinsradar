@@ -1,0 +1,19 @@
+{
+  "appId": "de.zinsradar.app",
+  "appName": "Zinsradar",
+  "webDir": "app",
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": false,
+    "webContentsDebuggingEnabled": false
+  },
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "LocalNotifications": {
+      "smallIcon": "ic_launcher",
+      "iconColor": "#0F6FD6"
+    }
+  }
+}

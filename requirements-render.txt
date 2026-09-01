@@ -1,0 +1,3 @@
+# Nur fuer Quellen mit rendering: js_required.
+# Nach der Installation zusaetzlich:  playwright install chromium
+playwright>=1.44

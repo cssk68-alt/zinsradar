@@ -1,0 +1,28 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Android / Gradle
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/app/src/main/assets/public/
+*.jks
+*.keystore
+keystore.properties
+
+# Von Gradle/Skripten erzeugte Kopie der Daten fuer die App
+app/data/
+
+# Diagnose-Ausgaben
+docs/snapshots/
+
+# Editoren / OS
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+.DS_Store

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Zinsradar</string>
+    <string name="title_activity_main">Zinsradar</string>
+    <string name="package_name">de.zinsradar.app</string>
+    <string name="custom_url_scheme">de.zinsradar.app</string>
+</resources>

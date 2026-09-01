@@ -1,0 +1,31 @@
+// Wurzel-Buildscript.
+//
+// Dieses Projekt kommt ohne Node/npm aus: Capacitor wird als Maven-Artefakt
+// von Maven Central geholt (com.capacitorjs:core), nicht aus node_modules.
+// Dadurch laesst sich die APK allein mit JDK 21, Gradle und dem Android-SDK
+// bauen - lokal wie in GitHub Actions.
+buildscript {
+    ext {
+        agpVersion       = '8.7.2'
+        capacitorVersion = '7.6.9'
+        capLocalNotif    = '7.0.6'
+        compileSdkVersion = 35
+        targetSdkVersion  = 35
+        minSdkVersion     = 24
+        androidxAppCompat = '1.7.0'
+        androidxCoreKtx   = '1.13.1'
+        androidxWebkit    = '1.11.0'
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$agpVersion"
+    }
+}
+
+
+tasks.register('clean', Delete) {
+    delete rootProject.layout.buildDirectory
+}

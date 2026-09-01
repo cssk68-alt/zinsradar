@@ -1,0 +1,92 @@
+{
+  "_hinweis": "Zentrale Stellschrauben. Wird vom Scraper gelesen und in Auszuegen nach data/zinsen.json gespiegelt, damit die PWA die Rechnung nachvollziehbar anzeigen kann.",
+  "score": {
+    "_hinweis": "Abschlag in Prozentpunkten, abgezogen vom Netto-Zins. Gemappt auf die S&P-Buchstabengruppe, +/- werden ignoriert (AA+ -> AA).",
+    "risiko_abschlag_pp": {
+      "AAA": 0.0,
+      "AA": 0.05,
+      "A": 0.1,
+      "BBB": 0.25,
+      "_default": 0.6
+    },
+    "abgeltungssteuer_de_pct": 26.375,
+    "_abgeltungssteuer_hinweis": "NICHT im Score. Nur Anzeige-Toggle in der App, weil sie alle Anbieter gleich trifft. 25% Kapitalertragsteuer + 5,5% Soli."
+  },
+  "validierung": {
+    "max_zins_pct": 10.0,
+    "max_abweichung_vortag_pp": 2.0,
+    "ezb_abstand_flag_pp": 3.0,
+    "min_treffer_gesamt": 1,
+    "max_stale_tage": 14
+  },
+  "fetch": {
+    "min_abstand_pro_domain_s": 2.0,
+    "timeout_s": 30.0,
+    "max_versuche": 3,
+    "backoff_faktor": 2.0,
+    "backoff_basis_s": 1.5,
+    "robots_respektieren": true,
+    "robots_cache_s": 3600,
+    "user_agent": "Mozilla/5.0 (compatible; ZinsradarBot/1.0; +https://github.com/USER/zinsradar)",
+    "playwright_timeout_ms": 25000,
+    "playwright_warte_auf": "networkidle",
+    "_user_agent_hinweis": "Konventionelles Crawler-Format: der Bot nennt sich klar beim Namen, benutzt aber das Mozilla-Praefix, das WAFs erwarten. Mehrere Banken weisen einen UA ohne dieses Praefix schon auf Verbindungsebene ab. robots.txt wird unveraendert strikt befolgt.",
+    "playwright_eigener_ua": true,
+    "_playwright_ua_hinweis": "true = Chromium behaelt seinen echten User-Agent. Ein gerenderter Browser IST ein Browser; ihm einen Bot-UA aufzudruecken bringt nur kaputtes Rendering."
+  },
+  "extraktion": {
+    "llm_aktiv": true,
+    "llm_modell": "gemini-2.0-flash",
+    "llm_max_zeichen": 8000,
+    "llm_timeout_s": 60.0,
+    "heuristik_aktiv": true,
+    "confidence": {
+      "tier1_json_endpoint": 0.95,
+      "tier1_jsonld": 0.9,
+      "tier2_css_konfiguriert": 0.75,
+      "tier2_css_heuristik": 0.5,
+      "tier3_llm": 0.4
+    },
+    "min_confidence_aufnahme": 0.3,
+    "heuristik_zins_min_pct": 0.05,
+    "heuristik_zins_max_pct": 8.0,
+    "_heuristik_fenster_hinweis": "Nur fuer Stufe 2b. Ohne diese Grenze liest die Heuristik ein '15 % Rabatt' oder '0 % Dispo' irgendwo auf der Seite als Sparzins. Stufe 1, konfigurierte Selektoren und LLM duerfen bis normalisierung.plausibler_zins_max_pct liefern."
+  },
+  "ezb": {
+    "basis_url": "https://data-api.ecb.europa.eu/service/data",
+    "mir_laender": [
+      "DE",
+      "FR",
+      "NL",
+      "IT",
+      "ES",
+      "AT",
+      "IE",
+      "PT",
+      "U2"
+    ],
+    "mir_serie_muster": "M.{land}.B.L21.A.R.A.2250.EUR.N",
+    "estr_serie": "B.EU000A2X2A25.WT",
+    "estr_tage": 90,
+    "fx_url": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml",
+    "fx_waehrungen": [
+      "PLN",
+      "SEK",
+      "CZK",
+      "HUF",
+      "NOK",
+      "DKK",
+      "CHF",
+      "GBP",
+      "RON",
+      "BGN",
+      "ISK"
+    ]
+  },
+  "normalisierung": {
+    "_hinweis": "Zinssaetze werden NICHT umgerechnet - ein PLN-Zins bleibt ein PLN-Zins. Umgerechnet werden nur Betraege (Mindest-/Hoechstanlage).",
+    "produkt_default": "Tagesgeld",
+    "plausibler_zins_min_pct": 0.0,
+    "plausibler_zins_max_pct": 15.0
+  }
+}

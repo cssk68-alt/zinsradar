@@ -1,0 +1,322 @@
+[
+  {
+    "land": "AT",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Einlagensicherung AUSTRIA Ges.m.b.H. (ESA)",
+    "staatsrating_sp": "AA+",
+    "staatsrating_moodys": "Aa1",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.einlagensicherung.at/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "BE",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Fonds de garantie pour les services financiers / Garantiefonds",
+    "staatsrating_sp": "AA",
+    "staatsrating_moodys": "Aa3",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.garantiefonds.belgium.be/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "BG",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Bulgarian Deposit Insurance Fund (BDIF)",
+    "staatsrating_sp": "BBB+",
+    "staatsrating_moodys": "Baa1",
+    "waehrung": "BGN",
+    "quelle_url": "https://www.dif.bg/en",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "CH",
+    "einlagensicherung_betrag_eur": 105000,
+    "sicherungssystem_name": "esisuisse (100.000 CHF)",
+    "staatsrating_sp": "AAA",
+    "staatsrating_moodys": "Aaa",
+    "waehrung": "CHF",
+    "quelle_url": "https://www.esisuisse.ch/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "CY",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Deposit Guarantee and Resolution of Credit and Other Institutions Scheme (DGS)",
+    "staatsrating_sp": "BBB+",
+    "staatsrating_moodys": "Baa2",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.centralbank.cy/en/deposit-guarantee-schemes",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "CZ",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Garancni system financniho trhu (GSFT - 2.500.000 CZK)",
+    "staatsrating_sp": "AA-",
+    "staatsrating_moodys": "Aa3",
+    "waehrung": "CZK",
+    "quelle_url": "https://www.garancnisystem.cz/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "DE",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Entschaedigungseinrichtung deutscher Banken GmbH (EdB)",
+    "staatsrating_sp": "AAA",
+    "staatsrating_moodys": "Aaa",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.edb-banken.de/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "DK",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Garantiformuen (Finansiel Stabilitet - 750.000 DKK)",
+    "staatsrating_sp": "AAA",
+    "staatsrating_moodys": "Aaa",
+    "waehrung": "DKK",
+    "quelle_url": "https://www.garafond.dk/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "EE",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Tagatisfond (Guarantee Fund)",
+    "staatsrating_sp": "AA-",
+    "staatsrating_moodys": "A1",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.tf.ee/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "ES",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Fondo de Garantia de Depositos de Entidades de Credito (FGD)",
+    "staatsrating_sp": "A",
+    "staatsrating_moodys": "Baa1",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.fgd.es/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "FI",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Rahoitusvakausvirasto (Financial Stability Authority / RVV)",
+    "staatsrating_sp": "AA+",
+    "staatsrating_moodys": "Aa1",
+    "waehrung": "EUR",
+    "quelle_url": "https://rvv.fi/en/deposit-guarantee",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "FR",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Fonds de Garantie des Depots et de Resolution (FGDR)",
+    "staatsrating_sp": "AA-",
+    "staatsrating_moodys": "Aa3",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.garantiedesdepots.fr/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "GR",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Hellenic Deposit and Investment Guarantee Fund (TEKE)",
+    "staatsrating_sp": "BBB-",
+    "staatsrating_moodys": "Baa3",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.teke.gr/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "HR",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Hrvatska agencija za osiguranje radnih trazbina (HAOD)",
+    "staatsrating_sp": "BBB+",
+    "staatsrating_moodys": "Baa2",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.haod.hr/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "HU",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Orszagos Betetbiztositasi Alap (OBA - 37.000.000 HUF)",
+    "staatsrating_sp": "BBB-",
+    "staatsrating_moodys": "Baa2",
+    "waehrung": "HUF",
+    "quelle_url": "https://www.oba.hu/en/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "IE",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Deposit Guarantee Scheme (DGS Ireland / Central Bank)",
+    "staatsrating_sp": "AA",
+    "staatsrating_moodys": "Aa2",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.depositguarantee.ie/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "IS",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Tryggingarsjodur (Depositors' and Investors' Guarantee Fund - TVF)",
+    "staatsrating_sp": "A",
+    "staatsrating_moodys": "A2",
+    "waehrung": "ISK",
+    "quelle_url": "https://www.tvf.is/en/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "IT",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Fondo Interbancario di Tutela dei Depositi (FITD)",
+    "staatsrating_sp": "BBB",
+    "staatsrating_moodys": "Baa3",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.fitd.it/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "LI",
+    "einlagensicherung_betrag_eur": 105000,
+    "sicherungssystem_name": "Einlagensicherungs- und Anlegerschutz-Stiftung (EAS - 100.000 CHF)",
+    "staatsrating_sp": "AAA",
+    "staatsrating_moodys": "Aaa",
+    "waehrung": "CHF",
+    "quelle_url": "https://www.eas-liechtenstein.li/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "LT",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Indeliu ir investiciju draudimas (IID)",
+    "staatsrating_sp": "A+",
+    "staatsrating_moodys": "A2",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.iidraudimas.lt/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "LU",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Fonds de garantie des depots Luxembourg (FGDL)",
+    "staatsrating_sp": "AAA",
+    "staatsrating_moodys": "Aaa",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.fgdl.lu/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "LV",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Noguldijumu garantiju fonds (Deposit Guarantee Fund of Latvia)",
+    "staatsrating_sp": "A+",
+    "staatsrating_moodys": "A3",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.bank.lv/en/tasks/deposit-guarantee-fund",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "MT",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Depositor Compensation Scheme (DCS Malta)",
+    "staatsrating_sp": "A-",
+    "staatsrating_moodys": "A2",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.dcs.org.mt/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "NL",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Depositogarantiestelsel (DGS - De Nederlandsche Bank)",
+    "staatsrating_sp": "AAA",
+    "staatsrating_moodys": "Aaa",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.dnb.nl/en/reliable-financial-sector/deposit-guarantee-scheme/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "NO",
+    "einlagensicherung_betrag_eur": 88000,
+    "sicherungssystem_name": "Bankenes sikringsfond (1.000.000 NOK)",
+    "staatsrating_sp": "AAA",
+    "staatsrating_moodys": "Aaa",
+    "waehrung": "NOK",
+    "quelle_url": "https://www.bankenessikringsfond.no/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "PL",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Bankowy Fundusz Gwarancyjny (BFG - Gegenwert in PLN)",
+    "staatsrating_sp": "A-",
+    "staatsrating_moodys": "A2",
+    "waehrung": "PLN",
+    "quelle_url": "https://www.bfg.pl/en/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "PT",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Fundo de Garantia de Depositos (FGD Portugal)",
+    "staatsrating_sp": "A-",
+    "staatsrating_moodys": "A3",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.fgd.pt/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "RO",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Fondul de Garantare a Depozitelor Bancare (FGDB)",
+    "staatsrating_sp": "BBB-",
+    "staatsrating_moodys": "Baa3",
+    "waehrung": "RON",
+    "quelle_url": "https://www.fgdb.ro/en",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "SE",
+    "einlagensicherung_betrag_eur": 92000,
+    "sicherungssystem_name": "Riksgalden / Insattningsgarantin (1.050.000 SEK)",
+    "staatsrating_sp": "AAA",
+    "staatsrating_moodys": "Aaa",
+    "waehrung": "SEK",
+    "quelle_url": "https://www.riksgalden.se/en/our-operations/deposit-guarantee/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "SI",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Sistem jamstva za vloge (Banka Slovenije)",
+    "staatsrating_sp": "A+",
+    "staatsrating_moodys": "A3",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.bsi.si/en/financial-stability/deposit-guarantee-scheme",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "SK",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Fond ochrany vkladov (FOV Slovakia)",
+    "staatsrating_sp": "A",
+    "staatsrating_moodys": "A2",
+    "waehrung": "EUR",
+    "quelle_url": "https://www.fovsk.sk/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "UK",
+    "einlagensicherung_betrag_eur": 100000,
+    "sicherungssystem_name": "Financial Services Compensation Scheme (FSCS - 85.000 GBP)",
+    "staatsrating_sp": "AA",
+    "staatsrating_moodys": "Aa3",
+    "waehrung": "GBP",
+    "quelle_url": "https://www.fscs.org.uk/",
+    "stand_datum": "2026-01-01"
+  }
+]

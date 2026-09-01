@@ -1,0 +1,337 @@
+{
+  "stand": "2026-09-01T20:33:19+00:00",
+  "quelle": "European Central Bank Data Portal (data-api.ecb.europa.eu) und eurofxref",
+  "lizenz_hinweis": "EZB-Daten sind frei nutzbar mit Quellenangabe.",
+  "ezb_mir": {
+    "AT": {
+      "wert_pct": 0.41,
+      "periode": "2026-06",
+      "serie": "MIR.M.AT.B.L21.A.R.A.2250.EUR.N",
+      "titel": "Bank interest rates - overnight deposits from households",
+      "status": "A"
+    },
+    "DE": {
+      "wert_pct": 0.51,
+      "periode": "2026-06",
+      "serie": "MIR.M.DE.B.L21.A.R.A.2250.EUR.N",
+      "titel": "Bank interest rates - overnight deposits from households",
+      "status": "P"
+    },
+    "ES": {
+      "wert_pct": 0.16,
+      "periode": "2026-06",
+      "serie": "MIR.M.ES.B.L21.A.R.A.2250.EUR.N",
+      "titel": "Bank interest rates - overnight deposits from households",
+      "status": "P"
+    },
+    "FR": {
+      "wert_pct": 0.04,
+      "periode": "2026-06",
+      "serie": "MIR.M.FR.B.L21.A.R.A.2250.EUR.N",
+      "titel": "Bank interest rates - overnight deposits from households",
+      "status": "P"
+    },
+    "IE": {
+      "wert_pct": 0.14,
+      "periode": "2026-06",
+      "serie": "MIR.M.IE.B.L21.A.R.A.2250.EUR.N",
+      "titel": "Bank interest rates - overnight deposits from households",
+      "status": "A"
+    },
+    "IT": {
+      "wert_pct": 0.19,
+      "periode": "2026-06",
+      "serie": "MIR.M.IT.B.L21.A.R.A.2250.EUR.N",
+      "titel": "Bank interest rates - overnight deposits from households",
+      "status": "P"
+    },
+    "NL": {
+      "wert_pct": 0.15,
+      "periode": "2026-06",
+      "serie": "MIR.M.NL.B.L21.A.R.A.2250.EUR.N",
+      "titel": "Bank interest rates - overnight deposits from households",
+      "status": "A"
+    },
+    "PT": {
+      "wert_pct": 0.03,
+      "periode": "2026-06",
+      "serie": "MIR.M.PT.B.L21.A.R.A.2250.EUR.N",
+      "titel": "Bank interest rates - overnight deposits from households",
+      "status": "A"
+    },
+    "U2": {
+      "wert_pct": 0.28,
+      "periode": "2026-06",
+      "serie": "MIR.M.U2.B.L21.A.R.A.2250.EUR.N",
+      "titel": "Bank interest rates - overnight deposits from households",
+      "status": "P"
+    }
+  },
+  "estr": {
+    "aktuell_pct": 2.185,
+    "datum": "2026-08-31",
+    "veraenderung_30t_pp": 0.001,
+    "trend": "stabil",
+    "serie": "EST.B.EU000A2X2A25.WT",
+    "reihe": [
+      {
+        "datum": "2026-06-09",
+        "wert_pct": 1.93
+      },
+      {
+        "datum": "2026-06-10",
+        "wert_pct": 1.93
+      },
+      {
+        "datum": "2026-06-11",
+        "wert_pct": 1.931
+      },
+      {
+        "datum": "2026-06-12",
+        "wert_pct": 1.931
+      },
+      {
+        "datum": "2026-06-15",
+        "wert_pct": 1.931
+      },
+      {
+        "datum": "2026-06-16",
+        "wert_pct": 1.931
+      },
+      {
+        "datum": "2026-06-17",
+        "wert_pct": 2.182
+      },
+      {
+        "datum": "2026-06-18",
+        "wert_pct": 2.18
+      },
+      {
+        "datum": "2026-06-19",
+        "wert_pct": 2.181
+      },
+      {
+        "datum": "2026-06-22",
+        "wert_pct": 2.181
+      },
+      {
+        "datum": "2026-06-23",
+        "wert_pct": 2.182
+      },
+      {
+        "datum": "2026-06-24",
+        "wert_pct": 2.181
+      },
+      {
+        "datum": "2026-06-25",
+        "wert_pct": 2.183
+      },
+      {
+        "datum": "2026-06-26",
+        "wert_pct": 2.181
+      },
+      {
+        "datum": "2026-06-29",
+        "wert_pct": 2.182
+      },
+      {
+        "datum": "2026-06-30",
+        "wert_pct": 2.182
+      },
+      {
+        "datum": "2026-07-01",
+        "wert_pct": 2.183
+      },
+      {
+        "datum": "2026-07-02",
+        "wert_pct": 2.183
+      },
+      {
+        "datum": "2026-07-03",
+        "wert_pct": 2.183
+      },
+      {
+        "datum": "2026-07-06",
+        "wert_pct": 2.182
+      },
+      {
+        "datum": "2026-07-07",
+        "wert_pct": 2.182
+      },
+      {
+        "datum": "2026-07-08",
+        "wert_pct": 2.182
+      },
+      {
+        "datum": "2026-07-09",
+        "wert_pct": 2.182
+      },
+      {
+        "datum": "2026-07-10",
+        "wert_pct": 2.182
+      },
+      {
+        "datum": "2026-07-13",
+        "wert_pct": 2.184
+      },
+      {
+        "datum": "2026-07-14",
+        "wert_pct": 2.184
+      },
+      {
+        "datum": "2026-07-15",
+        "wert_pct": 2.184
+      },
+      {
+        "datum": "2026-07-16",
+        "wert_pct": 2.185
+      },
+      {
+        "datum": "2026-07-17",
+        "wert_pct": 2.186
+      },
+      {
+        "datum": "2026-07-20",
+        "wert_pct": 2.184
+      },
+      {
+        "datum": "2026-07-21",
+        "wert_pct": 2.183
+      },
+      {
+        "datum": "2026-07-22",
+        "wert_pct": 2.184
+      },
+      {
+        "datum": "2026-07-23",
+        "wert_pct": 2.185
+      },
+      {
+        "datum": "2026-07-24",
+        "wert_pct": 2.186
+      },
+      {
+        "datum": "2026-07-27",
+        "wert_pct": 2.185
+      },
+      {
+        "datum": "2026-07-28",
+        "wert_pct": 2.184
+      },
+      {
+        "datum": "2026-07-29",
+        "wert_pct": 2.185
+      },
+      {
+        "datum": "2026-07-30",
+        "wert_pct": 2.185
+      },
+      {
+        "datum": "2026-07-31",
+        "wert_pct": 2.184
+      },
+      {
+        "datum": "2026-08-03",
+        "wert_pct": 2.185
+      },
+      {
+        "datum": "2026-08-04",
+        "wert_pct": 2.185
+      },
+      {
+        "datum": "2026-08-05",
+        "wert_pct": 2.185
+      },
+      {
+        "datum": "2026-08-06",
+        "wert_pct": 2.185
+      },
+      {
+        "datum": "2026-08-07",
+        "wert_pct": 2.185
+      },
+      {
+        "datum": "2026-08-10",
+        "wert_pct": 2.184
+      },
+      {
+        "datum": "2026-08-11",
+        "wert_pct": 2.184
+      },
+      {
+        "datum": "2026-08-12",
+        "wert_pct": 2.185
+      },
+      {
+        "datum": "2026-08-13",
+        "wert_pct": 2.188
+      },
+      {
+        "datum": "2026-08-14",
+        "wert_pct": 2.189
+      },
+      {
+        "datum": "2026-08-17",
+        "wert_pct": 2.187
+      },
+      {
+        "datum": "2026-08-18",
+        "wert_pct": 2.188
+      },
+      {
+        "datum": "2026-08-19",
+        "wert_pct": 2.188
+      },
+      {
+        "datum": "2026-08-20",
+        "wert_pct": 2.191
+      },
+      {
+        "datum": "2026-08-21",
+        "wert_pct": 2.189
+      },
+      {
+        "datum": "2026-08-24",
+        "wert_pct": 2.189
+      },
+      {
+        "datum": "2026-08-25",
+        "wert_pct": 2.189
+      },
+      {
+        "datum": "2026-08-26",
+        "wert_pct": 2.187
+      },
+      {
+        "datum": "2026-08-27",
+        "wert_pct": 2.188
+      },
+      {
+        "datum": "2026-08-28",
+        "wert_pct": 2.19
+      },
+      {
+        "datum": "2026-08-31",
+        "wert_pct": 2.185
+      }
+    ]
+  },
+  "fx": {
+    "datum": "2026-09-01",
+    "kurse": {
+      "CZK": 24.159,
+      "DKK": 7.4748,
+      "GBP": 0.85655,
+      "HUF": 366.71,
+      "PLN": 4.3313,
+      "RON": 5.2567,
+      "SEK": 11.1145,
+      "CHF": 0.9394,
+      "ISK": 140.8,
+      "NOK": 10.8185,
+      "EUR": 1.0
+    },
+    "quelle": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
+  },
+  "fehler": []
+}

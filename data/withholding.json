@@ -1,0 +1,322 @@
+[
+  {
+    "land": "AT",
+    "quellensteuer_standard_pct": 27.5,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "niedrig",
+    "formular_bezeichnung": "Ansaessigkeitsbescheinigung IS-QU1 / ZS-QU1",
+    "quelle_url": "https://www.bmf.gv.at/themen/steuern/internationales-steuerrecht/doppelbesteuerungsabkommen.html",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "BE",
+    "quellensteuer_standard_pct": 30.0,
+    "quellensteuer_mit_dba_pct": 15.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "hoch",
+    "formular_bezeichnung": "Formular 276 INT-AUT",
+    "quelle_url": "https://finances.belgium.be/fr/entreprises/international/conventions_internationales",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "BG",
+    "quellensteuer_standard_pct": 10.0,
+    "quellensteuer_mit_dba_pct": 5.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "hoch",
+    "formular_bezeichnung": "Certificate of Tax Residence / Art. 68 NRA Form",
+    "quelle_url": "https://nra.bg/wps/portal/nra-en/taxation/double-tax-treaties",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "CH",
+    "quellensteuer_standard_pct": 35.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "mittel",
+    "formular_bezeichnung": "Formular 85 / QIS",
+    "quelle_url": "https://www.estv.admin.ch/estv/de/home/verrechnungssteuer/vb-international.html",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "CY",
+    "quellensteuer_standard_pct": 0.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": false,
+    "rueckerstattung_aufwand": "keiner",
+    "formular_bezeichnung": "Nicht erforderlich (0% fuer Gebietsfremde)",
+    "quelle_url": "https://www.mof.gov.cy/mof/tax/taxdep.nsf",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "CZ",
+    "quellensteuer_standard_pct": 15.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "mittel",
+    "formular_bezeichnung": "Certificate of Tax Residence (Potvrzeni o danovem domicilu)",
+    "quelle_url": "https://www.financnisprava.cz/en/international-affairs/double-taxation",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "DE",
+    "quellensteuer_standard_pct": 25.0,
+    "quellensteuer_mit_dba_pct": 25.0,
+    "rueckerstattung_moeglich": false,
+    "rueckerstattung_aufwand": "keiner",
+    "formular_bezeichnung": "Freistellungsauftrag / NV-Bescheinigung (Inlandsfall)",
+    "quelle_url": "https://www.bzst.de/DE/Privatpersonen/Kapitalertraege/kapitalertraege_node.html",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "DK",
+    "quellensteuer_standard_pct": 27.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "mittel",
+    "formular_bezeichnung": "Form 02.028 (Claim for Refund of Danish Dividend/Interest Tax)",
+    "quelle_url": "https://skat.dk/en-us/individuals/tax-when-you-live-outside-denmark",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "EE",
+    "quellensteuer_standard_pct": 0.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": false,
+    "rueckerstattung_aufwand": "keiner",
+    "formular_bezeichnung": "Nicht erforderlich (0% auf Zinsen an Gebietsfremde)",
+    "quelle_url": "https://www.emta.ee/erakliendile/tulu-deklareerimine/valismaa-tulu",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "ES",
+    "quellensteuer_standard_pct": 19.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "niedrig",
+    "formular_bezeichnung": "Ansaessigkeitsbescheinigung (Formulario 210 zur Erstattung)",
+    "quelle_url": "https://sededeclaraciones.agenciatributaria.gob.es/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "FI",
+    "quellensteuer_standard_pct": 30.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "niedrig",
+    "formular_bezeichnung": "Finnish Non-Resident Tax Card / Form 6163e",
+    "quelle_url": "https://www.vero.fi/en/individuals/tax-cards-and-tax-returns/arriving_in_finland/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "FR",
+    "quellensteuer_standard_pct": 12.8,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "niedrig",
+    "formular_bezeichnung": "Formular 5000-DE / Certificate of Residence",
+    "quelle_url": "https://www.impots.gouv.fr/international-particulier",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "GR",
+    "quellensteuer_standard_pct": 15.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "hoch",
+    "formular_bezeichnung": "Greek Tax Claim Form / DTT Claim Application",
+    "quelle_url": "https://www.aade.gr/en/customs-tax-services/tax-services/double-taxation",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "HR",
+    "quellensteuer_standard_pct": 12.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "mittel",
+    "formular_bezeichnung": "Zahtjev za umanjenje porezne obveze (Form DTT)",
+    "quelle_url": "https://www.porezna-uprava.hr/en/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "HU",
+    "quellensteuer_standard_pct": 15.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "niedrig",
+    "formular_bezeichnung": "Certificate of Residence (NAV Formular)",
+    "quelle_url": "https://nav.gov.hu/en/taxation/double_taxation",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "IE",
+    "quellensteuer_standard_pct": 20.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "niedrig",
+    "formular_bezeichnung": "Form 8-3-6 / Declaration of Non-Residence",
+    "quelle_url": "https://www.revenue.ie/en/tax-professionals/tdm/income-tax-capital-gains-tax-corporation-tax/part-08/08-03-06.pdf",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "IS",
+    "quellensteuer_standard_pct": 22.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "mittel",
+    "formular_bezeichnung": "Application for Exemption/Reduction (RSK 5.02)",
+    "quelle_url": "https://www.rsk.is/english/tax-topics/double-taxation-agreements/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "IT",
+    "quellensteuer_standard_pct": 26.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "hoch",
+    "formular_bezeichnung": "Modello INT-DBA / Certificate of Tax Residence",
+    "quelle_url": "https://www.agenziaentrate.gov.it/portale/web/english/nse/convenzioni-per-evitare-le-doppie-imposizioni",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "LI",
+    "quellensteuer_standard_pct": 0.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": false,
+    "rueckerstattung_aufwand": "keiner",
+    "formular_bezeichnung": "Nicht erforderlich (0% auf Zinsen)",
+    "quelle_url": "https://www.llv.li/de/landesverwaltung/steuerverwaltung",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "LT",
+    "quellensteuer_standard_pct": 15.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "niedrig",
+    "formular_bezeichnung": "Form DAS-1 (Claim for Reduction or Exemption)",
+    "quelle_url": "https://www.vmi.lt/evmi/en/double-taxation-avoidance",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "LU",
+    "quellensteuer_standard_pct": 0.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": false,
+    "rueckerstattung_aufwand": "keiner",
+    "formular_bezeichnung": "Nicht erforderlich (0% fuer Nicht-Ansaessige)",
+    "quelle_url": "https://impotsdirects.public.lu/fr/conventions.html",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "LV",
+    "quellensteuer_standard_pct": 0.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": false,
+    "rueckerstattung_aufwand": "keiner",
+    "formular_bezeichnung": "Nicht erforderlich (0% auf Zinsen an Gebietsfremde)",
+    "quelle_url": "https://www.vid.gov.lv/en/tax-agreements",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "MT",
+    "quellensteuer_standard_pct": 0.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": false,
+    "rueckerstattung_aufwand": "keiner",
+    "formular_bezeichnung": "Nicht erforderlich (0% fuer Nicht-Ansaessige)",
+    "quelle_url": "https://cfr.gov.mt/en/inlandrevenue/Pages/Double-Taxation-Conventions.aspx",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "NL",
+    "quellensteuer_standard_pct": 0.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": false,
+    "rueckerstattung_aufwand": "keiner",
+    "formular_bezeichnung": "Nicht erforderlich (0% Zins-Quellensteuer)",
+    "quelle_url": "https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/belastingdienst/prive/vermogen_en_anmerkelijk_belang/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "NO",
+    "quellensteuer_standard_pct": 0.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": false,
+    "rueckerstattung_aufwand": "keiner",
+    "formular_bezeichnung": "Nicht erforderlich (0% auf Sparzinsen an Unverbundene)",
+    "quelle_url": "https://www.skatteetaten.no/en/person/taxes/get-the-right-tax-deduction/foreign/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "PL",
+    "quellensteuer_standard_pct": 19.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "mittel",
+    "formular_bezeichnung": "CFR-1 (Ansaessigkeitsbescheinigung zur Befreiung)",
+    "quelle_url": "https://www.gov.pl/web/finanse/umowy-o-unikaniu-podwojnego-opodatkowania",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "PT",
+    "quellensteuer_standard_pct": 28.0,
+    "quellensteuer_mit_dba_pct": 10.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "mittel",
+    "formular_bezeichnung": "Formular RFI 21 / Mod. 21-RFI",
+    "quelle_url": "https://www.portaldasfinancas.gov.pt/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "RO",
+    "quellensteuer_standard_pct": 10.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "mittel",
+    "formular_bezeichnung": "Certificat de rezidenta fiscala",
+    "quelle_url": "https://www.anaf.ro/anaf/internet/ANAF/asistenta_contribuabili/conventii_evitarea_dublei_impuneri",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "SE",
+    "quellensteuer_standard_pct": 0.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": false,
+    "rueckerstattung_aufwand": "keiner",
+    "formular_bezeichnung": "Nicht erforderlich (0% auf Zinsen an Gebietsfremde)",
+    "quelle_url": "https://www.skatteverket.se/privat/ettforetag/skattatabeller.4.html",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "SI",
+    "quellensteuer_standard_pct": 15.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "mittel",
+    "formular_bezeichnung": "Zahtevek za oprostitev davka (KIDO 3 Formular)",
+    "quelle_url": "https://www.fu.gov.si/davke_in_druge_dajatve/podrocja/mednarodno_obdavcenje/",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "SK",
+    "quellensteuer_standard_pct": 19.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "niedrig",
+    "formular_bezeichnung": "Potvrdenie o danovej rezidencii",
+    "quelle_url": "https://www.financnasprava.sk/sk/medzinarodne-vztahy/medzinarodne-zmluvy",
+    "stand_datum": "2026-01-01"
+  },
+  {
+    "land": "UK",
+    "quellensteuer_standard_pct": 20.0,
+    "quellensteuer_mit_dba_pct": 0.0,
+    "rueckerstattung_moeglich": true,
+    "rueckerstattung_aufwand": "mittel",
+    "formular_bezeichnung": "Form DT-Individual / FD13 Certificate",
+    "quelle_url": "https://www.gov.uk/government/publications/double-taxation-treaties-with-the-uk",
+    "stand_datum": "2026-01-01"
+  }
+]

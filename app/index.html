@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<meta name="description" content="Tagesgeldzinsen aus ganz Europa, nach Quellensteuer und Landesrisiko verglichen.">
+<title>Zinsradar</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<div id="ptr" class="ptr" aria-hidden="true"><span class="ptr-spinner"></span><span id="ptrText">Zum Aktualisieren ziehen</span></div>
+
+<header class="kopf">
+  <div class="kopf-oben">
+    <h1>Zinsradar</h1>
+    <div class="kopf-knoepfe">
+      <button id="btnAktualisieren" class="ikon" title="Aktualisieren" aria-label="Daten aktualisieren">&#8635;</button>
+      <button id="btnTheme" class="ikon" title="Hell/Dunkel" aria-label="Farbschema wechseln">&#9681;</button>
+      <button id="btnEinstellungen" class="ikon" title="Einstellungen" aria-label="Einstellungen">&#9881;</button>
+    </div>
+  </div>
+
+  <!-- Feature 4: Referenzleiste -->
+  <div id="referenzleiste" class="referenz" hidden>
+    <div class="referenz-zelle">
+      <span class="referenz-label" id="mirLabel">EZB-Schnitt</span>
+      <span class="referenz-wert" id="mirWert">–</span>
+      <span class="referenz-sub" id="mirSub"></span>
+    </div>
+    <div class="referenz-trenner"></div>
+    <div class="referenz-zelle">
+      <span class="referenz-label">&euro;STR</span>
+      <span class="referenz-wert" id="estrWert">–</span>
+      <span class="referenz-sub" id="estrSub"></span>
+    </div>
+    <div class="referenz-trenner"></div>
+    <div class="referenz-zelle">
+      <span class="referenz-label">Stand</span>
+      <span class="referenz-wert klein" id="standWert">–</span>
+      <span class="referenz-sub" id="standSub"></span>
+    </div>
+  </div>
+
+  <div class="suchzeile">
+    <input type="search" id="suche" placeholder="Bank suchen …" autocomplete="off" aria-label="Bank suchen">
+    <button id="btnFilter" class="filter-knopf">Filter <span id="filterAnzahl" class="pill" hidden>0</span></button>
+  </div>
+
+  <!-- Feature 1: Sortierung -->
+  <div class="sortzeile" role="tablist" aria-label="Sortierung">
+    <button class="sort aktiv" data-sort="score" role="tab">Score</button>
+    <button class="sort" data-sort="netto" role="tab">Netto</button>
+    <button class="sort" data-sort="brutto" role="tab">Brutto</button>
+    <button class="sort" data-sort="bank" role="tab">Name</button>
+    <button class="sort" data-sort="land" role="tab">Land</button>
+  </div>
+</header>
+
+<!-- Feature 5: Filter -->
+<section id="filterBereich" class="filterbereich" hidden>
+  <div class="filter-gitter">
+    <label class="feld">
+      <span>Land</span>
+      <select id="fLand"><option value="">alle Länder</option></select>
+    </label>
+    <label class="feld">
+      <span>Zinstyp</span>
+      <select id="fTyp">
+        <option value="">alle</option>
+        <option value="variabel">variabel</option>
+        <option value="aktion">Aktionszins</option>
+        <option value="fest">fest</option>
+      </select>
+    </label>
+    <label class="feld">
+      <span>Anlagebetrag</span>
+      <input type="number" id="fBetrag" min="0" step="500" placeholder="z.B. 10000" inputmode="numeric">
+    </label>
+    <label class="feld">
+      <span>Anbietertyp</span>
+      <select id="fQuelltyp">
+        <option value="">alle</option>
+        <option value="bank">nur Banken</option>
+        <option value="plattform">nur Plattformen</option>
+        <option value="portal">über Vergleichsportale</option>
+      </select>
+    </label>
+  </div>
+  <div class="filter-schalter">
+    <label class="schalter"><input type="checkbox" id="fNurEur"> <span>nur EUR</span></label>
+    <label class="schalter"><input type="checkbox" id="fNurWatchlist"> <span>nur Watchlist</span></label>
+    <label class="schalter"><input type="checkbox" id="fOhneStale"> <span>stale ausblenden</span></label>
+    <button id="btnFilterReset" class="text-knopf">zurücksetzen</button>
+  </div>
+</section>
+
+<main>
+  <div id="hinweis" class="hinweis" hidden></div>
+  <div id="ladeanzeige" class="lade">Daten werden geladen …</div>
+  <ol id="liste" class="liste" aria-live="polite"></ol>
+  <p id="leer" class="leer" hidden>Kein Eintrag passt zu den Filtern.</p>
+</main>
+
+<footer class="fuss">
+  <p><strong>Keine Anlageberatung.</strong> Alle Angaben ohne Gewähr. Zinssätze ändern sich
+     laufend – vor Abschluss immer beim Anbieter prüfen.</p>
+  <p id="fussStatistik" class="klein"></p>
+  <p class="klein">Referenzdaten: Europäische Zentralbank (MIR, &euro;STR, eurofxref).
+     Angebotsdaten: die je Eintrag genannten Quellen.</p>
+</footer>
+
+<!-- Detail-Sheet (Feature 2) -->
+<div id="sheet" class="sheet" hidden>
+  <div class="sheet-hintergrund" data-schliessen></div>
+  <div class="sheet-inhalt" role="dialog" aria-modal="true" aria-labelledby="sheetTitel">
+    <div class="sheet-griff" data-schliessen></div>
+    <div id="sheetBody"></div>
+  </div>
+</div>
+
+<!-- Einstellungen -->
+<div id="einstellungen" class="sheet" hidden>
+  <div class="sheet-hintergrund" data-schliessen></div>
+  <div class="sheet-inhalt" role="dialog" aria-modal="true" aria-labelledby="einstTitel">
+    <div class="sheet-griff" data-schliessen></div>
+    <h2 id="einstTitel">Einstellungen</h2>
+
+    <label class="schalter gross">
+      <input type="checkbox" id="sErstattung" checked>
+      <span>
+        <strong>Rückerstattung selbst machen</strong>
+        <em>Bei Ländern mit geringem Aufwand wird die Quellensteuer als
+            erstattet gerechnet (0 % statt DBA-Satz).</em>
+      </span>
+    </label>
+
+    <label class="schalter gross">
+      <input type="checkbox" id="sAbgeltung">
+      <span>
+        <strong>Deutsche Abgeltungssteuer anzeigen</strong>
+        <em>Nur Anzeige. Sie trifft alle Anbieter gleich und geht deshalb
+            nicht in den Score ein.</em>
+      </span>
+    </label>
+
+    <h3>Benachrichtigung</h3>
+    <label class="feld">
+      <span>Melden, wenn ein Zins in der Watchlist über … % liegt</span>
+      <input type="number" id="sSchwelle" min="0" max="10" step="0.05" value="3.5">
+    </label>
+    <label class="schalter gross">
+      <input type="checkbox" id="sBenachrichtigung">
+      <span><strong>Lokale Benachrichtigung aktivieren</strong>
+        <em id="benachrichtigungStatus">Prüft beim Aktualisieren, ob ein Wert die Schwelle reißt.</em></span>
+    </label>
+
+    <h3>Datenquelle</h3>
+    <label class="feld">
+      <span>JSON-URL (raw.githubusercontent)</span>
+      <input type="url" id="sQuelle" placeholder="https://raw.githubusercontent.com/…/data/zinsen.json">
+    </label>
+    <p class="klein" id="quelleStatus"></p>
+
+    <div class="sheet-aktionen">
+      <button id="btnEinstellungenSpeichern" class="primaer">Speichern</button>
+      <button class="text-knopf" data-schliessen>Schließen</button>
+    </div>
+
+    <p class="klein">Version <span id="appVersion">1.0.0</span> · Daten werden offline
+       zwischengespeichert und funktionieren ohne Netz.</p>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
