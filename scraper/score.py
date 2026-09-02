@@ -69,23 +69,23 @@ def qst_effektiv_pct(land: str | None, qst_daten: dict[str, dict],
     code = (land or "").upper()
 
     if code == INLANDSFALL:
-        return 0.0, ("Inlandsfall: keine auslaendische Quellensteuer. "
+        return 0.0, ("Inlandsfall: keine ausländische Quellensteuer. "
                      "Die deutsche Abgeltungssteuer ist im Score bewusst nicht enthalten.")
 
     eintrag = qst_daten.get(code)
     if not eintrag:
-        return 0.0, "Kein Quellensteuer-Datensatz fuer dieses Land - 0 % angenommen."
+        return 0.0, "Kein Quellensteuer-Datensatz für dieses Land – 0 % angenommen."
 
     aufwand = str(eintrag.get("rueckerstattung_aufwand", "")).lower()
     mit_dba = float(eintrag.get("quellensteuer_mit_dba_pct") or 0.0)
 
     if aufwand in ("keiner", "niedrig") and erstattung_selbst:
-        return 0.0, (f"Rueckerstattungsaufwand '{aufwand}' und Erstattung selbst erledigt "
-                     f"-> 0 % statt {mit_dba:.2f} %.")
+        return 0.0, (f"Rückerstattungsaufwand '{aufwand}' und Erstattung selbst erledigt "
+                     f"→ 0 % statt {mit_dba:.2f} %.")
     if aufwand in ("keiner", "niedrig"):
-        return mit_dba, (f"Rueckerstattung waere '{aufwand}', Setting ist aus "
-                         f"-> {mit_dba:.2f} % einbehalten.")
-    return mit_dba, (f"Rueckerstattungsaufwand '{aufwand}' -> mit DBA verbleiben "
+        return mit_dba, (f"Rückerstattung wäre '{aufwand}', Einstellung ist aus "
+                         f"→ {mit_dba:.2f} % einbehalten.")
+    return mit_dba, (f"Rückerstattungsaufwand '{aufwand}' → mit DBA verbleiben "
                      f"{mit_dba:.2f} %.")
 
 

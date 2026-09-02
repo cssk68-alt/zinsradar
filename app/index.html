@@ -118,7 +118,11 @@
 <div id="sheet" class="sheet" hidden>
   <div class="sheet-hintergrund" data-schliessen></div>
   <div class="sheet-inhalt" role="dialog" aria-modal="true" aria-labelledby="sheetTitel">
-    <div class="sheet-griff" data-schliessen></div>
+    <div class="sheet-kopf">
+      <span></span>
+      <div class="sheet-griff" data-schliessen></div>
+      <button class="sheet-x" data-schliessen type="button" aria-label="Schließen" title="Schließen">&times;</button>
+    </div>
     <div id="sheetBody"></div>
   </div>
 </div>
@@ -127,7 +131,11 @@
 <div id="einstellungen" class="sheet" hidden>
   <div class="sheet-hintergrund" data-schliessen></div>
   <div class="sheet-inhalt" role="dialog" aria-modal="true" aria-labelledby="einstTitel">
-    <div class="sheet-griff" data-schliessen></div>
+    <div class="sheet-kopf">
+      <span></span>
+      <div class="sheet-griff" data-schliessen></div>
+      <button class="sheet-x" data-schliessen type="button" aria-label="Schließen" title="Schließen">&times;</button>
+    </div>
     <h2 id="einstTitel">Einstellungen</h2>
 
     <label class="schalter gross">

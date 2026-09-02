@@ -5,7 +5,7 @@
     "quellensteuer_mit_dba_pct": 0.0,
     "rueckerstattung_moeglich": true,
     "rueckerstattung_aufwand": "niedrig",
-    "formular_bezeichnung": "Ansaessigkeitsbescheinigung IS-QU1 / ZS-QU1",
+    "formular_bezeichnung": "Ansässigkeitsbescheinigung IS-QU1 / ZS-QU1",
     "quelle_url": "https://www.bmf.gv.at/themen/steuern/internationales-steuerrecht/doppelbesteuerungsabkommen.html",
     "stand_datum": "2026-01-01"
   },
@@ -45,7 +45,7 @@
     "quellensteuer_mit_dba_pct": 0.0,
     "rueckerstattung_moeglich": false,
     "rueckerstattung_aufwand": "keiner",
-    "formular_bezeichnung": "Nicht erforderlich (0% fuer Gebietsfremde)",
+    "formular_bezeichnung": "Nicht erforderlich (0 % für Gebietsfremde)",
     "quelle_url": "https://www.mof.gov.cy/mof/tax/taxdep.nsf",
     "stand_datum": "2026-01-01"
   },
@@ -55,7 +55,7 @@
     "quellensteuer_mit_dba_pct": 0.0,
     "rueckerstattung_moeglich": true,
     "rueckerstattung_aufwand": "mittel",
-    "formular_bezeichnung": "Certificate of Tax Residence (Potvrzeni o danovem domicilu)",
+    "formular_bezeichnung": "Certificate of Tax Residence (Potvrzení o daňovém domicilu)",
     "quelle_url": "https://www.financnisprava.cz/en/international-affairs/double-taxation",
     "stand_datum": "2026-01-01"
   },
@@ -85,7 +85,7 @@
     "quellensteuer_mit_dba_pct": 0.0,
     "rueckerstattung_moeglich": false,
     "rueckerstattung_aufwand": "keiner",
-    "formular_bezeichnung": "Nicht erforderlich (0% auf Zinsen an Gebietsfremde)",
+    "formular_bezeichnung": "Nicht erforderlich (0 % auf Zinsen an Gebietsfremde)",
     "quelle_url": "https://www.emta.ee/erakliendile/tulu-deklareerimine/valismaa-tulu",
     "stand_datum": "2026-01-01"
   },
@@ -95,7 +95,7 @@
     "quellensteuer_mit_dba_pct": 0.0,
     "rueckerstattung_moeglich": true,
     "rueckerstattung_aufwand": "niedrig",
-    "formular_bezeichnung": "Ansaessigkeitsbescheinigung (Formulario 210 zur Erstattung)",
+    "formular_bezeichnung": "Ansässigkeitsbescheinigung (Formulario 210 zur Erstattung)",
     "quelle_url": "https://sededeclaraciones.agenciatributaria.gob.es/",
     "stand_datum": "2026-01-01"
   },
@@ -185,7 +185,7 @@
     "quellensteuer_mit_dba_pct": 0.0,
     "rueckerstattung_moeglich": false,
     "rueckerstattung_aufwand": "keiner",
-    "formular_bezeichnung": "Nicht erforderlich (0% auf Zinsen)",
+    "formular_bezeichnung": "Nicht erforderlich (0 % auf Zinsen)",
     "quelle_url": "https://www.llv.li/de/landesverwaltung/steuerverwaltung",
     "stand_datum": "2026-01-01"
   },
@@ -205,7 +205,7 @@
     "quellensteuer_mit_dba_pct": 0.0,
     "rueckerstattung_moeglich": false,
     "rueckerstattung_aufwand": "keiner",
-    "formular_bezeichnung": "Nicht erforderlich (0% fuer Nicht-Ansaessige)",
+    "formular_bezeichnung": "Nicht erforderlich (0 % für Nicht-Ansässige)",
     "quelle_url": "https://impotsdirects.public.lu/fr/conventions.html",
     "stand_datum": "2026-01-01"
   },
@@ -215,7 +215,7 @@
     "quellensteuer_mit_dba_pct": 0.0,
     "rueckerstattung_moeglich": false,
     "rueckerstattung_aufwand": "keiner",
-    "formular_bezeichnung": "Nicht erforderlich (0% auf Zinsen an Gebietsfremde)",
+    "formular_bezeichnung": "Nicht erforderlich (0 % auf Zinsen an Gebietsfremde)",
     "quelle_url": "https://www.vid.gov.lv/en/tax-agreements",
     "stand_datum": "2026-01-01"
   },
@@ -225,7 +225,7 @@
     "quellensteuer_mit_dba_pct": 0.0,
     "rueckerstattung_moeglich": false,
     "rueckerstattung_aufwand": "keiner",
-    "formular_bezeichnung": "Nicht erforderlich (0% fuer Nicht-Ansaessige)",
+    "formular_bezeichnung": "Nicht erforderlich (0 % für Nicht-Ansässige)",
     "quelle_url": "https://cfr.gov.mt/en/inlandrevenue/Pages/Double-Taxation-Conventions.aspx",
     "stand_datum": "2026-01-01"
   },
@@ -235,7 +235,7 @@
     "quellensteuer_mit_dba_pct": 0.0,
     "rueckerstattung_moeglich": false,
     "rueckerstattung_aufwand": "keiner",
-    "formular_bezeichnung": "Nicht erforderlich (0% Zins-Quellensteuer)",
+    "formular_bezeichnung": "Nicht erforderlich (0 % Zins-Quellensteuer)",
     "quelle_url": "https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/belastingdienst/prive/vermogen_en_anmerkelijk_belang/",
     "stand_datum": "2026-01-01"
   },
@@ -245,7 +245,7 @@
     "quellensteuer_mit_dba_pct": 0.0,
     "rueckerstattung_moeglich": false,
     "rueckerstattung_aufwand": "keiner",
-    "formular_bezeichnung": "Nicht erforderlich (0% auf Sparzinsen an Unverbundene)",
+    "formular_bezeichnung": "Nicht erforderlich (0 % auf Sparzinsen an Unverbundene)",
     "quelle_url": "https://www.skatteetaten.no/en/person/taxes/get-the-right-tax-deduction/foreign/",
     "stand_datum": "2026-01-01"
   },
@@ -255,7 +255,7 @@
     "quellensteuer_mit_dba_pct": 0.0,
     "rueckerstattung_moeglich": true,
     "rueckerstattung_aufwand": "mittel",
-    "formular_bezeichnung": "CFR-1 (Ansaessigkeitsbescheinigung zur Befreiung)",
+    "formular_bezeichnung": "CFR-1 (Ansässigkeitsbescheinigung zur Befreiung)",
     "quelle_url": "https://www.gov.pl/web/finanse/umowy-o-unikaniu-podwojnego-opodatkowania",
     "stand_datum": "2026-01-01"
   },
@@ -275,7 +275,7 @@
     "quellensteuer_mit_dba_pct": 0.0,
     "rueckerstattung_moeglich": true,
     "rueckerstattung_aufwand": "mittel",
-    "formular_bezeichnung": "Certificat de rezidenta fiscala",
+    "formular_bezeichnung": "Certificat de rezidență fiscală",
     "quelle_url": "https://www.anaf.ro/anaf/internet/ANAF/asistenta_contribuabili/conventii_evitarea_dublei_impuneri",
     "stand_datum": "2026-01-01"
   },
@@ -285,7 +285,7 @@
     "quellensteuer_mit_dba_pct": 0.0,
     "rueckerstattung_moeglich": false,
     "rueckerstattung_aufwand": "keiner",
-    "formular_bezeichnung": "Nicht erforderlich (0% auf Zinsen an Gebietsfremde)",
+    "formular_bezeichnung": "Nicht erforderlich (0 % auf Zinsen an Gebietsfremde)",
     "quelle_url": "https://www.skatteverket.se/privat/ettforetag/skattatabeller.4.html",
     "stand_datum": "2026-01-01"
   },
@@ -305,7 +305,7 @@
     "quellensteuer_mit_dba_pct": 0.0,
     "rueckerstattung_moeglich": true,
     "rueckerstattung_aufwand": "niedrig",
-    "formular_bezeichnung": "Potvrdenie o danovej rezidencii",
+    "formular_bezeichnung": "Potvrdenie o daňovej rezidencii",
     "quelle_url": "https://www.financnasprava.sk/sk/medzinarodne-vztahy/medzinarodne-zmluvy",
     "stand_datum": "2026-01-01"
   },

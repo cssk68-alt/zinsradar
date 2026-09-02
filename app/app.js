@@ -557,18 +557,48 @@
     return h.join("");
   }
 
+  // Merkt sich, ob für ein offenes Sheet ein History-Eintrag liegt. Damit
+  // schließt die Android-Zurück-Taste das Sheet, statt die ganze App zu
+  // beenden - sonst gäbe es aus einem offenen Sheet nur den Weg über das X.
+  var sheetHistorie = false;
+
+  function sheetOeffnen(el) {
+    el.hidden = false;
+    document.body.style.overflow = "hidden";
+    if (!sheetHistorie) {
+      try {
+        history.pushState({ zrSheet: true }, "");
+        sheetHistorie = true;
+      } catch (e) { /* file:// erlaubt kein pushState */ }
+    }
+  }
+
+  function einSheetOffen() {
+    return !$("sheet").hidden || !$("einstellungen").hidden;
+  }
+
   function detailOeffnen(index) {
     var a = sichtbar[index];
     if (!a) return;
     $("sheetBody").innerHTML = detailHtml(a);
-    $("sheet").hidden = false;
-    document.body.style.overflow = "hidden";
+    $("sheet").scrollTop = 0;
+    var inhalt = $("sheet").querySelector(".sheet-inhalt");
+    if (inhalt) inhalt.scrollTop = 0;
+    sheetOeffnen($("sheet"));
   }
 
-  function sheetsSchliessen() {
+  function sheetsSchliessen(vonZurueckTaste) {
     $("sheet").hidden = true;
     $("einstellungen").hidden = true;
     document.body.style.overflow = "";
+    if (sheetHistorie) {
+      sheetHistorie = false;
+      // Beim Schließen per X oder Hintergrund den eigenen History-Eintrag
+      // wieder abräumen; kommt der Ruf von der Zurück-Taste, ist er weg.
+      if (!vonZurueckTaste) {
+        try { history.back(); } catch (e) { /* egal */ }
+      }
+    }
   }
 
   // -------------------------------------------- Watchlist + Meldung (F6)
@@ -716,8 +746,9 @@
     $("sQuelle").placeholder = CFG.datenUrl || "";
     $("quelleStatus").textContent = "Aktiv: " + (datenUrl() || "keine URL gesetzt");
     $("appVersion").textContent = CFG.version || "1.0.0";
-    $("einstellungen").hidden = false;
-    document.body.style.overflow = "hidden";
+    var inhalt = $("einstellungen").querySelector(".sheet-inhalt");
+    if (inhalt) inhalt.scrollTop = 0;
+    sheetOeffnen($("einstellungen"));
   }
 
   function einstellungenSpeichern() {
@@ -821,6 +852,11 @@
 
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape") sheetsSchliessen();
+    });
+
+    // Android-Zurück-Taste: schließt das Sheet statt der App.
+    window.addEventListener("popstate", function () {
+      if (einSheetOffen()) sheetsSchliessen(true);
     });
 
     window.addEventListener("online", function () { laden(false); });

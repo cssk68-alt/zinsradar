@@ -52,7 +52,7 @@
   {
     "land": "CZ",
     "einlagensicherung_betrag_eur": 100000,
-    "sicherungssystem_name": "Garancni system financniho trhu (GSFT - 2.500.000 CZK)",
+    "sicherungssystem_name": "Garanční systém finančního trhu (GSFT - 2.500.000 CZK)",
     "staatsrating_sp": "AA-",
     "staatsrating_moodys": "Aa3",
     "waehrung": "CZK",
@@ -62,7 +62,7 @@
   {
     "land": "DE",
     "einlagensicherung_betrag_eur": 100000,
-    "sicherungssystem_name": "Entschaedigungseinrichtung deutscher Banken GmbH (EdB)",
+    "sicherungssystem_name": "Entschädigungseinrichtung deutscher Banken GmbH (EdB)",
     "staatsrating_sp": "AAA",
     "staatsrating_moodys": "Aaa",
     "waehrung": "EUR",
@@ -92,7 +92,7 @@
   {
     "land": "ES",
     "einlagensicherung_betrag_eur": 100000,
-    "sicherungssystem_name": "Fondo de Garantia de Depositos de Entidades de Credito (FGD)",
+    "sicherungssystem_name": "Fondo de Garantía de Depósitos de Entidades de Crédito (FGD)",
     "staatsrating_sp": "A",
     "staatsrating_moodys": "Baa1",
     "waehrung": "EUR",
@@ -112,7 +112,7 @@
   {
     "land": "FR",
     "einlagensicherung_betrag_eur": 100000,
-    "sicherungssystem_name": "Fonds de Garantie des Depots et de Resolution (FGDR)",
+    "sicherungssystem_name": "Fonds de Garantie des Dépôts et de Résolution (FGDR)",
     "staatsrating_sp": "AA-",
     "staatsrating_moodys": "Aa3",
     "waehrung": "EUR",
@@ -132,7 +132,7 @@
   {
     "land": "HR",
     "einlagensicherung_betrag_eur": 100000,
-    "sicherungssystem_name": "Hrvatska agencija za osiguranje radnih trazbina (HAOD)",
+    "sicherungssystem_name": "Hrvatska agencija za osiguranje radnih tražbina (HAOD)",
     "staatsrating_sp": "BBB+",
     "staatsrating_moodys": "Baa2",
     "waehrung": "EUR",
@@ -142,7 +142,7 @@
   {
     "land": "HU",
     "einlagensicherung_betrag_eur": 100000,
-    "sicherungssystem_name": "Orszagos Betetbiztositasi Alap (OBA - 37.000.000 HUF)",
+    "sicherungssystem_name": "Országos Betétbiztosítási Alap (OBA - 37.000.000 HUF)",
     "staatsrating_sp": "BBB-",
     "staatsrating_moodys": "Baa2",
     "waehrung": "HUF",
@@ -162,7 +162,7 @@
   {
     "land": "IS",
     "einlagensicherung_betrag_eur": 100000,
-    "sicherungssystem_name": "Tryggingarsjodur (Depositors' and Investors' Guarantee Fund - TVF)",
+    "sicherungssystem_name": "Tryggingarsjóður (Depositors' and Investors' Guarantee Fund - TVF)",
     "staatsrating_sp": "A",
     "staatsrating_moodys": "A2",
     "waehrung": "ISK",
@@ -192,7 +192,7 @@
   {
     "land": "LT",
     "einlagensicherung_betrag_eur": 100000,
-    "sicherungssystem_name": "Indeliu ir investiciju draudimas (IID)",
+    "sicherungssystem_name": "Indėlių ir investicijų draudimas (IID)",
     "staatsrating_sp": "A+",
     "staatsrating_moodys": "A2",
     "waehrung": "EUR",
@@ -202,7 +202,7 @@
   {
     "land": "LU",
     "einlagensicherung_betrag_eur": 100000,
-    "sicherungssystem_name": "Fonds de garantie des depots Luxembourg (FGDL)",
+    "sicherungssystem_name": "Fonds de garantie des dépôts Luxembourg (FGDL)",
     "staatsrating_sp": "AAA",
     "staatsrating_moodys": "Aaa",
     "waehrung": "EUR",
@@ -212,7 +212,7 @@
   {
     "land": "LV",
     "einlagensicherung_betrag_eur": 100000,
-    "sicherungssystem_name": "Noguldijumu garantiju fonds (Deposit Guarantee Fund of Latvia)",
+    "sicherungssystem_name": "Noguldījumu garantiju fonds (Deposit Guarantee Fund of Latvia)",
     "staatsrating_sp": "A+",
     "staatsrating_moodys": "A3",
     "waehrung": "EUR",
@@ -262,7 +262,7 @@
   {
     "land": "PT",
     "einlagensicherung_betrag_eur": 100000,
-    "sicherungssystem_name": "Fundo de Garantia de Depositos (FGD Portugal)",
+    "sicherungssystem_name": "Fundo de Garantia de Depósitos (FGD Portugal)",
     "staatsrating_sp": "A-",
     "staatsrating_moodys": "A3",
     "waehrung": "EUR",
@@ -282,7 +282,7 @@
   {
     "land": "SE",
     "einlagensicherung_betrag_eur": 92000,
-    "sicherungssystem_name": "Riksgalden / Insattningsgarantin (1.050.000 SEK)",
+    "sicherungssystem_name": "Riksgälden / Insättningsgarantin (1.050.000 SEK)",
     "staatsrating_sp": "AAA",
     "staatsrating_moodys": "Aaa",
     "waehrung": "SEK",

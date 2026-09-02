@@ -56,6 +56,15 @@ html[data-theme="dark"], :root[data-theme="dark"] {
 
 * { box-sizing: border-box; }
 
+/* MUSS vor allen display-Regeln stehen und !important tragen.
+   Das eingebaute [hidden] { display: none } der Browser hat dieselbe
+   Spezifität wie eine Klassenregel und verliert deshalb gegen jedes
+   spätere `display:` im Autorenstil. Ohne diese Zeile bleiben .sheet
+   (display:flex) und .referenz sichtbar, obwohl das hidden-Attribut
+   gesetzt ist - die Einstellungen lagen dann beim Start über der App
+   und ließen sich nicht schließen. */
+[hidden] { display: none !important; }
+
 body {
   margin: 0;
   background: var(--bg);
@@ -234,7 +243,26 @@ main { padding: .8rem .9rem 2rem; }
   .sheet { align-items: center; justify-content: center; }
   .sheet-inhalt { max-width: 560px; border-radius: 18px; max-height: 84vh; }
 }
-.sheet-griff { width: 40px; height: 4px; border-radius: 2px; background: var(--karte-rand); margin: .4rem auto 1rem; }
+/* Kopfzeile des Sheets: bleibt beim Scrollen oben stehen, damit das X
+   immer erreichbar ist. Ohne das lag der einzige Ausweg ganz unten im
+   Inhalt und man musste erst scrollen, um wieder herauszukommen. */
+.sheet-kopf {
+  position: sticky; top: 0; z-index: 3;
+  display: grid; grid-template-columns: 44px 1fr 44px; align-items: center;
+  background: var(--karte);
+  margin: 0 -1rem .6rem; padding: .3rem 1rem .4rem;
+  border-bottom: 1px solid transparent;
+}
+.sheet-griff { width: 40px; height: 4px; border-radius: 2px; background: var(--karte-rand); margin: .4rem auto; }
+
+.sheet-x {
+  width: 44px; height: 44px; justify-self: end;
+  border: 1px solid var(--karte-rand); border-radius: 50%;
+  background: var(--bg); color: var(--text);
+  font-size: 1.6rem; line-height: 1; cursor: pointer;
+  display: grid; place-items: center; padding: 0 0 .18em 0;
+}
+.sheet-x:active { background: var(--akzent-weich); color: var(--akzent); border-color: var(--akzent); }
 .sheet-aktionen { display: flex; gap: .8rem; align-items: center; margin-top: 1.2rem; }
 .primaer {
   background: var(--akzent); color: #fff; border: none; border-radius: 10px;
@@ -244,7 +272,13 @@ main { padding: .8rem .9rem 2rem; }
 /* Rechnung im Detail */
 .rechnung { width: 100%; border-collapse: collapse; font-size: .88rem; margin: .3rem 0 .6rem; }
 .rechnung td { padding: .4rem 0; border-bottom: 1px solid var(--karte-rand); vertical-align: top; }
+.rechnung td:first-child { overflow-wrap: anywhere; }
 .rechnung td:last-child { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: .6rem; }
+/* Erklärzeilen laufen über beide Spalten und sind Fließtext - ohne diese
+   Ausnahme greift das nowrap von td:last-child auch für sie und macht die
+   Tabelle doppelt so breit wie das Sheet. Die Werte rechts waren dann
+   abgeschnitten. */
+.rechnung td[colspan] { white-space: normal; text-align: left; padding-left: 0; }
 .rechnung tr.summe td { font-weight: 700; border-bottom: none; border-top: 2px solid var(--karte-rand); padding-top: .55rem; }
 .rechnung tr.zwischen td { color: var(--text-schwach); }
 .formel {

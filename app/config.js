@@ -8,7 +8,7 @@
  * Wert dort gewinnt gegen diese Datei.
  */
 window.ZINSRADAR_CONFIG = {
-  version: "1.0.0",
+  version: "1.0.1",
 
   // Zeigt auf das Repo cssk68-alt/zinsradar. Bei einem Fork hier anpassen.
   datenUrl: "https://raw.githubusercontent.com/cssk68-alt/zinsradar/main/data/zinsen.json",

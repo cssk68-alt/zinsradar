@@ -1,5 +1,5 @@
 {
-  "stand": "2026-09-02T10:44:39+00:00",
+  "stand": "2026-09-02T15:08:16+00:00",
   "quelle": "European Central Bank Data Portal (data-api.ecb.europa.eu) und eurofxref",
   "lizenz_hinweis": "EZB-Daten sind frei nutzbar mit Quellenangabe.",
   "ezb_mir": {
@@ -317,18 +317,18 @@
     ]
   },
   "fx": {
-    "datum": "2026-09-01",
+    "datum": "2026-09-02",
     "kurse": {
-      "CZK": 24.159,
-      "DKK": 7.4748,
-      "GBP": 0.85655,
-      "HUF": 366.71,
-      "PLN": 4.3313,
-      "RON": 5.2567,
-      "SEK": 11.1145,
-      "CHF": 0.9394,
-      "ISK": 140.8,
-      "NOK": 10.8185,
+      "CZK": 24.191,
+      "DKK": 7.475,
+      "GBP": 0.8587,
+      "HUF": 368.2,
+      "PLN": 4.3265,
+      "RON": 5.2558,
+      "SEK": 11.1575,
+      "CHF": 0.9424,
+      "ISK": 140.6,
+      "NOK": 10.809,
       "EUR": 1.0
     },
     "quelle": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
