@@ -2,6 +2,9 @@
 
 Europaweiter Tagesgeld-Zins-Aggregator mit Android-App.
 
+**[APK herunterladen](https://github.com/cssk68-alt/zinsradar/releases/latest)**
+· fertig konfiguriert, installieren und loslegen.
+
 Kein Server, keine laufenden Kosten: GitHub Actions sammelt einmal täglich die
 Zinsen und schreibt sie als `data/zinsen.json` ins Repo. Die PWA lädt genau
 diese Datei über `raw.githubusercontent.com` und hält sie offline vor.
@@ -279,16 +282,22 @@ Ressourcen (damit sie offline vollständig funktioniert).
    Tier-3-Werte als „automatisch erkannt" markiert.
 8. **Pull-to-Refresh**, Dark Mode (System/hell/dunkel), deutsche Oberfläche.
 
-### Datenquelle eintragen
+### Datenquelle
 
-**Das ist der einzige Pflicht-Handgriff.** In `app/config.js`:
+Ist bereits eingetragen und braucht keinen Handgriff — `app/config.js` zeigt
+auf dieses Repo:
 
 ```js
 datenUrl: "https://raw.githubusercontent.com/cssk68-alt/zinsradar/main/data/zinsen.json",
 ```
 
-Alternativ zur Laufzeit in den Einstellungen der App — der Wert dort gewinnt
-gegen die Datei.
+**Nur bei einem Fork** muss die URL auf das eigene Repo umgestellt werden,
+entweder in der Datei oder zur Laufzeit in den Einstellungen der App — der
+Wert dort gewinnt gegen die Datei.
+
+Das Repo muss dafür öffentlich sein: `raw.githubusercontent.com` liefert
+private Dateien nur mit Token, und ein Token in einer verteilten APK wäre für
+jeden auslesbar.
 
 ---
 
