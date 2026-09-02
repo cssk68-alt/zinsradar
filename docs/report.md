@@ -1,6 +1,6 @@
 # Lauf-Report 2026-09-02
 
-Erstellt: 2026-09-02T03:45:31+00:00
+Erstellt: 2026-09-02T10:46:16+00:00
 
 ## Zusammenfassung
 
@@ -14,7 +14,7 @@ Erstellt: 2026-09-02T03:45:31+00:00
 | Angebote nach Dedupe | 81 |
 | Angebote im Ergebnis | 81 |
 | davon stale | 0 |
-| Laufzeit (s) | 104.7 |
+| Laufzeit (s) | 106.7 |
 
 ### Extraktionsstufen
 
@@ -36,7 +36,7 @@ Erstellt: 2026-09-02T03:45:31+00:00
 | raisin.nl | 2 | css_heuristik | 10 |  |
 | moneyvox.fr | 2 | css_heuristik | 20 |  |
 | raisin.fr | 2 | css_heuristik | 7 |  |
-| confrontaconti.it | - | - | 0 | HTTP 404 |
+| confrontaconti.it | - | - | 0 | HTTP 403 |
 | tucapital.es | - | - | 0 | S1/json_endpoint: kein json_endpoint in sources.yaml; S1/jsonld: ld+json vorhanden, aber ohne verwertbares Zin |
 | bankier.pl | 2 | css_heuristik | 8 |  |
 | compracer.se | - | - | 0 | robots.txt nicht erreichbar: ConnectError |
@@ -51,26 +51,14 @@ Erstellt: 2026-09-02T03:45:31+00:00
 
 ## Weit ueber EZB-Landesdurchschnitt - Flag 'pruefen' (8)
 
-- **Revolut Tagesgeld(Standard)** (DE): 4.25 % vs. EZB 0.51 % (+3.74 pp)
-- **Chase Tagesgeld** (DE): 4.0 % vs. EZB 0.51 % (+3.49 pp)
-- **Ikano Bank** (DE): 3.91 % vs. EZB 0.51 % (+3.4 pp)
-- **ING** (DE): 3.75 % vs. EZB 0.51 % (+3.24 pp)
-- **Stellantis Direktbank** (DE): 3.62 % vs. EZB 0.51 % (+3.11 pp)
-- **Hamburg Direct Bank** (DE): 3.61 % vs. EZB 0.51 % (+3.1 pp)
+- **Revolut Tagesgeld(Standard)** (DE): 4.25 % vs. EZB 0.5 % (+3.75 pp)
+- **Chase Tagesgeld** (DE): 4.0 % vs. EZB 0.5 % (+3.5 pp)
+- **Ikano Bank** (DE): 3.91 % vs. EZB 0.5 % (+3.41 pp)
+- **ING** (DE): 3.75 % vs. EZB 0.5 % (+3.25 pp)
+- **Stellantis Direktbank** (DE): 3.62 % vs. EZB 0.5 % (+3.12 pp)
+- **Hamburg Direct Bank** (DE): 3.61 % vs. EZB 0.5 % (+3.11 pp)
 - **Consorsbank** (FR): 3.6 % vs. EZB 0.04 % (+3.56 pp)
-- **Opel Bank** (DE): 3.52 % vs. EZB 0.51 % (+3.01 pp)
-
-## Neu hinzugekommen (9)
-
-- **Raisin StartZins** (DE): 3.0 %
-- **Derzeit** (DE): 2.32 %
-- **Anyfin** (SE): 2.17 %
-- **Avida Bank AB** (SE): 2.17 %
-- **Heder Bank** (NO): 2.17 %
-- **Instabank ASA** (NO): 2.17 %
-- **BluOr Bank AS** (LV): 2.25 %
-- **Banca Progetto** (IT): 2.25 %
-- **Banca CF+** (IT): 2.2 %
+- **Opel Bank** (DE): 3.52 % vs. EZB 0.5 % (+3.02 pp)
 
 ---
 
