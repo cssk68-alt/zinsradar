@@ -10,8 +10,8 @@
 window.ZINSRADAR_CONFIG = {
   version: "1.0.0",
 
-  // Hier den eigenen GitHub-Nutzernamen eintragen:
-  datenUrl: "https://raw.githubusercontent.com/USER/zinsradar/main/data/zinsen.json",
+  // Zeigt auf das Repo cssk68-alt/zinsradar. Bei einem Fork hier anpassen.
+  datenUrl: "https://raw.githubusercontent.com/cssk68-alt/zinsradar/main/data/zinsen.json",
 
   // Mitgelieferte Kopie: greift beim allerersten Start ohne Netz und in der APK.
   lokalerFallback: "data/zinsen.json",

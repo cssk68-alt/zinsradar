@@ -67,7 +67,7 @@ Voraussetzungen: Python 3.12 oder neuer. Für JS-Seiten zusätzlich Playwright,
 für die APK JDK 21 und das Android SDK.
 
 ```bash
-git clone <dein-repo> zinsradar && cd zinsradar
+git clone https://github.com/cssk68-alt/zinsradar.git && cd zinsradar
 python -m venv .venv
 ```
 
@@ -284,7 +284,7 @@ Ressourcen (damit sie offline vollständig funktioniert).
 **Das ist der einzige Pflicht-Handgriff.** In `app/config.js`:
 
 ```js
-datenUrl: "https://raw.githubusercontent.com/DEIN-NUTZERNAME/zinsradar/main/data/zinsen.json",
+datenUrl: "https://raw.githubusercontent.com/cssk68-alt/zinsradar/main/data/zinsen.json",
 ```
 
 Alternativ zur Laufzeit in den Einstellungen der App — der Wert dort gewinnt

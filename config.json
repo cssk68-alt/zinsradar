@@ -27,7 +27,7 @@
     "backoff_basis_s": 1.5,
     "robots_respektieren": true,
     "robots_cache_s": 3600,
-    "user_agent": "Mozilla/5.0 (compatible; ZinsradarBot/1.0; +https://github.com/USER/zinsradar)",
+    "user_agent": "Mozilla/5.0 (compatible; ZinsradarBot/1.0; +https://github.com/cssk68-alt/zinsradar)",
     "playwright_timeout_ms": 25000,
     "playwright_warte_auf": "networkidle",
     "_user_agent_hinweis": "Konventionelles Crawler-Format: der Bot nennt sich klar beim Namen, benutzt aber das Mozilla-Praefix, das WAFs erwarten. Mehrere Banken weisen einen UA ohne dieses Praefix schon auf Verbindungsebene ab. robots.txt wird unveraendert strikt befolgt.",
