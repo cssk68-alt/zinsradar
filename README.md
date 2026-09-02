@@ -333,21 +333,35 @@ erlauben). Läuft ab Android 7 (API 24), Ziel ist API 35.
 
 ### Signiertes Release
 
-Keystore erzeugen (einmalig, gut aufheben — ohne ihn sind keine Updates der
-App möglich):
+**Der Keystore existiert bereits** und liegt als `zinsradar.jks` im
+Projektordner, die Passwörter in `keystore.properties`. Beide stehen in
+`.gitignore` und sind als GitHub-Secrets hinterlegt, sodass jedes Release
+aus Actions mit demselben Schlüssel signiert wird.
+
+> **Diese zwei Dateien sichern.** Gehen sie verloren, lässt sich kein Update
+> mehr bauen, das sich über eine installierte App legt — Android verweigert
+> die Installation bei gewechseltem Signaturschlüssel. Man müsste die App
+> deinstallieren und alle lokalen Einstellungen und die Watchlist verlieren.
+
+Lokal signiert bauen:
 
 ```bash
-keytool -genkeypair -v -keystore zinsradar.jks -keyalg RSA -keysize 2048 -validity 10000 -alias zinsradar
+cd android && ./gradlew assembleRelease -PZR_KEYSTORE_PATH=../../zinsradar.jks -PZR_KEYSTORE_PASSWORD=… -PZR_KEY_ALIAS=zinsradar -PZR_KEY_PASSWORD=…
 ```
 
-Dann bauen:
+Neuen Keystore erzeugen (nur bei einem Fork nötig):
 
 ```bash
-ZR_KEYSTORE_PATH=../zinsradar.jks ZR_KEYSTORE_PASSWORD=… ZR_KEY_ALIAS=zinsradar ZR_KEY_PASSWORD=… ./gradlew assembleRelease
+keytool -genkeypair -v -keystore zinsradar.jks -keyalg RSA -keysize 4096 -validity 10950 -alias zinsradar
+gh secret set KEYSTORE_BASE64 < <(base64 -w0 zinsradar.jks)
+gh secret set KEYSTORE_PASSWORD
+gh secret set KEY_ALIAS
+gh secret set KEY_PASSWORD
 ```
 
-Ohne Keystore fällt der Release-Build auf den Debug-Key zurück; die APK ist
-dann installierbar, aber nicht mit dem eigenen Schlüssel signiert.
+Ohne Keystore fällt der Release-Build auf den Debug-Key zurück. Die APK ist
+dann zwar installierbar, aber jeder CI-Lauf erzeugt einen anderen Debug-Key —
+Updates ließen sich nicht mehr über die installierte Version legen.
 
 ### Icons neu erzeugen
 
@@ -381,16 +395,24 @@ git tag v1.0.0 && git push origin v1.0.0
 
 ### Secrets
 
-| Secret | Pflicht | Wofür |
+| Secret | Status | Wofür |
 | --- | --- | --- |
-| `GEMINI_API_KEY` | nein | Stufe 3. Fehlt er, wird die Stufe stillschweigend übersprungen. |
-| `KEYSTORE_BASE64` | nein | Keystore als Base64: `base64 -w0 zinsradar.jks` |
-| `KEYSTORE_PASSWORD` | nein | Keystore-Passwort |
-| `KEY_ALIAS` | nein | Alias im Keystore |
-| `KEY_PASSWORD` | nein | Passwort des Schlüssels |
+| `GEMINI_API_KEY` | **offen** | Stufe 3. Fehlt er, wird die Stufe stillschweigend übersprungen. |
+| `KEYSTORE_BASE64` | gesetzt | Keystore als Base64: `base64 -w0 zinsradar.jks` |
+| `KEYSTORE_PASSWORD` | gesetzt | Keystore-Passwort |
+| `KEY_ALIAS` | gesetzt | Alias im Keystore (`zinsradar`) |
+| `KEY_PASSWORD` | gesetzt | Passwort des Schlüssels |
 
 Ohne Keystore-Secrets baut der Workflow eine mit dem Debug-Key signierte APK
 und warnt im Log.
+
+`GEMINI_API_KEY` ist bewusst offen: Stufe 3 läuft erst, wenn ein Key
+hinterlegt wird. Kostenlos zu bekommen über
+[Google AI Studio](https://aistudio.google.com/apikey), dann:
+
+```bash
+gh secret set GEMINI_API_KEY --repo cssk68-alt/zinsradar
+```
 
 ---
 
