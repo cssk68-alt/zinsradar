@@ -132,7 +132,7 @@
   </div>
 </header>
 
-<main>
+<main id="hauptbereich">
   <!-- Betrag: die eine Zahl, die alles andere verständlich macht -->
   <button id="betragKarte" class="betrag-karte" type="button">
     <span class="betrag-text">
@@ -206,7 +206,7 @@
     <div class="skelett"></div><div class="skelett"></div><div class="skelett"></div>
   </div>
 
-  <ol id="liste" class="liste" aria-live="polite"></ol>
+  <ol id="liste" class="liste"></ol>
 
   <button id="btnMehr" class="mehr" type="button" hidden></button>
 
@@ -223,10 +223,10 @@
     <button id="btnLeerReset" class="knopf-weich" type="button">Filter zurücksetzen</button>
   </div>
 
-  <p id="fussStatistik" class="statistik"></p>
+  <p id="fussStatistik" class="statistik" role="status" aria-live="polite"></p>
 </main>
 
-<footer class="fuss">
+<footer class="fuss" id="fussbereich">
   <p><strong>Keine Anlageberatung.</strong> Alle Angaben ohne Gewähr.
      Zinsen ändern sich täglich – vor dem Abschluss immer beim Anbieter nachsehen.</p>
   <p class="fuss-klein">Vergleichszahlen von der Europäischen Zentralbank.

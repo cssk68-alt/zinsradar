@@ -40,7 +40,7 @@
       land: "", typ: "", quelltyp: "", rating: "", minZins: "",
       aktion: "", neukunden: "",
       nurEur: false, nurWatch: false, ohneStale: false, passtZuBetrag: false,
-      vollGesichert: false, zeigeErledigt: false,
+      vollGesichert: false,
     },
     einstellungen: {
       erstattung: true,
@@ -158,8 +158,11 @@
       // Ein Punkt vor genau drei Ziffern ist ein Tausenderpunkt.
       if (/^[+-]?\d{1,3}(\.\d{3})+$/.test(t)) t = t.replace(/\./g, "");
     }
+    // Nach dem Aufraeumen darf hoechstens noch ein Punkt uebrig sein,
+    // sonst war die Eingabe keine Zahl ("1.2.3").
+    if ((t.match(/\./g) || []).length > 1) return NaN;
     var wert = parseFloat(t);
-    return isFinite(wert) ? wert : NaN;
+    return isFinite(wert) && /^[+-]?\d*\.?\d*$/.test(t) ? wert : NaN;
   }
 
   /* Nur http(s) in ein href lassen. esc() verhindert zwar den Ausbruch aus
@@ -176,11 +179,28 @@
       '<use href="#i-' + name + '"></use></svg>';
   }
 
-  function lies(schluessel, standard) {
+  /* Liest einen gespeicherten Wert und prüft den Typ.
+     Ohne die Prüfung legt ein einziger krummer Eintrag die App still
+     lahm: zr_erledigt = "5" ergibt beim Start
+     "zustand.erledigt.indexOf is not a function", die Liste bleibt leer,
+     und der Zustand überlebt jeden Neustart. */
+  function lies(schluessel, standard, art) {
+    var wert;
     try {
       var roh = localStorage.getItem(schluessel);
-      return roh ? JSON.parse(roh) : standard;
+      wert = roh ? JSON.parse(roh) : standard;
     } catch (e) { return standard; }
+
+    if (art === "liste" && !Array.isArray(wert)) return standard;
+    if (art === "objekt" && (wert === null || typeof wert !== "object" || Array.isArray(wert))) {
+      return standard;
+    }
+    if (art === "zahl") {
+      var zahl = Number(wert);
+      return isFinite(zahl) && zahl > 0 ? zahl : standard;
+    }
+    if (art === "text" && typeof wert !== "string") return standard;
+    return wert === undefined ? standard : wert;
   }
 
   function schreib(schluessel, wert) {
@@ -267,7 +287,7 @@
         pruefeSchwelle(daten);
       })
       .catch(function (fehler) {
-        var zwischen = lies(SPEICHER.daten, null);
+        var zwischen = lies(SPEICHER.daten, null, "objekt");
         if (zwischen && pruefeStruktur(zwischen.daten)) {
           uebernehmen(zwischen.daten, "cache", fehler.message, zwischen.geholt);
           if (erzwingen) toast("Kein Netz – gespeicherter Stand");
@@ -292,13 +312,20 @@
     $("ladeanzeige").hidden = true;
 
     var hinweis = $("hinweis");
-    if (quelle === "netz") {
+    if (quelle === "netz" || quelle === "start") {
+      // "start" ist der gespeicherte Stand, den die App beim Öffnen sofort
+      // zeigt, während der Abruf noch läuft. Dabei von "kein Netz" zu
+      // sprechen wäre eine Behauptung ins Blaue – der Versuch hat noch
+      // gar nicht stattgefunden.
       hinweis.hidden = true;
     } else {
       hinweis.hidden = false;
       hinweis.className = "hinweis";
       hinweis.textContent = quelle === "cache"
-        ? "Gerade kein Netz. Du siehst den gespeicherten Stand vom " + datumKurz(geholtAm) + "."
+        ? (navigator.onLine === false
+            ? "Gerade kein Netz. Du siehst den gespeicherten Stand vom " + datumKurz(geholtAm) + "."
+            : "Die Daten ließen sich nicht abrufen (" + (fehlertext || "unbekannt") +
+              "). Angezeigt wird der gespeicherte Stand vom " + datumKurz(geholtAm) + ".")
         : "Es werden die mitgelieferten Daten angezeigt. Die Daten-Adresse steht in den Einstellungen.";
     }
     rendern();
@@ -407,11 +434,9 @@
     var minRang = f.rating ? (ratingRang[f.rating] || 0) : 0;
 
     return (zustand.daten.angebote || []).filter(function (a) {
-      // Abgehakte Angebote sind aus der Hauptliste raus – außer man
-      // schaut sie in den Einstellungen bewusst an.
-      var abgehakt = zustand.erledigt.indexOf(a.dedupe_key) !== -1;
-      if (f.zeigeErledigt) { if (!abgehakt) return false; }
-      else if (abgehakt) return false;
+      // Abgehakte Angebote sind aus der Hauptliste raus; sie stehen
+      // stattdessen in den Einstellungen unter "Schon genutzt".
+      if (zustand.erledigt.indexOf(a.dedupe_key) !== -1) return false;
 
       if (worte.length && !passtZurSuche(a, worte)) return false;
       if (f.land && (a.einlagensicherung_land || a.land) !== f.land) return false;
@@ -532,7 +557,7 @@
     if (a.zinstyp === "aktion" && a.aktionsdauer_monate > 0) {
       aktion =
         '<div class="aktion-hinweis">' + ikon("uhr") +
-        "<span><b>Nur " + a.aktionsdauer_monate + " Monate lang.</b> Danach " +
+        "<span><b>Nur " + esc(a.aktionsdauer_monate) + " Monate lang.</b> Danach " +
         pct(a.folgezins_pct) + (a.folgezins_geschaetzt ? " (geschätzt)" : "") +
         " – über zwölf Monate also " + pct(a.brutto_12m_pct) + ".</span></div>";
     }
@@ -563,7 +588,7 @@
     }
     if (a.zinstyp === "aktion" && a.aktionsdauer_monate) {
       pillen.push('<span class="marke-pille info">' + ikon("funke") +
-        a.aktionsdauer_monate + " Monate Aktion</span>");
+        esc(a.aktionsdauer_monate) + " Monate Aktion</span>");
     }
     if (a.nur_neukunden) {
       pillen.push('<span class="marke-pille mittel">' + ikon("person") + "nur für Neukunden</span>");
@@ -600,7 +625,8 @@
     }
 
     return '<li class="' + klassen.join(" ") + '" data-index="' + index +
-      '" style="animation-delay:' + Math.min(index, 9) * 28 + 'ms" tabindex="0" role="button">' +
+      '" style="animation-delay:' + Math.min(index, 9) * 28 + 'ms" tabindex="0"' +
+      ' aria-label="' + esc(a.bank) + ", " + pct(a.zinssatz_pct) + ', Einzelheiten öffnen">' +
       kopf + zins + aktion + rechnung +
       '<div class="marken">' + pillen.join("") + "</div>" +
       "</li>";
@@ -680,7 +706,7 @@
 
     $("heldSatz").innerHTML = esc(beste.bank) + " zahlt " +
       "<strong>" + pct(beste.zinssatz_pct) + "</strong>" +
-      (beste.zinstyp === "aktion" ? " für " + beste.aktionsdauer_monate + " Monate" : "");
+      (beste.zinstyp === "aktion" ? " für " + esc(beste.aktionsdauer_monate) + " Monate" : "");
     $("heldSub").textContent = "Das sind " + euro(inEuro(beste.brutto_12m_pct)) +
       " im ersten Jahr bei " + euro(zustand.betrag) + ".";
   }
@@ -715,7 +741,9 @@
       satz += " Hier gibt es bis zu <strong>" + pct(beste) + "</strong>.";
     }
     $("referenzSatz").innerHTML = satz;
-    $("referenzPunkt").className = "referenz-punkt " + (estr.trend || "");
+    // Klassenname aus Fremddaten: nur die drei bekannten Werte zulassen.
+    var trend = ["steigend", "fallend", "stabil"].indexOf(estr.trend) !== -1 ? estr.trend : "";
+    $("referenzPunkt").className = "referenz-punkt " + trend;
   }
 
   function statistikZeigen() {
@@ -751,7 +779,8 @@
    * laufen immer durch dieselben zwei Funktionen.
    */
 
-  var sheetHistorie = false;
+  var sheetHistorie = false;   // liegt ein eigener History-Eintrag?
+  var eigenesZurueck = false;  // wartet ein selbst ausgelöstes history.back()?
   var aktuelleFolien = null;   // { titel, reiter:[{name, bau}], index }
   var vorherFokus = null;
 
@@ -788,16 +817,61 @@
     sheet.hidden = false;
     document.body.style.overflow = "hidden";
 
-    // Ein eigener History-Eintrag, damit die Android-Zurück-Taste das
-    // Sheet schließt statt die App zu beenden.
-    if (!sheetHistorie) {
-      try { history.pushState({ zrSheet: true }, ""); sheetHistorie = true; }
-      catch (e) { /* file:// erlaubt kein pushState */ }
-    }
+    historieMerken();
+
+    hintergrundStilllegen(true);
 
     if (typeof opt.danach === "function") opt.danach();
     // Fokus in den Dialog, sonst hängt er hinter der Abdeckung.
     setTimeout(function () { $("btnSheetX").focus({ preventScroll: true }); }, 30);
+  }
+
+  /* Ein eigener History-Eintrag, damit die Android-Zurück-Taste das
+     Sheet schließt statt die App zu beenden. */
+  function historieMerken() {
+    if (sheetHistorie) return;
+    try {
+      // Steht schon ein verwaister Marker im Verlauf (kann nach einem
+      // schnellen Zu-und-wieder-Auf passieren), diesen weiterverwenden
+      // statt einen zweiten anzulegen. Sonst braucht die Zurück-Taste
+      // hinterher einen Druck mehr.
+      if (history.state && history.state.zrSheet) { sheetHistorie = true; return; }
+      history.pushState({ zrSheet: true }, "");
+      sheetHistorie = true;
+    } catch (e) { /* file:// erlaubt kein pushState */ }
+  }
+
+  /* Alles hinter dem Sheet für Tastatur und Screenreader abschalten.
+     Ohne das läuft die Tabulator-Taste aus dem Dialog in die Liste
+     dahinter – bei 190 Karten sind das über 200 erreichbare Elemente.
+     `inert` gibt es ab Chrome 102; für ältere WebViews bleibt
+     aria-hidden plus das Ausschalten der Tabstopps. */
+  function hintergrundStilllegen(an) {
+    ["kopfMarker", "hauptbereich", "fussbereich"].forEach(function (id) {
+      var el = $(id);
+      if (!el) return;
+      if (an) {
+        el.setAttribute("aria-hidden", "true");
+        if ("inert" in el) el.inert = true;
+      } else {
+        el.removeAttribute("aria-hidden");
+        if ("inert" in el) el.inert = false;
+      }
+    });
+    if (!("inert" in document.createElement("div"))) {
+      // Notlösung für WebViews ohne inert: Tabstopps einsammeln.
+      var liste = $("liste");
+      if (liste) {
+        Array.prototype.forEach.call(liste.querySelectorAll("[tabindex], button"), function (el) {
+          if (an) { el.dataset.tabAlt = el.getAttribute("tabindex") || ""; el.setAttribute("tabindex", "-1"); }
+          else if (el.dataset.tabAlt !== undefined) {
+            if (el.dataset.tabAlt) el.setAttribute("tabindex", el.dataset.tabAlt);
+            else el.removeAttribute("tabindex");
+            delete el.dataset.tabAlt;
+          }
+        });
+      }
+    }
   }
 
   function folieZeigen(index, richtung) {
@@ -836,11 +910,17 @@
     $("sheetBody").innerHTML = "";
     aktuelleFolien = null;
     document.body.style.overflow = "";
+    hintergrundStilllegen(false);
 
     if (sheetHistorie) {
       sheetHistorie = false;
       if (!vonZurueckTaste) {
-        try { history.back(); } catch (e) { /* egal */ }
+        // history.back() wirkt erst im nächsten Tick. Wird in der
+        // Zwischenzeit ein neues Sheet geöffnet, würde das nachlaufende
+        // popstate dieses gleich wieder schließen. Deshalb merken, dass
+        // das kommende popstate von uns selbst stammt.
+        eigenesZurueck = true;
+        try { history.back(); } catch (e) { eigenesZurueck = false; }
       }
     }
     if (vorherFokus && typeof vorherFokus.focus === "function") {
@@ -883,7 +963,7 @@
     if (a.zinstyp === "aktion" && a.aktionsdauer_monate > 0) {
       h.push('<div class="info-karte warnung"><div class="kopfzeile">' + ikon("uhr") +
         "Das ist ein Angebot auf Zeit</div>" +
-        "Die " + pct(a.zinssatz_pct) + " gibt es " + a.aktionsdauer_monate +
+        "Die " + pct(a.zinssatz_pct) + " gibt es " + esc(a.aktionsdauer_monate) +
         " Monate lang. Danach zahlt die Bank " + pct(a.folgezins_pct) +
         (a.folgezins_geschaetzt
           ? " – dieser Wert stand nicht im Angebot und ist geschätzt."
@@ -985,8 +1065,10 @@
     if (zustand.einstellungen.abgeltung) {
       var vorAbg = zustand.einstellungen.erstattung
         ? a.netto_12m_mit_erstattung_pct : a.netto_12m_ohne_erstattung_pct;
+      var vorAbgEuro = inEuro(vorAbg);
       h.push(schritt("Deutsche Abgeltungssteuer", "25 % plus Solidaritätszuschlag",
-        "− " + euroGenau(inEuro(vorAbg) - netto), "abzug"));
+        (istZahl(vorAbgEuro) && istZahl(netto))
+          ? "− " + euroGenau(vorAbgEuro - netto) : "–", "abzug"));
     }
 
     h.push(schritt("Das bleibt dir", pct(nettoWert(a)) + " im ersten Jahr",
@@ -1116,7 +1198,7 @@
       h.push('<div class="info-karte warnung"><div class="kopfzeile">' + ikon("warnung") +
         "Die Quellen sind sich uneinig</div>" +
         esc(a.quellen_abweichung.map(function (q) {
-          return q.quelle + " nennt " + nfZins.format(q.zinssatz_pct) + " %";
+          return q.quelle + " nennt " + pct(q.zinssatz_pct);
         }).join(", ")) + ". Angezeigt wird der Wert der verlässlichsten Quelle.</div>");
     }
 
@@ -1230,6 +1312,9 @@
     });
 
     var f = zustand.filter;
+    var hatNeukundenDaten = (zustand.daten ? zustand.daten.angebote || [] : [])
+      .some(function (a) { return a.nur_neukunden; });
+
     var wahl = function (id, label, hilfe, optionen, wert) {
       return '<label class="feld"><span>' + label +
         (hilfe ? ' <em class="feld-hilfe">' + hilfe + "</em>" : "") + "</span><select id=\"" + id + "\">" +
@@ -1257,11 +1342,15 @@
           ["ohne", "keine Aktionen – nur Dauerzins"],
         ], f.aktion) +
 
-        wahl("fNeukunden", "Neukunden", "", [
-          ["", "alle Angebote"],
-          ["nur", "nur Neukunden-Angebote"],
-          ["ohne", "ohne Neukunden-Angebote"],
-        ], f.neukunden) +
+        // Ältere Datenstände kennen das Feld nicht. Dann führt der Filter
+        // nur in eine leere Liste – also gar nicht erst anbieten.
+        (hatNeukundenDaten
+          ? wahl("fNeukunden", "Neukunden", "", [
+              ["", "alle Angebote"],
+              ["nur", "nur Neukunden-Angebote"],
+              ["ohne", "ohne Neukunden-Angebote"],
+            ], f.neukunden)
+          : "") +
 
         wahl("fTyp", "Art des Zinses", "", [
           ["", "alle"],
@@ -1338,7 +1427,7 @@
       land: "", typ: "", quelltyp: "", rating: "", minZins: "",
       aktion: "", neukunden: "",
       nurEur: false, nurWatch: false, ohneStale: false, passtZuBetrag: false,
-      vollGesichert: false, zeigeErledigt: false,
+      vollGesichert: false,
     };
     zustand.limit = SEITE;
     zustand.suche = "";
@@ -1397,6 +1486,10 @@
 
   /* Abgehakte Neukunden-Angebote: hier stehen sie, hier kommen sie zurück. */
   function genutzteListe() {
+    return '<div id="genutztBereich">' + genutztInhalt() + "</div>";
+  }
+
+  function genutztInhalt() {
     var liste = erledigteAngebote();
     if (!liste.length) {
       return "<h3>Schon genutzte Angebote</h3>" +
@@ -1552,7 +1645,7 @@
     var schwelle = zahlAusEingabe(zustand.einstellungen.schwelle);
     if (isNaN(schwelle) || !zustand.watchlist.length) return;
 
-    var gemeldet = lies(SPEICHER.gemeldet, {});
+    var gemeldet = lies(SPEICHER.gemeldet, {}, "objekt");
     var heute = new Date().toISOString().slice(0, 10);
     var treffer = [];
 
@@ -1597,7 +1690,7 @@
   }
 
   function themeUmschalten() {
-    var jetzt = lies(SPEICHER.theme, "auto");
+    var jetzt = lies(SPEICHER.theme, "auto", "text");
     var naechstes = jetzt === "auto" ? "light" : (jetzt === "light" ? "dark" : "auto");
     themeSetzen(naechstes);
     toast(naechstes === "auto" ? "Folgt dem System"
@@ -1619,8 +1712,21 @@
       ausgeloest = false;
     }, { passive: true });
 
+    function abbrechen() {
+      ziehend = false;
+      ausgeloest = false;
+      ptr.classList.remove("aktiv", "laedt");
+      $("ptrText").textContent = "Zum Aktualisieren ziehen";
+    }
+
+    // Ohne touchcancel bleibt der Balken nach einem abgebrochenen Zug auf
+    // "Loslassen" stehen - und schlimmer: `ziehend` bleibt true, sodass
+    // ein Wischen im offenen Sheet danach einen ganzen Neuladen auslöst.
+    document.addEventListener("touchcancel", abbrechen, { passive: true });
+
     document.addEventListener("touchmove", function (e) {
       if (!ziehend) return;
+      if (sheetOffen()) { abbrechen(); return; }
       var delta = e.touches[0].clientY - startY;
       if (delta > 12 && window.scrollY <= 0) {
         ptr.classList.add("aktiv");
@@ -1635,6 +1741,7 @@
     document.addEventListener("touchend", function () {
       if (!ziehend) return;
       ziehend = false;
+      if (sheetOffen()) { abbrechen(); return; }
       if (!ausgeloest) { ptr.classList.remove("aktiv"); return; }
       ptr.classList.add("laedt");
       $("ptrText").textContent = "Wird geholt …";
@@ -1686,6 +1793,7 @@
       $("suche").value = "";
       zustand.suche = "";
       $("btnSucheLeeren").hidden = true;
+      zustand.limit = SEITE;
       rendern();
     });
 
@@ -1726,7 +1834,8 @@
     $("liste").addEventListener("keydown", function (e) {
       if (e.key !== "Enter" && e.key !== " ") return;
       var karte = e.target.closest(".karte");
-      if (!karte || e.target.closest("[data-watch]")) return;
+      // Die Knöpfe in der Karte lösen selbst aus – hier nicht dazwischenfunken.
+      if (!karte || e.target.closest("[data-watch], [data-erledigt]")) return;
       e.preventDefault();
       detailOeffnen(parseInt(karte.dataset.index, 10));
     });
@@ -1757,10 +1866,16 @@
         var eKey = erledigtKnopf.dataset.erledigtKey;
         var warDrin = zustand.erledigt.indexOf(eKey) !== -1;
         erledigtUmschalten(eKey);
-        // Aus dem Detail-Sheet heraus schließen; in der Einstellungsliste
-        // stattdessen die Liste neu aufbauen, damit man weitermachen kann.
-        if (!warDrin) sheetSchliessen();
-        else einstellungenOeffnen();
+        if (!warDrin) {
+          sheetSchliessen();          // aus dem Detail-Sheet heraus
+        } else {
+          // In den Einstellungen NUR die Liste neu bauen. Ein kompletter
+          // Neuaufbau des Sheets würde noch nicht gespeicherte Eingaben
+          // (Daten-Adresse, Schalter) still zurücksetzen.
+          var bereich = $("genutztBereich");
+          if (bereich) bereich.innerHTML = genutztInhalt();
+          else einstellungenOeffnen();
+        }
         return;
       }
 
@@ -1815,6 +1930,13 @@
 
     // Android-Zurück-Taste schließt das Sheet statt die App.
     window.addEventListener("popstate", function () {
+      if (eigenesZurueck) {
+        eigenesZurueck = false;
+        // Zwischenzeitlich ein neues Sheet geöffnet? Dann hat es seinen
+        // History-Eintrag gerade mitverloren und braucht einen neuen.
+        if (sheetOffen()) { sheetHistorie = false; historieMerken(); }
+        return;
+      }
       if (sheetOffen()) sheetSchliessen(true);
     });
 
@@ -1835,7 +1957,7 @@
     if (window.matchMedia) {
       var mq = window.matchMedia("(prefers-color-scheme: dark)");
       var reagiere = function () {
-        if (lies(SPEICHER.theme, "auto") === "auto") themeSetzen("auto");
+        if (lies(SPEICHER.theme, "auto", "text") === "auto") themeSetzen("auto");
       };
       if (mq.addEventListener) mq.addEventListener("change", reagiere);
       else if (mq.addListener) mq.addListener(reagiere);
@@ -1845,22 +1967,23 @@
   /* ================================================================= Start */
 
   function start() {
-    zustand.einstellungen = Object.assign(zustand.einstellungen, lies(SPEICHER.einst, {}));
-    zustand.watchlist = lies(SPEICHER.watch, []) || [];
-    zustand.erledigt = lies(SPEICHER.erledigt, []) || [];
+    zustand.einstellungen = Object.assign(zustand.einstellungen,
+      lies(SPEICHER.einst, {}, "objekt"));
+    zustand.watchlist = lies(SPEICHER.watch, [], "liste")
+      .filter(function (k) { return typeof k === "string"; });
+    zustand.erledigt = lies(SPEICHER.erledigt, [], "liste")
+      .filter(function (k) { return typeof k === "string"; });
+    zustand.betrag = lies(SPEICHER.betrag, BETRAG_STANDARD, "zahl");
 
-    var gespeicherterBetrag = Number(lies(SPEICHER.betrag, BETRAG_STANDARD));
-    zustand.betrag = (isFinite(gespeicherterBetrag) && gespeicherterBetrag > 0)
-      ? gespeicherterBetrag : BETRAG_STANDARD;
-
-    themeSetzen(lies(SPEICHER.theme, "auto"));
+    var theme = lies(SPEICHER.theme, "auto", "text");
+    themeSetzen(["auto", "light", "dark"].indexOf(theme) === -1 ? "auto" : theme);
     betragAnzeigen();
     ereignisse();
     ptrEinrichten();
 
-    var zwischen = lies(SPEICHER.daten, null);
+    var zwischen = lies(SPEICHER.daten, null, "objekt");
     if (zwischen && pruefeStruktur(zwischen.daten)) {
-      uebernehmen(zwischen.daten, "cache", null, zwischen.geholt);
+      uebernehmen(zwischen.daten, "start", null, zwischen.geholt);
     }
 
     laden(false);

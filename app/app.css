@@ -31,17 +31,29 @@
   --karte-rand:   rgba(28, 25, 20, 0.08);
   --text:         #1b1a17;
   --text-weich:   #5d574d;
-  --text-zart:    #8c857a;
+  /* 4,6:1 auf --grund. Vorher #8c857a mit 3,4:1 - zu blass fuer die
+     Zweitzeilen der Karten und die Statistik. */
+  --text-zart:    #6d675d;
 
   --akzent:       #0f9d76;
   --akzent-dunkel:#0b7d5e;
   --akzent-weich: #e4f6f0;
+
+  /* Grund und Schrift fuer gefuellte Knoepfe. Weiss auf --akzent kaeme
+     nur auf 3,4:1; im Dunkelmodus wird --akzent hell, dort braucht es
+     umgekehrt dunkle Schrift. */
+  --knopf-grund:  #0b7d5e;
+  --auf-akzent:   #ffffff;
+
   --warm:         #e0862c;
   --warm-weich:   #fdf1e2;
+  --warm-text:    #8a4d06;
   --rot:          #c9503f;
   --rot-weich:    #fceeeb;
+  --rot-text:     #a53826;
   --blau:         #3d6ea8;
   --blau-weich:   #eaf1f9;
+  --blau-text:    #2f5686;
 
   --r-gross:  26px;
   --r-mittel: 18px;
@@ -56,7 +68,11 @@
 
   --tempo:   .22s;
   --kurve:   cubic-bezier(.22, .9, .3, 1);
-  --sicher-unten: env(safe-area-inset-bottom, 0px);
+  /* Android-WebView unter 140 liefert fuer env(safe-area-inset-*) oft 0.
+     Capacitor spritzt ab 8.3 eigene --safe-area-inset-* ein; steht die
+     zur Verfuegung, gewinnt sie. */
+  --sicher-oben:  var(--safe-area-inset-top, env(safe-area-inset-top, 0px));
+  --sicher-unten: var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -72,12 +88,17 @@
     --akzent:       #3fc79c;
     --akzent-dunkel:#68d9b4;
     --akzent-weich: rgba(63, 199, 156, .15);
+    --knopf-grund:  #3fc79c;
+    --auf-akzent:   #0d2620;
     --warm:         #eeab5c;
     --warm-weich:   rgba(238, 171, 92, .16);
+    --warm-text:    #f0b878;
     --rot:          #ef7f6d;
     --rot-weich:    rgba(239, 127, 109, .16);
+    --rot-text:     #f39a8b;
     --blau:         #7fa9dd;
     --blau-weich:   rgba(127, 169, 221, .16);
+    --blau-text:    #9dbfe6;
     --schatten:      0 1px 2px rgba(0, 0, 0, .35), 0 10px 26px -18px rgba(0, 0, 0, .7);
     --schatten-hoch: 0 2px 6px rgba(0, 0, 0, .4), 0 26px 50px -24px rgba(0, 0, 0, .8);
   }
@@ -95,12 +116,17 @@
   --akzent:       #3fc79c;
   --akzent-dunkel:#68d9b4;
   --akzent-weich: rgba(63, 199, 156, .15);
+  --knopf-grund:  #3fc79c;
+  --auf-akzent:   #0d2620;
   --warm:         #eeab5c;
   --warm-weich:   rgba(238, 171, 92, .16);
+  --warm-text:    #f0b878;
   --rot:          #ef7f6d;
   --rot-weich:    rgba(239, 127, 109, .16);
+  --rot-text:     #f39a8b;
   --blau:         #7fa9dd;
   --blau-weich:   rgba(127, 169, 221, .16);
+  --blau-text:    #9dbfe6;
   --schatten:      0 1px 2px rgba(0, 0, 0, .35), 0 10px 26px -18px rgba(0, 0, 0, .7);
   --schatten-hoch: 0 2px 6px rgba(0, 0, 0, .4), 0 26px 50px -24px rgba(0, 0, 0, .8);
 }
@@ -157,7 +183,7 @@ main {
   background: var(--grund);
   border-bottom: 1px solid transparent;
   transition: border-color var(--tempo) var(--kurve);
-  padding-top: env(safe-area-inset-top, 0px);
+  padding-top: var(--sicher-oben);
 }
 
 .kopf.gescrollt { border-bottom-color: var(--karte-rand); }
@@ -398,9 +424,9 @@ main {
 }
 
 .filter-knopf.aktiv {
-  background: var(--akzent);
-  border-color: var(--akzent);
-  color: #fff;
+  background: var(--knopf-grund);
+  border-color: var(--knopf-grund);
+  color: var(--auf-akzent);
 }
 
 .filter-zahl {
@@ -413,7 +439,7 @@ main {
   display: grid;
   place-items: center;
   border-radius: var(--r-pille);
-  background: var(--warm);
+  background: var(--warm-text);
   color: #fff;
   font-size: .68rem;
   font-weight: 700;
@@ -504,7 +530,10 @@ main {
   background: var(--karte);
   box-shadow: var(--schatten);
   cursor: pointer;
-  animation: auftauchen .38s var(--kurve) both;
+  /* Kein "both": ohne Animation gilt der normale Zustand (sichtbar).
+     Mit "both" bliebe die Karte bei opacity 0 haengen, falls die
+     Animation nie laeuft. */
+  animation: auftauchen .38s var(--kurve);
   transition: transform .14s var(--kurve), box-shadow var(--tempo) var(--kurve);
 }
 
@@ -644,14 +673,14 @@ main {
 }
 .marke-pille .ikon-svg { width: 13px; height: 13px; }
 .marke-pille.gut     { background: var(--akzent-weich); color: var(--akzent-dunkel); }
-.marke-pille.mittel  { background: var(--warm-weich);   color: var(--warm); }
-.marke-pille.schwach { background: var(--rot-weich);    color: var(--rot); }
-.marke-pille.info    { background: var(--blau-weich);   color: var(--blau); }
+.marke-pille.mittel  { background: var(--warm-weich);   color: var(--warm-text); }
+.marke-pille.schwach { background: var(--rot-weich);    color: var(--rot-text); }
+.marke-pille.info    { background: var(--blau-weich);   color: var(--blau-text); }
 
 .leer {
   text-align: center;
   padding: 2.4rem 1rem;
-  animation: auftauchen .4s var(--kurve) both;
+  animation: auftauchen .4s var(--kurve);
 }
 .leer-bild  { width: 116px; height: 88px; margin-bottom: .4rem; }
 .leer-titel { font-size: 1.1rem; font-weight: 640; margin: 0 0 .2rem; }
@@ -718,7 +747,7 @@ main {
   position: absolute;
   inset: 0;
   background: rgba(20, 18, 15, .45);
-  animation: einblenden .24s var(--kurve) both;
+  animation: einblenden .24s var(--kurve);
 }
 
 @keyframes einblenden { from { opacity: 0; } to { opacity: 1; } }
@@ -734,7 +763,7 @@ main {
   border-radius: var(--r-gross) var(--r-gross) 0 0;
   background: var(--karte);
   box-shadow: var(--schatten-hoch);
-  animation: hochfahren .34s var(--kurve) both;
+  animation: hochfahren .34s var(--kurve);
   overflow: hidden;
 }
 
@@ -839,7 +868,7 @@ main {
   background: var(--karte);
 }
 
-.folie { animation: folie-rein .26s var(--kurve) both; }
+.folie { animation: folie-rein .26s var(--kurve); }
 .folie.rueckwaerts { animation-name: folie-rein-links; }
 
 @keyframes folie-rein       { from { opacity: 0; transform: translateX(16px); }  to { opacity: 1; transform: none; } }
@@ -907,7 +936,7 @@ main {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-.schritt.abzug .schritt-wert { color: var(--rot); }
+.schritt.abzug .schritt-wert { color: var(--rot-text); }
 
 .schritt.summe {
   margin-top: .3rem;
@@ -1074,7 +1103,7 @@ main {
               color var(--tempo) var(--kurve),
               transform .14s var(--kurve);
 }
-.chip.aktiv { background: var(--akzent); border-color: var(--akzent); color: #fff; }
+.chip.aktiv { background: var(--knopf-grund); border-color: var(--knopf-grund); color: var(--auf-akzent); }
 .chip:active { transform: scale(.95); }
 
 .primaer, .zweit {
@@ -1085,7 +1114,7 @@ main {
   font-weight: 620;
   transition: transform .14s var(--kurve);
 }
-.primaer { background: var(--akzent); color: #fff; }
+.primaer { background: var(--knopf-grund); color: var(--auf-akzent); }
 .primaer:active { transform: scale(.97); }
 .zweit { background: var(--grund-tief); color: var(--text-weich); }
 .zweit:active { transform: scale(.97); }
@@ -1112,7 +1141,7 @@ main {
   transition: height var(--tempo) var(--kurve);
   pointer-events: none;
 }
-.ptr.aktiv { height: 56px; padding-top: env(safe-area-inset-top, 0px); }
+.ptr.aktiv { height: 56px; padding-top: var(--sicher-oben); }
 
 .ptr-kreis {
   width: 26px;
@@ -1141,7 +1170,12 @@ main {
   font-weight: 540;
   text-align: center;
   box-shadow: var(--schatten-hoch);
-  animation: toast-rein .28s var(--kurve) both;
+  animation: toast-rein .28s var(--kurve);
+  /* Der Toast liegt mit z-index 90 ueber allem und traegt selbst keine
+     Bedienung. Ohne diese Zeile schluckt er 2,6 Sekunden lang jeden Tipp
+     in der Bildschirmmitte unten - genau dort, wo die Sheet-Knoepfe
+     "Speichern" und "Schliessen" sitzen. */
+  pointer-events: none;
 }
 
 @keyframes toast-rein {

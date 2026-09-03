@@ -65,8 +65,14 @@ self.addEventListener("fetch", function (e) {
         }
         return antwort;
       }).catch(function () {
-        return caches.match(e.request).then(function (treffer) {
-          return treffer || caches.match("data/zinsen.json");
+        // Gezielt im Datencache nachsehen. caches.match() ohne Angabe
+        // durchsucht die Caches in Anlagereihenfolge und liefert dann die
+        // aeltere, mitgelieferte Kopie aus dem Shell-Cache statt der
+        // frischeren aus dem Datencache.
+        return caches.open(DATEN_CACHE).then(function (c) {
+          return c.match(e.request).then(function (treffer) {
+            return treffer || caches.match("data/zinsen.json");
+          });
         });
       })
     );
