@@ -366,6 +366,33 @@ ausgeschriebene Namen.
 10. **Pull-to-Refresh**, Dark Mode (System/hell/dunkel), deutsche Oberfläche,
     Android-Zurück-Taste schließt das Detailfenster statt der App.
 
+### Was beim Prüfen herauskam
+
+Der Oberflächencode ist nach dem Neubau von einem Prüf-Agenten durchgegangen
+worden — mit Netzrecherche zu WebView-Fallstricken, nicht nur mit Codelesen.
+Zehn Funde waren reproduziert. Die wichtigsten, weil sie eine Bauart zeigen,
+die beim Klicktest unsichtbar bleibt:
+
+| Fund | Warum er beim Testen durchrutscht |
+| --- | --- |
+| Der Toast lag ohne `pointer-events: none` mit `z-index: 90` über allem und fraß 2,6 s lang jeden Tipp in der unteren Bildschirmmitte — genau dort, wo „Speichern" und „Schließen" sitzen | Der Knopf *sieht* normal aus und reagiert nur manchmal nicht. Sichtbar erst, wenn man `elementFromPoint` auf die Knopfmitte legt. |
+| `history.back()` wirkt erst im nächsten Tick: schnell schließen und gleich wieder öffnen → das Sheet schloss sich 400 ms später von selbst, und die Zurück-Taste tat danach einmal gar nichts | Nur bei schneller Bedienung, auf langsamen Geräten häufiger. |
+| `zr_erledigt = "5"` im Speicher → beim Start `indexOf is not a function`, keine Karten, kein Fehlertext — und das überlebte jeden Neustart | Tritt nie auf, solange nur die App selbst schreibt. |
+| Beim Öffnen stand „Gerade kein Netz", bevor überhaupt ein Abruf lief | Verschwindet nach 200 ms wieder — außer auf Mobilfunk. |
+| Weiß auf `--akzent` ergibt 3,4 : 1 (hell) und 2,1 : 1 (dunkel), nötig sind 4,5 : 1 | Sieht auf einem guten Monitor gut aus. |
+
+Dieselbe Lehre wie beim `[hidden]`-Fehler aus 1.0.0: **prüfen, was tatsächlich
+auf dem Schirm passiert, nicht was im DOM steht.** Ein `hidden`-Attribut sagt
+nichts über `display`, und ein sichtbarer Knopf sagt nichts darüber, ob er den
+Tipp auch bekommt.
+
+Was der Prüflauf ausdrücklich als in Ordnung bestätigt hat: keine zweite
+`[hidden]`-Stelle, keine hängende Scroll-Sperre, keine veralteten Indizes nach
+Filter- oder Sortierwechsel, vollständiges Escaping (die 191 Karten und
+7 × 4 Folien wurden auf `NaN`, `undefined` und ungültige `width:`-Werte
+abgesucht — 0 Treffer), alle 21 SVG-Symbole aufgelöst, und kein CSS-Feature
+oberhalb des Android-13-Bodens ohne Rückfallebene.
+
 ### Datenquelle
 
 Ist bereits eingetragen und braucht keinen Handgriff — `app/config.js` zeigt
