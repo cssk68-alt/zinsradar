@@ -553,7 +553,7 @@ _KEIN_NAME = re.compile(
     r"^(?:a{1,3}[+-]?|b{1,3}[+-]?|c{1,3}[+-]?|d|aa[123]|baa?[123]|"
     r"[a-c]{1,3}[+-]?\s*/\s*[a-c]{1,3}[+-]?)$"
     r"|^\w*[-\s]?ident\b"
-    r"|\b(?:sichern|entdecken|vergleichen|eroeffnen|beantragen|ansehen|"
+    r"|\b(?:sichern|entdecken|vergleichen|er(?:oe|o)ffnen|beantragen|ansehen|"
     r"berechnen|weiter|hier)\b",
     re.IGNORECASE,
 )
@@ -574,7 +574,7 @@ def _ist_label(text: str) -> bool:
         if t in woerter:
             return True
     # Fragmente wie "Bis 300 EUR &" oder "ab 1.000"
-    if re.match(r"^(?:bis|ab|bei|fuer|max|min|von|unter|ueber|mind)\b", t):
+    if re.match(r"^(?:bis|ab|bei|f(?:ue|u)r|max|min|von|unter|(?:ue|u)ber|mind)\b", t):
         return True
     # Reine Zahlen, Prozente, Waehrungen
     return bool(re.fullmatch(r"[\d\s.,%€£+-]*", t))
@@ -655,15 +655,20 @@ def _bank_aus_knoten(knoten, *, nachbarn: bool = True) -> str:
 # ---- 2b: generische Heuristik, unabhaengig von den YAML-Selektoren ----
 
 # Beschriftungen, die einen Prozentwert als Aktions- bzw. Basiszins ausweisen.
+# WICHTIG: zwischen Beschriftung und Zahl steht [^%], nicht \D.
+# Vergleichsportale schreiben "Aktionszins Ab 0EUR: 4%" - mit \D scheiterte
+# das an der 0 in "Ab 0EUR", und der Aktionszins blieb unerkannt. Genau
+# daran hing der Chase-Fehler: 4 % standen als Dauerzins in der Liste,
+# obwohl es sie nur die ersten vier Monate gibt.
 _AKTION_LABEL = re.compile(
     r"(aktions?zins|aktionszinssatz|bonus\w*|neukunden\w*|willkommens\w*|promo\w*|"
-    r"startzins|tasso\s+promo|taux\s+promo|premie)\D{0,30}?"
+    r"startzins|tasso\s+promo|taux\s+promo|premie)[^%]{0,40}?"
     r"(\d{1,2}(?:[.,]\d{1,3})?)\s*%",
     re.IGNORECASE,
 )
 _BASIS_LABEL = re.compile(
     r"(basis\w*|grundzins|folgezins|standard\w*|regel\w*|danach|anschliessend|"
-    r"anschließend|ab\s+dem\s+\d+|tasso\s+base|taux\s+de\s+base|base\s*rate)\D{0,30}?"
+    r"anschließend|ab\s+dem\s+\d+|tasso\s+base|taux\s+de\s+base|base\s*rate)[^%]{0,40}?"
     r"(\d{1,2}(?:[.,]\d{1,3})?)\s*%",
     re.IGNORECASE,
 )
@@ -773,6 +778,85 @@ def _struktur_gruppen(baum, sprache: str) -> list[tuple[str, list]]:
     return gruppen[:40]
 
 
+# Woerter, an denen ein Detailblock zu erkennen ist. Nur solche Bloecke
+# duerfen anreichern - sonst schleppt jede Layout-Kachel ihren Text mit.
+_DETAIL_HINWEIS = re.compile(
+    r"aktions?zins|basiszins|grundzins|folgezins|danach|neukund|kundenkreis|"
+    r"ersten\s*\d+\s*monat|dauer\s*aktion|monate?\s*lang",
+    re.IGNORECASE,
+)
+
+
+def _mit_details_anreichern(bester: list[dict[str, Any]],
+                            alle: list[list[dict[str, Any]]]) -> list[dict[str, Any]]:
+    """Der Gewinnergruppe die Details der anderen Gruppen beilegen.
+
+    Vergleichsportale zeigen dieselbe Bank zweimal: als Werbekachel
+    ("Chase 4,00 % - Sehr gut") und als Datenblock ("Basiszins 2 %,
+    Aktionszins 4 %, Dauer 4, Kundenkreis Neukunden"). Die Kachel gewinnt
+    die Gruppenwahl, weil sie mehr Banken abdeckt - und schluckt damit
+    alles, was das Angebot einschraenkt.
+
+    Hier bekommt jeder Gewinner den passenden Detailtext angehaengt.
+    Ausgewertet wird er spaeter in normalize.py; diese Funktion sortiert
+    nur zu, sie interpretiert nichts.
+    """
+    from normalize import bank_schluessel
+
+    if not bester or len(alle) < 2:
+        return bester
+
+    # Pro Bank den reichsten Detailtext aus allen anderen Gruppen merken.
+    details: dict[str, dict[str, Any]] = {}
+    for gruppe in alle:
+        if gruppe is bester:
+            continue
+        for k in gruppe:
+            text = k.get("zinstyp") or ""
+            if not isinstance(text, str) or not _DETAIL_HINWEIS.search(text):
+                continue
+            schluessel = bank_schluessel(k.get("bank"))
+            if not schluessel:
+                continue
+            vorher = details.get(schluessel)
+            if vorher is None or len(text) > len(vorher.get("text") or ""):
+                details[schluessel] = {
+                    "text": text,
+                    "folgezins_pct": k.get("folgezins_pct"),
+                    "zinssatz_pct": k.get("zinssatz_pct"),
+                }
+
+    if not details:
+        return bester
+
+    angereichert = 0
+    for k in bester:
+        d = details.get(bank_schluessel(k.get("bank")))
+        if not d:
+            continue
+        # Text anhaengen, damit Dauer, Neukunden-Vorbehalt und Folgezins
+        # gefunden werden. Der Zinssatz der Gewinnergruppe bleibt stehen.
+        for feld in ("zinstyp", "aktionsdauer_monate"):
+            vorhandener = k.get(feld)
+            if isinstance(vorhandener, str) and d["text"] not in vorhandener:
+                k[feld] = vorhandener + " " + d["text"]
+        k["_kontext"] = (k.get("_kontext") or "") + " " + d["text"][:300]
+
+        # Folgezins nur uebernehmen, wenn er wirklich darunter liegt.
+        # Ein hoeherer "Folgezins" ist immer ein Lesefehler.
+        folge = d.get("folgezins_pct")
+        zins = k.get("zinssatz_pct")
+        if (k.get("folgezins_pct") is None and folge is not None
+                and zins is not None and folge < zins):
+            k["folgezins_pct"] = folge
+        angereichert += 1
+
+    if angereichert:
+        log().info("      %d Treffer aus einem zweiten Block angereichert "
+                   "(Aktionsdauer, Folgezins, Neukunden)", angereichert)
+    return bester
+
+
 def stufe2_heuristik(html: str, quelle: dict[str, Any]) -> tuple[list[dict], StufenVersuch]:
     """Findet Angebote ohne jede Selektor-Konfiguration.
 
@@ -808,6 +892,7 @@ def stufe2_heuristik(html: str, quelle: dict[str, Any]) -> tuple[list[dict], Stu
     bester: list[dict[str, Any]] = []
     beste_quelle = ""
     beste_guete = (0, 0.0)
+    alle_gruppen: list[list[dict[str, Any]]] = []
 
     for name, knoten in _struktur_gruppen(baum, sprache):
         if len(knoten) > 400:
@@ -847,6 +932,7 @@ def stufe2_heuristik(html: str, quelle: dict[str, Any]) -> tuple[list[dict], Stu
         # Guete: erstens Anzahl unterschiedlicher Banknamen (eine Struktur mit
         # 40 Layout-Dopplungen derselben Bank ist schlechter als eine mit 8
         # echten), zweitens - bei Gleichstand - die feinere Granularitaet.
+        alle_gruppen.append(kandidaten)
         namen = {entschaerfe(k["bank"])[:40] for k in kandidaten}
         mittel_laenge = sum(len(k["_kontext"]) for k in kandidaten) / len(kandidaten)
         guete = (len(namen), -mittel_laenge)
@@ -864,6 +950,8 @@ def stufe2_heuristik(html: str, quelle: dict[str, Any]) -> tuple[list[dict], Stu
             return [einzel], versuch
         versuch.fehler = "keine wiederkehrende Struktur mit Zins gefunden"
         return [], versuch
+
+    bester = _mit_details_anreichern(bester, alle_gruppen)
 
     # Gleiche Bank + gleicher Zins mehrfach = meist Layout-Dopplung.
     gesehen: set[tuple[str, float]] = set()

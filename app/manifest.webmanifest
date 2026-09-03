@@ -1,15 +1,15 @@
 {
   "name": "Zinsradar – Tagesgeld Europa",
   "short_name": "Zinsradar",
-  "description": "Tagesgeldzinsen aus ganz Europa, verglichen nach Quellensteuer, Einlagensicherung und Länderrisiko.",
+  "description": "Tagesgeldzinsen aus ganz Europa – einfach erklärt, mit Rechenbeispiel und Steuern.",
   "lang": "de",
   "dir": "ltr",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0d1117",
-  "theme_color": "#0f172a",
+  "background_color": "#faf7f2",
+  "theme_color": "#faf7f2",
   "categories": ["finance", "utilities"],
   "icons": [
     { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },

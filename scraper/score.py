@@ -63,30 +63,111 @@ def brutto_12m(aktionszins: float, aktionsdauer_monate: int | None,
     return (float(aktionszins) * dauer + folge * (12 - dauer)) / 12.0
 
 
+# Fuer die App ausgeschrieben - "LV" oder "DBA" sagt niemandem etwas.
+LAND_NAMEN = {
+    "DE": "Deutschland", "AT": "Österreich", "NL": "den Niederlanden",
+    "FR": "Frankreich", "IT": "Italien", "ES": "Spanien", "PT": "Portugal",
+    "IE": "Irland", "SE": "Schweden", "NO": "Norwegen", "DK": "Dänemark",
+    "FI": "Finnland", "PL": "Polen", "CZ": "Tschechien", "BE": "Belgien",
+    "LU": "Luxemburg", "LV": "Lettland", "LT": "Litauen", "EE": "Estland",
+    "MT": "Malta", "CY": "Zypern", "SI": "Slowenien", "SK": "der Slowakei",
+    "HR": "Kroatien", "HU": "Ungarn", "RO": "Rumänien", "BG": "Bulgarien",
+    "GR": "Griechenland", "CH": "der Schweiz", "LI": "Liechtenstein",
+    "IS": "Island", "UK": "Großbritannien",
+}
+
+AUFWAND_WORT = {
+    "keiner": "gar keinen Aufwand",
+    "niedrig": "wenig Aufwand",
+    "mittel": "etwas Aufwand",
+    "hoch": "viel Aufwand",
+}
+
+
+def pct_wort(wert: float) -> str:
+    """12.8 -> "12,8 %", 15.0 -> "15 %". Fuer Saetze in der App."""
+    text = f"{float(wert):.1f}".rstrip("0").rstrip(".")
+    return text.replace(".", ",") + " %"
+
+
+def land_wort(code: str | None) -> str:
+    return LAND_NAMEN.get((code or "").upper(), (code or "diesem Land").upper())
+
+
 def qst_effektiv_pct(land: str | None, qst_daten: dict[str, dict],
                      erstattung_selbst: bool) -> tuple[float, str]:
-    """Effektive Quellensteuer in Prozent + Begruendung fuer die App."""
+    """Effektive Quellensteuer in Prozent + Begruendung in ganzen Saetzen.
+
+    Die Begruendung landet unveraendert in der App, deshalb steht hier
+    Klartext statt Fachjargon: kein "DBA", kein "qst_effektiv", und keine
+    Saetze wie "0 % statt 0.00 %", wenn ohnehin nichts einbehalten wird.
+    """
     code = (land or "").upper()
+    name = land_wort(code)
 
     if code == INLANDSFALL:
-        return 0.0, ("Inlandsfall: keine ausländische Quellensteuer. "
-                     "Die deutsche Abgeltungssteuer ist im Score bewusst nicht enthalten.")
+        return 0.0, ("Eine deutsche Bank behält keine ausländische Steuer ein. "
+                     "Die deutsche Abgeltungssteuer trifft alle Anbieter gleich "
+                     "und bleibt deshalb aus der Bewertung heraus.")
 
     eintrag = qst_daten.get(code)
     if not eintrag:
-        return 0.0, "Kein Quellensteuer-Datensatz für dieses Land – 0 % angenommen."
+        return 0.0, (f"Für {name} liegen keine Steuerangaben vor. "
+                     "Gerechnet wird ohne Abzug – bitte selbst nachprüfen.")
 
     aufwand = str(eintrag.get("rueckerstattung_aufwand", "")).lower()
     mit_dba = float(eintrag.get("quellensteuer_mit_dba_pct") or 0.0)
+    standard = float(eintrag.get("quellensteuer_standard_pct") or 0.0)
 
+    # Fall A: Nach dem Steuerabkommen bleibt ohnehin nichts haengen.
+    if mit_dba <= 0:
+        if standard > 0:
+            return 0.0, (f"{name} zieht zunächst {pct_wort(standard)} ab, gibt sie "
+                         "deutschen Anlegern wegen des Steuerabkommens aber "
+                         "zurück. Gerechnet wird deshalb ohne Abzug.")
+        return 0.0, f"{name} behält auf Zinsen deutscher Anleger nichts ein."
+
+    # Fall B: Es bliebe etwas haengen, du holst es dir aber zurueck.
     if aufwand in ("keiner", "niedrig") and erstattung_selbst:
-        return 0.0, (f"Rückerstattungsaufwand '{aufwand}' und Erstattung selbst erledigt "
-                     f"→ 0 % statt {mit_dba:.2f} %.")
+        return 0.0, (f"{name} würde {pct_wort(mit_dba)} einbehalten. Weil die "
+                     f"Rückerstattung dort {AUFWAND_WORT.get(aufwand, 'wenig Aufwand')} "
+                     "macht und du sie laut Einstellung selbst erledigst, "
+                     "wird ohne Abzug gerechnet.")
+
     if aufwand in ("keiner", "niedrig"):
-        return mit_dba, (f"Rückerstattung wäre '{aufwand}', Einstellung ist aus "
-                         f"→ {mit_dba:.2f} % einbehalten.")
-    return mit_dba, (f"Rückerstattungsaufwand '{aufwand}' → mit DBA verbleiben "
-                     f"{mit_dba:.2f} %.")
+        return mit_dba, (f"{name} behält {pct_wort(mit_dba)} ein. Du könntest sie dir "
+                         "zurückholen, hast das in den Einstellungen aber "
+                         "abgeschaltet – deshalb wird mit Abzug gerechnet.")
+
+    return mit_dba, (f"{name} behält {pct_wort(mit_dba)} ein. Die Rückerstattung macht "
+                     f"{AUFWAND_WORT.get(aufwand, 'Aufwand')}, deshalb wird sie hier "
+                     "nicht eingerechnet.")
+
+
+def qst_reibung(land: str | None, qst_daten: dict[str, dict]) -> str | None:
+    """Warnung, wenn die Bank erst einbehaelt und du selbst zurueckfordern musst.
+
+    Die Formel der Aufgabenstellung rechnet mit dem Satz nach Abkommen -
+    fuer Italien also mit 0 %. In Wahrheit sind erst einmal 26 % weg und
+    kommen nur mit Formularen zurueck. Der Score bleibt wie vorgegeben,
+    aber die App sagt es dazu.
+    """
+    code = (land or "").upper()
+    if code == INLANDSFALL:
+        return None
+    eintrag = qst_daten.get(code)
+    if not eintrag:
+        return None
+
+    standard = float(eintrag.get("quellensteuer_standard_pct") or 0.0)
+    mit_dba = float(eintrag.get("quellensteuer_mit_dba_pct") or 0.0)
+    aufwand = str(eintrag.get("rueckerstattung_aufwand", "")).lower()
+
+    if standard - mit_dba > 0.01 and aufwand in ("mittel", "hoch"):
+        return (f"{land_wort(code)} behält zuerst {pct_wort(standard)} ein. Zurückholen "
+                f"kannst du sie dir, das macht aber {AUFWAND_WORT.get(aufwand, 'Aufwand')} "
+                "und dauert. Bis dahin fehlt dir das Geld.")
+    return None
 
 
 _RATING_STUFEN = ("AAA", "AA", "A", "BBB", "BB", "B", "CCC", "CC", "C", "D")
@@ -173,6 +254,7 @@ def berechne(angebot: dict[str, Any], qst_daten: dict[str, dict],
         "rueckerstattung_moeglich": qst_info.get("rueckerstattung_moeglich"),
         "rueckerstattung_formular": qst_info.get("formular_bezeichnung"),
         "rueckerstattung_quelle": qst_info.get("quelle_url"),
+        "qst_reibung": qst_reibung(land, qst_daten),
 
         "netto_12m_mit_erstattung_pct": round(netto_mit, 4),
         "netto_12m_ohne_erstattung_pct": round(netto_ohne, 4),

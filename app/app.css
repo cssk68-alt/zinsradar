@@ -1,309 +1,1180 @@
-/* Zinsradar - Vanilla CSS, kein Build-Step, keine externen Ressourcen.
-   Mobile-first. Dark Mode folgt dem System, per Knopf überschreibbar. */
+/* Zinsradar – weiches, rundes, offenes Design.
+ *
+ * Aufbau der Datei:
+ *   1. Grundregeln und Farben
+ *   2. Kopf und Betragskarte
+ *   3. Held- und Referenzkarte
+ *   4. Werkzeuge (Suche, Filter, Sortierung)
+ *   5. Angebotskarten
+ *   6. Sheet (Detail, Einstellungen, Betrag)
+ *   7. Kleinteile (Toast, Ziehen zum Aktualisieren, Illustrationen)
+ *   8. Bewegung und große Bildschirme
+ */
+
+/* ================================================================== 1
+ * MUSS ganz oben stehen und !important tragen.
+ *
+ * Das eingebaute [hidden] { display: none } der Browser hat dieselbe
+ * Spezifität wie eine Klassenregel und verliert deshalb gegen jedes
+ * spätere `display:` im Autorenstil. Genau daran lag in 1.0.0 das
+ * Einstellungs-Sheet dauerhaft über der App: `.sheet { display: flex }`
+ * hat es sichtbar gehalten, obwohl hidden gesetzt war.
+ * ================================================================== */
+[hidden] { display: none !important; }
 
 :root {
-  --bg: #f6f7f9;
-  --karte: #ffffff;
-  --karte-rand: #e3e6eb;
-  --text: #17202a;
-  --text-schwach: #5d6672;
-  --text-sehr-schwach: #8a929e;
-  --akzent: #0f6fd6;
-  --akzent-weich: #e8f1fd;
-  --gut: #12805c;
-  --gut-weich: #e2f4ec;
-  --mittel: #9a6b00;
-  --mittel-weich: #fbf0d8;
-  --schlecht: #b3261e;
-  --schlecht-weich: #fbe5e3;
-  --kopf-bg: #ffffff;
-  --schatten: 0 1px 2px rgba(16, 24, 40, .06), 0 1px 3px rgba(16, 24, 40, .08);
-  --radius: 14px;
-  --sicher-oben: env(safe-area-inset-top, 0px);
+  color-scheme: light;
+
+  --grund:        #faf7f2;
+  --grund-tief:   #f2ede4;
+  --karte:        #ffffff;
+  --karte-rand:   rgba(28, 25, 20, 0.08);
+  --text:         #1b1a17;
+  --text-weich:   #5d574d;
+  --text-zart:    #8c857a;
+
+  --akzent:       #0f9d76;
+  --akzent-dunkel:#0b7d5e;
+  --akzent-weich: #e4f6f0;
+  --warm:         #e0862c;
+  --warm-weich:   #fdf1e2;
+  --rot:          #c9503f;
+  --rot-weich:    #fceeeb;
+  --blau:         #3d6ea8;
+  --blau-weich:   #eaf1f9;
+
+  --r-gross:  26px;
+  --r-mittel: 18px;
+  --r-klein:  12px;
+  --r-pille:  999px;
+
+  --schatten:      0 1px 2px rgba(28, 25, 20, .04), 0 10px 26px -18px rgba(28, 25, 20, .28);
+  --schatten-hoch: 0 2px 6px rgba(28, 25, 20, .06), 0 26px 50px -24px rgba(28, 25, 20, .34);
+
+  --schrift: "Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system,
+             "Noto Sans", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --tempo:   .22s;
+  --kurve:   cubic-bezier(.22, .9, .3, 1);
   --sicher-unten: env(safe-area-inset-bottom, 0px);
 }
 
-html[data-theme="dark"], :root[data-theme="dark"] {
-  --bg: #0d1117;
-  --karte: #161b22;
-  --karte-rand: #262d38;
-  --text: #e6edf3;
-  --text-schwach: #9aa5b1;
-  --text-sehr-schwach: #6e7681;
-  --akzent: #58a6ff;
-  --akzent-weich: #10243e;
-  --gut: #3fb950;
-  --gut-weich: #10251a;
-  --mittel: #d29922;
-  --mittel-weich: #2b2209;
-  --schlecht: #f85149;
-  --schlecht-weich: #2d1213;
-  --kopf-bg: #0d1117;
-  --schatten: none;
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --grund:        #16181c;
+    --grund-tief:   #21242a;
+    --karte:        #1f2228;
+    --karte-rand:   rgba(255, 255, 255, .09);
+    --text:         #f0eee9;
+    --text-weich:   #b3ada3;
+    --text-zart:    #8b857b;
+    --akzent:       #3fc79c;
+    --akzent-dunkel:#68d9b4;
+    --akzent-weich: rgba(63, 199, 156, .15);
+    --warm:         #eeab5c;
+    --warm-weich:   rgba(238, 171, 92, .16);
+    --rot:          #ef7f6d;
+    --rot-weich:    rgba(239, 127, 109, .16);
+    --blau:         #7fa9dd;
+    --blau-weich:   rgba(127, 169, 221, .16);
+    --schatten:      0 1px 2px rgba(0, 0, 0, .35), 0 10px 26px -18px rgba(0, 0, 0, .7);
+    --schatten-hoch: 0 2px 6px rgba(0, 0, 0, .4), 0 26px 50px -24px rgba(0, 0, 0, .8);
+  }
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) {
-    --bg: #0d1117; --karte: #161b22; --karte-rand: #262d38;
-    --text: #e6edf3; --text-schwach: #9aa5b1; --text-sehr-schwach: #6e7681;
-    --akzent: #58a6ff; --akzent-weich: #10243e;
-    --gut: #3fb950; --gut-weich: #10251a;
-    --mittel: #d29922; --mittel-weich: #2b2209;
-    --schlecht: #f85149; --schlecht-weich: #2d1213;
-    --kopf-bg: #0d1117; --schatten: none;
-  }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --grund:        #16181c;
+  --grund-tief:   #21242a;
+  --karte:        #1f2228;
+  --karte-rand:   rgba(255, 255, 255, .09);
+  --text:         #f0eee9;
+  --text-weich:   #b3ada3;
+  --text-zart:    #8b857b;
+  --akzent:       #3fc79c;
+  --akzent-dunkel:#68d9b4;
+  --akzent-weich: rgba(63, 199, 156, .15);
+  --warm:         #eeab5c;
+  --warm-weich:   rgba(238, 171, 92, .16);
+  --rot:          #ef7f6d;
+  --rot-weich:    rgba(239, 127, 109, .16);
+  --blau:         #7fa9dd;
+  --blau-weich:   rgba(127, 169, 221, .16);
+  --schatten:      0 1px 2px rgba(0, 0, 0, .35), 0 10px 26px -18px rgba(0, 0, 0, .7);
+  --schatten-hoch: 0 2px 6px rgba(0, 0, 0, .4), 0 26px 50px -24px rgba(0, 0, 0, .8);
 }
 
 * { box-sizing: border-box; }
 
-/* MUSS vor allen display-Regeln stehen und !important tragen.
-   Das eingebaute [hidden] { display: none } der Browser hat dieselbe
-   Spezifität wie eine Klassenregel und verliert deshalb gegen jedes
-   spätere `display:` im Autorenstil. Ohne diese Zeile bleiben .sheet
-   (display:flex) und .referenz sichtbar, obwohl das hidden-Attribut
-   gesetzt ist - die Einstellungen lagen dann beim Start über der App
-   und ließen sich nicht schließen. */
-[hidden] { display: none !important; }
-
 body {
   margin: 0;
-  background: var(--bg);
+  font-family: var(--schrift);
+  font-size: 16px;
+  line-height: 1.55;
   color: var(--text);
-  font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  -webkit-text-size-adjust: 100%;
+  background: var(--grund);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: contain;
 }
 
-h1 { font-size: 1.3rem; margin: 0; letter-spacing: -.01em; }
-h2 { font-size: 1.1rem; margin: 0 0 .6rem; }
-h3 { font-size: .95rem; margin: 1.4rem 0 .5rem; color: var(--text-schwach); }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: var(--akzent-dunkel); text-decoration-thickness: 1px; text-underline-offset: 2px; }
 
-/* ---------------------------------------------------------- Pull-to-Refresh */
-.ptr {
-  position: fixed; top: 0; left: 0; right: 0;
-  height: 0; overflow: hidden;
-  display: flex; align-items: center; justify-content: center; gap: .5rem;
-  background: var(--akzent-weich); color: var(--akzent);
-  font-size: .82rem; z-index: 60;
-  transition: height .15s ease;
+/* Sichtbarer Fokusring – ohne den ist die App per Tastatur unbedienbar. */
+:focus-visible {
+  outline: 2.5px solid var(--akzent);
+  outline-offset: 2px;
+  border-radius: 6px;
 }
-.ptr.aktiv { height: 46px; }
-.ptr-spinner {
-  width: 14px; height: 14px; border-radius: 50%;
-  border: 2px solid currentColor; border-top-color: transparent;
-}
-.ptr.laedt .ptr-spinner { animation: dreh .8s linear infinite; }
-@keyframes dreh { to { transform: rotate(360deg); } }
 
-/* ------------------------------------------------------------------- Kopf */
+.icon-vorrat { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+.ikon-svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+  flex: none;
+  color: inherit;
+}
+
+main {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* ================================================================== 2
+ * Kopfzeile und Betragskarte
+ * ================================================================== */
+
 .kopf {
-  position: sticky; top: 0; z-index: 40;
-  background: var(--kopf-bg);
-  border-bottom: 1px solid var(--karte-rand);
-  padding: calc(.7rem + var(--sicher-oben)) .9rem .5rem;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--grund);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--tempo) var(--kurve);
+  padding-top: env(safe-area-inset-top, 0px);
 }
-.kopf-oben { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+
+.kopf.gescrollt { border-bottom-color: var(--karte-rand); }
+
+.kopf-zeile {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: .7rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+}
+
+.marke { display: flex; align-items: center; gap: .5rem; }
+
+.marke-punkt {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--akzent);
+  box-shadow: 0 0 0 4px var(--akzent-weich);
+  animation: puls 3.2s var(--kurve) infinite;
+}
+
+@keyframes puls {
+  0%, 70%, 100% { box-shadow: 0 0 0 4px var(--akzent-weich); }
+  35%           { box-shadow: 0 0 0 9px transparent; }
+}
+
+.marke-name { font-size: 1.16rem; font-weight: 650; letter-spacing: -.015em; }
+
 .kopf-knoepfe { display: flex; gap: .3rem; }
 
 .ikon {
-  width: 38px; height: 38px; border-radius: 10px;
-  border: 1px solid var(--karte-rand); background: var(--karte);
-  color: var(--text); font-size: 1.1rem; cursor: pointer;
-  display: grid; place-items: center;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: var(--r-pille);
+  background: transparent;
+  color: var(--text-weich);
+  transition: background var(--tempo) var(--kurve),
+              color var(--tempo) var(--kurve),
+              transform .12s var(--kurve);
 }
-.ikon:active { background: var(--akzent-weich); }
-.ikon.dreht { animation: dreh .8s linear infinite; }
+
+.ikon:hover  { background: var(--grund-tief); color: var(--text); }
+.ikon:active { transform: scale(.9); }
+.ikon.dreht .ikon-svg { animation: drehen .9s linear infinite; }
+
+@keyframes drehen { to { transform: rotate(360deg); } }
+
+.betrag-karte {
+  width: 100%;
+  margin: .4rem 0 .9rem;
+  padding: .95rem 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  text-align: left;
+  border: 1px solid var(--karte-rand);
+  border-radius: var(--r-gross);
+  background: var(--karte);
+  box-shadow: var(--schatten);
+  transition: transform .14s var(--kurve), box-shadow var(--tempo) var(--kurve);
+}
+
+.betrag-karte:active { transform: scale(.985); }
+
+.betrag-text { display: flex; flex-direction: column; gap: .05rem; min-width: 0; }
+.betrag-label { font-size: .82rem; color: var(--text-zart); }
+
+.betrag-wert {
+  font-size: 1.5rem;
+  font-weight: 680;
+  letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.betrag-stift {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-pille);
+  background: var(--akzent-weich);
+  color: var(--akzent-dunkel);
+  flex: none;
+}
+
+/* ================================================================== 3
+ * Held- und Referenzkarte
+ * ================================================================== */
+
+.held {
+  width: 100%;
+  margin: 0 0 .8rem;
+  padding: 1rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  text-align: left;
+  border: 1px solid var(--karte-rand);
+  border-radius: var(--r-gross);
+  background:
+    radial-gradient(120% 130% at 100% 0%, var(--akzent-weich) 0%, transparent 62%),
+    var(--karte);
+  box-shadow: var(--schatten);
+  transition: transform .14s var(--kurve);
+}
+
+.held:active { transform: scale(.985); }
+
+.held-bild { flex: none; width: 74px; }
+.held-svg  { width: 74px; height: 56px; display: block; }
+
+.held-text { display: flex; flex-direction: column; gap: .1rem; min-width: 0; }
+
+.held-label {
+  font-size: .74rem;
+  font-weight: 640;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--akzent-dunkel);
+}
+
+.held-satz { font-size: 1.02rem; font-weight: 620; line-height: 1.35; }
+.held-sub  { font-size: .85rem; color: var(--text-weich); }
 
 .referenz {
-  display: flex; align-items: stretch; gap: .4rem;
-  margin: .6rem 0 .1rem; padding: .5rem .2rem;
-  background: var(--akzent-weich); border-radius: var(--radius);
-}
-.referenz-zelle { flex: 1; display: flex; flex-direction: column; align-items: center; min-width: 0; }
-.referenz-trenner { width: 1px; background: var(--karte-rand); }
-.referenz-label { font-size: .68rem; color: var(--text-schwach); text-transform: uppercase; letter-spacing: .04em; }
-.referenz-wert { font-size: 1.02rem; font-weight: 650; font-variant-numeric: tabular-nums; }
-.referenz-wert.klein { font-size: .88rem; }
-.referenz-sub { font-size: .68rem; color: var(--text-sehr-schwach); text-align: center;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
-.referenz-sub.steigend { color: var(--gut); }
-.referenz-sub.fallend { color: var(--schlecht); }
-
-.suchzeile { display: flex; gap: .5rem; margin-top: .6rem; }
-.suchzeile input {
-  flex: 1; min-width: 0; padding: .6rem .75rem; font-size: .95rem;
-  border: 1px solid var(--karte-rand); border-radius: 10px;
-  background: var(--karte); color: var(--text);
-}
-.filter-knopf {
-  padding: .6rem .8rem; border-radius: 10px; cursor: pointer;
-  border: 1px solid var(--karte-rand); background: var(--karte); color: var(--text);
-  font-size: .9rem; white-space: nowrap; display: flex; align-items: center; gap: .35rem;
-}
-.filter-knopf.aktiv { border-color: var(--akzent); color: var(--akzent); }
-.pill {
-  background: var(--akzent); color: #fff; border-radius: 999px;
-  font-size: .7rem; padding: .05rem .4rem; font-weight: 700;
+  width: 100%;
+  margin: 0 0 .9rem;
+  padding: .7rem .9rem;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  text-align: left;
+  border: 1px solid var(--karte-rand);
+  border-radius: var(--r-mittel);
+  background: var(--grund-tief);
+  color: var(--text-weich);
+  font-size: .88rem;
+  transition: background var(--tempo) var(--kurve);
 }
 
-.sortzeile { display: flex; gap: .35rem; margin-top: .55rem; overflow-x: auto; padding-bottom: .2rem; }
-.sortzeile::-webkit-scrollbar { display: none; }
-.sort {
-  border: 1px solid var(--karte-rand); background: var(--karte); color: var(--text-schwach);
-  padding: .35rem .7rem; border-radius: 999px; font-size: .82rem; cursor: pointer; white-space: nowrap;
-}
-.sort.aktiv { background: var(--akzent); border-color: var(--akzent); color: #fff; font-weight: 600; }
+.referenz:active { background: var(--karte); }
+.referenz-satz { flex: 1; min-width: 0; }
+.referenz-satz strong { color: var(--text); font-weight: 620; }
+.referenz-info { width: 17px; height: 17px; color: var(--text-zart); flex: none; }
 
-/* ----------------------------------------------------------------- Filter */
-.filterbereich {
-  background: var(--karte); border-bottom: 1px solid var(--karte-rand);
-  padding: .8rem .9rem 1rem;
+.referenz-punkt {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--text-zart);
 }
-.filter-gitter { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
-.feld { display: flex; flex-direction: column; gap: .25rem; font-size: .8rem; color: var(--text-schwach); }
-.feld select, .feld input {
-  padding: .5rem .6rem; font-size: .9rem; border-radius: 9px;
-  border: 1px solid var(--karte-rand); background: var(--bg); color: var(--text);
-}
-.filter-schalter { display: flex; flex-wrap: wrap; gap: .8rem; align-items: center; margin-top: .8rem; }
-.schalter { display: flex; align-items: center; gap: .4rem; font-size: .85rem; cursor: pointer; }
-.schalter.gross { align-items: flex-start; gap: .6rem; margin: .9rem 0; }
-.schalter.gross span { display: flex; flex-direction: column; gap: .15rem; }
-.schalter.gross em { font-style: normal; font-size: .78rem; color: var(--text-schwach); line-height: 1.35; }
-.schalter input { width: 18px; height: 18px; accent-color: var(--akzent); flex: none; margin-top: .1rem; }
-.text-knopf { background: none; border: none; color: var(--akzent); cursor: pointer; font-size: .85rem; padding: 0; }
-
-/* ------------------------------------------------------------------ Liste */
-main { padding: .8rem .9rem 2rem; }
-.lade, .leer { text-align: center; color: var(--text-schwach); padding: 2.5rem 1rem; font-size: .9rem; }
+.referenz-punkt.steigend { background: var(--akzent); }
+.referenz-punkt.fallend  { background: var(--warm); }
 
 .hinweis {
-  background: var(--mittel-weich); color: var(--mittel);
-  border: 1px solid currentColor; border-radius: 10px;
-  padding: .6rem .8rem; font-size: .84rem; margin-bottom: .8rem;
+  margin: 0 0 .9rem;
+  padding: .8rem 1rem;
+  border-radius: var(--r-mittel);
+  background: var(--warm-weich);
+  color: var(--text);
+  font-size: .88rem;
+  border: 1px solid var(--warm);
 }
-.hinweis.fehler { background: var(--schlecht-weich); color: var(--schlecht); }
 
-.liste { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .55rem; }
+.hinweis.fehler { background: var(--rot-weich); border-color: var(--rot); }
+
+/* ================================================================== 4
+ * Suche, Filter, Sortierung
+ * ================================================================== */
+
+.werkzeuge { display: flex; gap: .5rem; margin-bottom: .7rem; }
+
+.suchfeld {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: 0 .5rem 0 .85rem;
+  border: 1px solid var(--karte-rand);
+  border-radius: var(--r-pille);
+  background: var(--karte);
+  transition: border-color var(--tempo) var(--kurve), box-shadow var(--tempo) var(--kurve);
+}
+
+.suchfeld:focus-within {
+  border-color: var(--akzent);
+  box-shadow: 0 0 0 3px var(--akzent-weich);
+}
+
+.such-ikon { color: var(--text-zart); }
+
+.suchfeld input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  padding: .7rem 0;
+  font-size: .95rem;
+  outline: none;
+}
+.suchfeld input::-webkit-search-cancel-button { display: none; }
+
+.such-x {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: var(--grund-tief);
+  color: var(--text-weich);
+}
+.such-x .ikon-svg { width: 15px; height: 15px; }
+
+.filter-knopf {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--karte-rand);
+  border-radius: var(--r-pille);
+  background: var(--karte);
+  color: var(--text-weich);
+  transition: background var(--tempo) var(--kurve),
+              border-color var(--tempo) var(--kurve),
+              color var(--tempo) var(--kurve);
+}
+
+.filter-knopf.aktiv {
+  background: var(--akzent);
+  border-color: var(--akzent);
+  color: #fff;
+}
+
+.filter-zahl {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 4px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-pille);
+  background: var(--warm);
+  color: #fff;
+  font-size: .68rem;
+  font-weight: 700;
+  border: 2px solid var(--grund);
+}
+
+.sortzeile {
+  display: flex;
+  gap: .4rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 0 -1rem .8rem;
+  padding: 0 1rem .2rem;
+}
+.sortzeile::-webkit-scrollbar { display: none; }
+
+.sort {
+  flex: none;
+  padding: .42rem .85rem;
+  border: 1px solid var(--karte-rand);
+  border-radius: var(--r-pille);
+  background: var(--karte);
+  color: var(--text-weich);
+  font-size: .86rem;
+  font-weight: 520;
+  white-space: nowrap;
+  transition: background var(--tempo) var(--kurve),
+              border-color var(--tempo) var(--kurve),
+              color var(--tempo) var(--kurve);
+}
+
+.sort.aktiv {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--grund);
+  font-weight: 600;
+}
+
+.aktive-filter { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .8rem; }
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .28rem .5rem .28rem .7rem;
+  border: none;
+  border-radius: var(--r-pille);
+  background: var(--akzent-weich);
+  color: var(--akzent-dunkel);
+  font-size: .8rem;
+  font-weight: 560;
+}
+.filter-chip .ikon-svg { width: 13px; height: 13px; }
+
+/* ================================================================== 5
+ * Angebotskarten
+ * ================================================================== */
+
+.lade { display: grid; gap: .7rem; }
+
+.skelett {
+  height: 148px;
+  border-radius: var(--r-gross);
+  background: var(--grund-tief);
+  position: relative;
+  overflow: hidden;
+}
+
+.skelett::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 20%, var(--karte) 50%, transparent 80%);
+  opacity: .55;
+  transform: translateX(-100%);
+  animation: schimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes schimmer { to { transform: translateX(100%); } }
+
+.liste { list-style: none; margin: 0; padding: 0; display: grid; gap: .7rem; }
 
 .karte {
-  background: var(--karte); border: 1px solid var(--karte-rand);
-  border-radius: var(--radius); box-shadow: var(--schatten);
-  padding: .75rem .85rem; cursor: pointer; position: relative;
-}
-.karte:active { border-color: var(--akzent); }
-.karte.stale { opacity: .55; }
-.karte.watch { border-left: 3px solid var(--akzent); }
-
-.karte-kopf { display: flex; align-items: baseline; justify-content: space-between; gap: .6rem; }
-.bank { font-weight: 650; font-size: 1rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.zins { font-size: 1.32rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.zins small { font-size: .62em; font-weight: 600; color: var(--text-schwach); margin-left: .1em; }
-
-/* Feature 2: Netto-Zeile */
-.netto-zeile {
-  margin-top: .15rem; font-size: .86rem; color: var(--text-schwach);
-  display: flex; align-items: baseline; gap: .4rem; flex-wrap: wrap;
-}
-.netto-wert { font-weight: 600; color: var(--gut); font-variant-numeric: tabular-nums; }
-.netto-zeile .tipp { color: var(--akzent); font-size: .78rem; }
-
-.badges { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .5rem; }
-.badge {
-  font-size: .71rem; padding: .16rem .48rem; border-radius: 999px;
-  border: 1px solid transparent; white-space: nowrap; font-weight: 600;
-}
-.badge.gut { background: var(--gut-weich); color: var(--gut); border-color: currentColor; }
-.badge.mittel { background: var(--mittel-weich); color: var(--mittel); border-color: currentColor; }
-.badge.schlecht { background: var(--schlecht-weich); color: var(--schlecht); border-color: currentColor; }
-.badge.neutral { background: var(--bg); color: var(--text-schwach); border-color: var(--karte-rand); }
-.badge.info { background: var(--akzent-weich); color: var(--akzent); border-color: currentColor; }
-
-.karte-fuss {
-  margin-top: .45rem; display: flex; align-items: center; justify-content: space-between;
-  gap: .5rem; font-size: .74rem; color: var(--text-sehr-schwach);
-}
-.stern {
-  background: none; border: none; font-size: 1.15rem; line-height: 1; cursor: pointer;
-  color: var(--text-sehr-schwach); padding: .15rem .2rem;
-}
-.stern.an { color: #e8a70a; }
-
-/* ------------------------------------------------------------------ Sheet */
-.sheet { position: fixed; inset: 0; z-index: 80; display: flex; align-items: flex-end; }
-.sheet-hintergrund { position: absolute; inset: 0; background: rgba(3, 7, 18, .5); }
-.sheet-inhalt {
-  position: relative; width: 100%; max-height: 88vh; overflow-y: auto;
-  background: var(--karte); border-radius: 18px 18px 0 0;
-  padding: .5rem 1rem calc(1.4rem + var(--sicher-unten));
-  animation: hoch .18s ease-out;
-}
-@keyframes hoch { from { transform: translateY(14px); opacity: .6; } }
-@media (min-width: 640px) {
-  .sheet { align-items: center; justify-content: center; }
-  .sheet-inhalt { max-width: 560px; border-radius: 18px; max-height: 84vh; }
-}
-/* Kopfzeile des Sheets: bleibt beim Scrollen oben stehen, damit das X
-   immer erreichbar ist. Ohne das lag der einzige Ausweg ganz unten im
-   Inhalt und man musste erst scrollen, um wieder herauszukommen. */
-.sheet-kopf {
-  position: sticky; top: 0; z-index: 3;
-  display: grid; grid-template-columns: 44px 1fr 44px; align-items: center;
+  position: relative;
+  padding: .95rem 1.05rem 1rem;
+  border: 1px solid var(--karte-rand);
+  border-radius: var(--r-gross);
   background: var(--karte);
-  margin: 0 -1rem .6rem; padding: .3rem 1rem .4rem;
-  border-bottom: 1px solid transparent;
+  box-shadow: var(--schatten);
+  cursor: pointer;
+  animation: auftauchen .38s var(--kurve) both;
+  transition: transform .14s var(--kurve), box-shadow var(--tempo) var(--kurve);
 }
-.sheet-griff { width: 40px; height: 4px; border-radius: 2px; background: var(--karte-rand); margin: .4rem auto; }
+
+.karte:active { transform: scale(.988); }
+.karte:hover  { box-shadow: var(--schatten-hoch); }
+
+@keyframes auftauchen {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.karte.stale { opacity: .62; }
+.karte.watch { border-color: var(--warm); }
+
+.karte-kopf {
+  display: flex;
+  align-items: flex-start;
+  gap: .6rem;
+  margin-bottom: .55rem;
+}
+
+.karte-titel { flex: 1; min-width: 0; }
+
+.bank {
+  display: block;
+  font-size: 1.06rem;
+  font-weight: 640;
+  letter-spacing: -.012em;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.bank-sub {
+  display: block;
+  font-size: .82rem;
+  color: var(--text-zart);
+  margin-top: .05rem;
+}
+
+.karte-knoepfe {
+  display: flex;
+  gap: .1rem;
+  flex: none;
+  margin: -.3rem -.35rem 0 0;
+}
+
+.stern, .haken {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-zart);
+  transition: color var(--tempo) var(--kurve),
+              background var(--tempo) var(--kurve),
+              transform .16s var(--kurve);
+}
+
+/* Haken = "schon genutzt". Nur bei Neukunden-Angeboten sichtbar. */
+.haken:hover  { background: var(--akzent-weich); color: var(--akzent-dunkel); }
+.haken:active { transform: scale(.85); }
+.stern:active { transform: scale(.85); }
+.stern.an { color: var(--warm); }
+.stern.an .ikon-svg { animation: hupf .35s var(--kurve); }
+
+@keyframes hupf {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.32) rotate(9deg); }
+  100% { transform: scale(1); }
+}
+
+.zins-zeile { display: flex; align-items: baseline; gap: .4rem; }
+
+.zins {
+  font-size: 2.1rem;
+  font-weight: 700;
+  letter-spacing: -.035em;
+  line-height: 1.05;
+  color: var(--akzent-dunkel);
+  font-variant-numeric: tabular-nums;
+}
+
+.zins-dazu { font-size: .84rem; color: var(--text-zart); }
+
+.werbung {
+  font-size: .8rem;
+  color: var(--text-zart);
+  margin-top: .1rem;
+}
+
+/* Der Rechenkasten: die Antwort auf "was bringt mir das?" */
+.rechenkasten {
+  margin: .65rem 0;
+  padding: .65rem .8rem;
+  border-radius: var(--r-mittel);
+  background: var(--akzent-weich);
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+
+.rechenkasten .ikon-svg { width: 22px; height: 22px; color: var(--akzent-dunkel); flex: none; }
+.rechen-text  { min-width: 0; }
+.rechen-haupt { font-size: .95rem; font-weight: 560; }
+.rechen-haupt b { font-weight: 720; }
+.rechen-neben { font-size: .82rem; color: var(--text-weich); }
+
+.aktion-hinweis {
+  margin: 0 0 .65rem;
+  padding: .5rem .7rem;
+  border-radius: var(--r-klein);
+  background: var(--warm-weich);
+  font-size: .82rem;
+  color: var(--text-weich);
+  display: flex;
+  align-items: flex-start;
+  gap: .45rem;
+}
+.aktion-hinweis .ikon-svg { width: 16px; height: 16px; color: var(--warm); margin-top: .12rem; }
+
+.marken { display: flex; flex-wrap: wrap; gap: .35rem; }
+
+.marke-pille {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .24rem .58rem;
+  border-radius: var(--r-pille);
+  font-size: .76rem;
+  font-weight: 540;
+  background: var(--grund-tief);
+  color: var(--text-weich);
+  white-space: nowrap;
+}
+.marke-pille .ikon-svg { width: 13px; height: 13px; }
+.marke-pille.gut     { background: var(--akzent-weich); color: var(--akzent-dunkel); }
+.marke-pille.mittel  { background: var(--warm-weich);   color: var(--warm); }
+.marke-pille.schwach { background: var(--rot-weich);    color: var(--rot); }
+.marke-pille.info    { background: var(--blau-weich);   color: var(--blau); }
+
+.leer {
+  text-align: center;
+  padding: 2.4rem 1rem;
+  animation: auftauchen .4s var(--kurve) both;
+}
+.leer-bild  { width: 116px; height: 88px; margin-bottom: .4rem; }
+.leer-titel { font-size: 1.1rem; font-weight: 640; margin: 0 0 .2rem; }
+.leer-text  { color: var(--text-weich); margin: 0 0 1rem; }
+
+.knopf-weich {
+  padding: .6rem 1.15rem;
+  border: 1px solid var(--karte-rand);
+  border-radius: var(--r-pille);
+  background: var(--karte);
+  font-weight: 560;
+  transition: transform .14s var(--kurve);
+}
+.knopf-weich:active { transform: scale(.96); }
+
+.mehr {
+  width: 100%;
+  margin-top: .8rem;
+  padding: .85rem 1rem;
+  border: 1px dashed var(--karte-rand);
+  border-radius: var(--r-gross);
+  background: transparent;
+  color: var(--text-weich);
+  font-weight: 560;
+  transition: background var(--tempo) var(--kurve), color var(--tempo) var(--kurve);
+}
+.mehr:hover  { background: var(--karte); color: var(--text); }
+.mehr:active { transform: scale(.99); }
+
+.statistik {
+  margin: 1.1rem 0 0;
+  text-align: center;
+  font-size: .8rem;
+  color: var(--text-zart);
+}
+
+.fuss {
+  max-width: 640px;
+  margin: 1.6rem auto 0;
+  padding: 1.3rem 1rem calc(1.3rem + var(--sicher-unten));
+  border-top: 1px solid var(--karte-rand);
+  color: var(--text-zart);
+  font-size: .8rem;
+  line-height: 1.6;
+}
+.fuss p { margin: 0 0 .5rem; }
+.fuss strong { color: var(--text-weich); }
+.fuss-klein { font-size: .76rem; }
+
+/* ================================================================== 6
+ * Sheet
+ * ================================================================== */
+
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.sheet-hintergrund {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 18, 15, .45);
+  animation: einblenden .24s var(--kurve) both;
+}
+
+@keyframes einblenden { from { opacity: 0; } to { opacity: 1; } }
+
+.sheet-inhalt {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  max-height: 92vh;
+  max-height: 92dvh;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--r-gross) var(--r-gross) 0 0;
+  background: var(--karte);
+  box-shadow: var(--schatten-hoch);
+  animation: hochfahren .34s var(--kurve) both;
+  overflow: hidden;
+}
+
+@keyframes hochfahren {
+  from { transform: translateY(14%); opacity: .4; }
+  to   { transform: none; opacity: 1; }
+}
+
+.sheet-kopf {
+  flex: none;
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  gap: .3rem;
+  padding: .55rem .8rem .5rem;
+  border-bottom: 1px solid var(--karte-rand);
+  background: var(--karte);
+}
+
+/* Der Griff sitzt über der Titelzeile und schließt beim Antippen mit. */
+.sheet-griff {
+  position: absolute;
+  top: .4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 42px;
+  height: 4px;
+  border-radius: var(--r-pille);
+  background: var(--karte-rand);
+  cursor: pointer;
+}
+
+.sheet-titel {
+  grid-column: 2;
+  margin: .5rem 0 0;
+  font-size: 1.06rem;
+  font-weight: 640;
+  text-align: center;
+  letter-spacing: -.01em;
+  overflow-wrap: anywhere;
+}
 
 .sheet-x {
-  width: 44px; height: 44px; justify-self: end;
-  border: 1px solid var(--karte-rand); border-radius: 50%;
-  background: var(--bg); color: var(--text);
-  font-size: 1.6rem; line-height: 1; cursor: pointer;
-  display: grid; place-items: center; padding: 0 0 .18em 0;
+  grid-column: 3;
+  width: 40px;
+  height: 40px;
+  margin-top: .4rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--karte-rand);
+  border-radius: 50%;
+  background: var(--grund-tief);
+  color: var(--text-weich);
+  transition: background var(--tempo) var(--kurve),
+              color var(--tempo) var(--kurve),
+              transform .12s var(--kurve);
 }
-.sheet-x:active { background: var(--akzent-weich); color: var(--akzent); border-color: var(--akzent); }
-.sheet-aktionen { display: flex; gap: .8rem; align-items: center; margin-top: 1.2rem; }
-.primaer {
-  background: var(--akzent); color: #fff; border: none; border-radius: 10px;
-  padding: .65rem 1.1rem; font-size: .95rem; font-weight: 600; cursor: pointer;
+.sheet-x:hover  { background: var(--rot-weich); color: var(--rot); }
+.sheet-x:active { transform: scale(.9); }
+
+.sheet-reiter {
+  flex: none;
+  display: flex;
+  gap: .3rem;
+  padding: .6rem .9rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--karte-rand);
+}
+.sheet-reiter::-webkit-scrollbar { display: none; }
+
+.reiter {
+  flex: none;
+  padding: .35rem .75rem;
+  border: none;
+  border-radius: var(--r-pille);
+  background: transparent;
+  color: var(--text-zart);
+  font-size: .85rem;
+  font-weight: 540;
+  white-space: nowrap;
+  transition: background var(--tempo) var(--kurve), color var(--tempo) var(--kurve);
+}
+.reiter.aktiv { background: var(--akzent-weich); color: var(--akzent-dunkel); font-weight: 640; }
+
+.sheet-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: 1rem 1.1rem 1.3rem;
 }
 
-/* Rechnung im Detail */
-.rechnung { width: 100%; border-collapse: collapse; font-size: .88rem; margin: .3rem 0 .6rem; }
-.rechnung td { padding: .4rem 0; border-bottom: 1px solid var(--karte-rand); vertical-align: top; }
-.rechnung td:first-child { overflow-wrap: anywhere; }
-.rechnung td:last-child { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: .6rem; }
-/* Erklärzeilen laufen über beide Spalten und sind Fließtext - ohne diese
-   Ausnahme greift das nowrap von td:last-child auch für sie und macht die
-   Tabelle doppelt so breit wie das Sheet. Die Werte rechts waren dann
-   abgeschnitten. */
-.rechnung td[colspan] { white-space: normal; text-align: left; padding-left: 0; }
-.rechnung tr.summe td { font-weight: 700; border-bottom: none; border-top: 2px solid var(--karte-rand); padding-top: .55rem; }
-.rechnung tr.zwischen td { color: var(--text-schwach); }
-.formel {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: .74rem; color: var(--text-schwach); background: var(--bg);
-  padding: .5rem .6rem; border-radius: 8px; overflow-x: auto; white-space: pre-wrap; word-break: break-word;
-}
-.quellenliste { list-style: none; padding: 0; margin: .3rem 0 0; font-size: .82rem; }
-.quellenliste li { padding: .3rem 0; border-bottom: 1px solid var(--karte-rand); }
-.quellenliste a { color: var(--akzent); word-break: break-all; }
-
-/* ------------------------------------------------------------------- Fuss */
-.fuss {
-  padding: 1.2rem .9rem calc(1.6rem + var(--sicher-unten));
+.sheet-fuss {
+  flex: none;
+  display: flex;
+  gap: .5rem;
+  padding: .8rem 1.1rem calc(.9rem + var(--sicher-unten));
   border-top: 1px solid var(--karte-rand);
-  color: var(--text-schwach); font-size: .8rem; background: var(--karte);
+  background: var(--karte);
 }
-.fuss p { margin: .4rem 0; }
-.klein { font-size: .74rem; color: var(--text-sehr-schwach); }
 
-/* ------------------------------------------------------------------ Toast */
+.folie { animation: folie-rein .26s var(--kurve) both; }
+.folie.rueckwaerts { animation-name: folie-rein-links; }
+
+@keyframes folie-rein       { from { opacity: 0; transform: translateX(16px); }  to { opacity: 1; transform: none; } }
+@keyframes folie-rein-links { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: none; } }
+
+.folie-punkte { display: flex; justify-content: center; gap: .35rem; padding-top: 1.2rem; }
+
+.folie-punkt {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--karte-rand);
+  border: none;
+  padding: 0;
+  transition: background var(--tempo) var(--kurve), width var(--tempo) var(--kurve);
+}
+.folie-punkt.aktiv { background: var(--akzent); width: 20px; border-radius: var(--r-pille); }
+
+/* Inhalte im Sheet */
+
+.gross-zins { text-align: center; padding: .4rem 0 1rem; }
+
+.gross-zins .wert {
+  display: block;
+  font-size: 3.2rem;
+  font-weight: 720;
+  line-height: 1;
+  letter-spacing: -.04em;
+  color: var(--akzent-dunkel);
+  font-variant-numeric: tabular-nums;
+}
+.gross-zins .label { display: block; font-size: .88rem; color: var(--text-weich); margin-top: .35rem; }
+
+.satz { margin: 0 0 .9rem; line-height: 1.6; }
+.satz.zart { color: var(--text-weich); font-size: .89rem; }
+
+.sheet-body h3 {
+  margin: 1.35rem 0 .55rem;
+  font-size: .78rem;
+  font-weight: 640;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--text-zart);
+}
+.sheet-body h3:first-child { margin-top: 0; }
+
+/* Rechenschritte als lesbare Zeilen statt als Formel */
+.schritte { display: grid; gap: .1rem; margin: 0 0 .9rem; }
+
+.schritt {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .8rem;
+  padding: .55rem .1rem;
+  border-bottom: 1px solid var(--karte-rand);
+}
+.schritt:last-child { border-bottom: none; }
+.schritt-text { flex: 1; min-width: 0; font-size: .92rem; }
+.schritt-hilf { display: block; font-size: .8rem; color: var(--text-zart); }
+
+.schritt-wert {
+  flex: none;
+  font-weight: 620;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.schritt.abzug .schritt-wert { color: var(--rot); }
+
+.schritt.summe {
+  margin-top: .3rem;
+  padding: .7rem .8rem;
+  border: none;
+  border-radius: var(--r-mittel);
+  background: var(--akzent-weich);
+}
+.schritt.summe .schritt-text { font-weight: 620; }
+.schritt.summe .schritt-wert { color: var(--akzent-dunkel); font-size: 1.15rem; font-weight: 720; }
+
+/* Balken: wie viel von brutto übrig bleibt */
+.balken {
+  height: 30px;
+  display: flex;
+  border-radius: var(--r-klein);
+  overflow: hidden;
+  margin: .2rem 0 .5rem;
+  background: var(--grund-tief);
+}
+
+.balken-teil {
+  display: grid;
+  place-items: center;
+  font-size: .72rem;
+  font-weight: 620;
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: width .5s var(--kurve);
+}
+.balken-teil.bleibt { background: var(--akzent); }
+.balken-teil.steuer { background: var(--rot); }
+
+.balken-legende { display: flex; gap: 1rem; font-size: .78rem; color: var(--text-weich); }
+.balken-legende span { display: inline-flex; align-items: center; gap: .35rem; }
+.legende-punkt { width: 9px; height: 9px; border-radius: 3px; }
+
+.info-karte {
+  padding: .8rem .9rem;
+  border-radius: var(--r-mittel);
+  background: var(--grund-tief);
+  margin: 0 0 .8rem;
+  font-size: .89rem;
+  line-height: 1.6;
+}
+.info-karte.warnung { background: var(--warm-weich); }
+.info-karte.fehler  { background: var(--rot-weich); }
+
+.info-karte .kopfzeile {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-weight: 620;
+  margin-bottom: .2rem;
+}
+.info-karte .ikon-svg { width: 17px; height: 17px; }
+
+.paare { display: grid; gap: .1rem; margin: 0; }
+
+/* Grid statt flex: die Beschriftung darf nicht umbrechen, nur der Wert.
+   Sonst wird aus "Art des Zinses" ein zweizeiliges "Art des / Zinses". */
+.paar {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: .3rem 1rem;
+  padding: .5rem .1rem;
+  border-bottom: 1px solid var(--karte-rand);
+  font-size: .9rem;
+}
+.paar:last-child { border-bottom: none; }
+.paar dt { color: var(--text-weich); margin: 0; white-space: nowrap; }
+.paar dd { margin: 0; font-weight: 560; text-align: right; overflow-wrap: anywhere; }
+
+.quellen { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+
+.quelle {
+  padding: .65rem .8rem;
+  border-radius: var(--r-mittel);
+  background: var(--grund-tief);
+  font-size: .86rem;
+}
+.quelle a { font-weight: 560; overflow-wrap: anywhere; }
+.quelle .klein { display: block; color: var(--text-zart); font-size: .78rem; margin-top: .1rem; }
+
+/* Formulare im Sheet */
+.feld { display: block; margin: 0 0 .9rem; }
+
+.feld > span {
+  display: block;
+  font-size: .85rem;
+  color: var(--text-weich);
+  margin-bottom: .35rem;
+}
+
+.feld input, .feld select {
+  width: 100%;
+  padding: .7rem .85rem;
+  border: 1px solid var(--karte-rand);
+  border-radius: var(--r-mittel);
+  background: var(--grund-tief);
+  outline: none;
+  transition: border-color var(--tempo) var(--kurve), box-shadow var(--tempo) var(--kurve);
+}
+.feld input:focus, .feld select:focus {
+  border-color: var(--akzent);
+  box-shadow: 0 0 0 3px var(--akzent-weich);
+}
+
+.schalter {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  padding: .8rem .9rem;
+  margin-bottom: .6rem;
+  border-radius: var(--r-mittel);
+  background: var(--grund-tief);
+  cursor: pointer;
+}
+.schalter input { margin: .2rem 0 0; width: 20px; height: 20px; accent-color: var(--akzent); flex: none; }
+.schalter strong { display: block; font-weight: 600; font-size: .94rem; }
+.schalter em { display: block; font-style: normal; font-size: .83rem; color: var(--text-weich); margin-top: .1rem; }
+
+.genutzt { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: .35rem; }
+
+.genutzt-zeile {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .6rem .8rem;
+  border-radius: var(--r-mittel);
+  background: var(--grund-tief);
+  font-size: .9rem;
+}
+.genutzt-name { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.genutzt-name em { display: block; font-style: normal; font-size: .8rem; }
+.zart { color: var(--text-zart); }
+
+.knopf-klein {
+  flex: none;
+  padding: .35rem .7rem;
+  border: 1px solid var(--karte-rand);
+  border-radius: var(--r-pille);
+  background: var(--karte);
+  font-size: .82rem;
+  font-weight: 560;
+  transition: transform .14s var(--kurve);
+}
+.knopf-klein:active { transform: scale(.94); }
+
+.feld-hilfe { font-style: normal; color: var(--text-zart); font-size: .8rem; }
+
+.chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
+
+.chip {
+  padding: .5rem .9rem;
+  border: 1px solid var(--karte-rand);
+  border-radius: var(--r-pille);
+  background: var(--karte);
+  font-weight: 560;
+  font-variant-numeric: tabular-nums;
+  transition: background var(--tempo) var(--kurve),
+              border-color var(--tempo) var(--kurve),
+              color var(--tempo) var(--kurve),
+              transform .14s var(--kurve);
+}
+.chip.aktiv { background: var(--akzent); border-color: var(--akzent); color: #fff; }
+.chip:active { transform: scale(.95); }
+
+.primaer, .zweit {
+  flex: 1;
+  padding: .8rem 1rem;
+  border: none;
+  border-radius: var(--r-mittel);
+  font-weight: 620;
+  transition: transform .14s var(--kurve);
+}
+.primaer { background: var(--akzent); color: #fff; }
+.primaer:active { transform: scale(.97); }
+.zweit { background: var(--grund-tief); color: var(--text-weich); }
+.zweit:active { transform: scale(.97); }
+
+/* ================================================================== 7
+ * Kleinteile
+ * ================================================================== */
+
+.ptr {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  height: 0;
+  overflow: hidden;
+  font-size: .82rem;
+  color: var(--text-weich);
+  background: var(--grund);
+  transition: height var(--tempo) var(--kurve);
+  pointer-events: none;
+}
+.ptr.aktiv { height: 56px; padding-top: env(safe-area-inset-top, 0px); }
+
+.ptr-kreis {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--akzent-weich);
+  color: var(--akzent-dunkel);
+}
+.ptr-kreis .ikon-svg { width: 15px; height: 15px; }
+.ptr.laedt .ptr-kreis .ikon-svg { animation: drehen .9s linear infinite; }
+
 .toast {
-  position: fixed; left: 50%; transform: translateX(-50%);
-  bottom: calc(1.2rem + var(--sicher-unten)); z-index: 90;
-  background: var(--text); color: var(--bg);
-  padding: .6rem 1rem; border-radius: 10px; font-size: .86rem;
-  max-width: 88vw; text-align: center; box-shadow: 0 6px 20px rgba(0,0,0,.25);
+  position: fixed;
+  left: 50%;
+  bottom: calc(1.3rem + var(--sicher-unten));
+  transform: translateX(-50%);
+  z-index: 90;
+  max-width: min(90vw, 420px);
+  padding: .75rem 1.15rem;
+  border-radius: var(--r-pille);
+  background: var(--text);
+  color: var(--grund);
+  font-size: .88rem;
+  font-weight: 540;
+  text-align: center;
+  box-shadow: var(--schatten-hoch);
+  animation: toast-rein .28s var(--kurve) both;
+}
+
+@keyframes toast-rein {
+  from { opacity: 0; transform: translate(-50%, 14px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* Illustrationen */
+.ill-schatten   { fill: var(--karte-rand); }
+.ill-fuellung   { fill: var(--akzent-weich); stroke: var(--akzent); stroke-width: 2; }
+.ill-linie      { fill: none; stroke: var(--akzent); stroke-width: 2; stroke-linecap: round; }
+.ill-auge       { fill: var(--akzent-dunkel); }
+.ill-muenze     { fill: var(--warm-weich); stroke: var(--warm); stroke-width: 2; }
+.ill-muenz-text { fill: var(--warm); font-size: 10px; font-weight: 700; text-anchor: middle; font-family: var(--schrift); }
+.ill-lupe-glas  { fill: var(--akzent-weich); }
+
+/* ================================================================== 8
+ * Bewegung und große Bildschirme
+ * ================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (min-width: 700px) {
+  .sheet { align-items: center; padding: 1.5rem; }
+  .sheet-inhalt { border-radius: var(--r-gross); max-height: 86vh; max-height: 86dvh; }
+  .sheet-griff { display: none; }
+  .sheet-titel { margin-top: 0; }
+  .sheet-x { margin-top: 0; }
 }

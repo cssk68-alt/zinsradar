@@ -298,6 +298,85 @@ def parse_monate(text: str | None) -> int | None:
     return None
 
 
+# Beschriftungen, hinter denen wirklich die Aktionsdauer steht.
+# Reihenfolge = Verlaesslichkeit: die beschriftete Spalte schlaegt den
+# Fliesstext, der Fliesstext schlaegt eine beliebige Monatszahl.
+_DAUER_MUSTER = (
+    # "Dauer Aktionszins 4", "Aktionsdauer: 6 Monate"
+    r"(?:dauer\s*(?:des\s*)?aktionszins(?:es)?|aktionsdauer|dauer\s*der\s*aktion|"
+    r"dauer\s*aktion|promotionsdauer|duree\s*promo)\s*:?\s*(\d{1,3})",
+    # "fuer die ersten 6 Monate", "in den ersten 12 Monaten"
+    r"ersten\s*(\d{1,3})\s*monat",
+    # "6 Monate lang", "12 Monate garantiert"
+    r"(\d{1,3})\s*monate?\s*(?:lang|garantiert|festgeschrieben)",
+    r"garantiert\s*(?:f(?:ue|u)r\s*)?(\d{1,3})\s*monat",
+    # "fuer 6 Monate"
+    r"f(?:ue|u)r\s*(\d{1,3})\s*monat",
+)
+
+# Zahlen hinter diesen Woertern sind KEINE Aktionsdauer.
+_DAUER_FALLE = re.compile(
+    r"(?:zinsgutschrift|gutschrift|laufzeit|kuendigungsfrist|kundigungsfrist|"
+    r"verf(?:ue|u)gbarkeit|zinszahlung)\s*(?:/|\s)*\s*(?:pro\s*)?(?:jahr|monat)?\s*:?\s*\d{1,3}",
+    re.IGNORECASE,
+)
+
+
+def aktionsdauer_aus_text(text: str | None) -> int | None:
+    """Aktionsdauer aus einem ganzen Textblock, nicht aus einer Zelle.
+
+    parse_monate() nimmt die erste Monatszahl im Text. In einem
+    Portalblock steht aber vieles davor ("Zinsgutschrift / Jahr 12"),
+    deshalb hier beschriftete Muster in fester Reihenfolge.
+    """
+    if not text:
+        return None
+    t = entschaerfe(text)
+    if not t:
+        return None
+
+    # Fallen unkenntlich machen, damit sie kein Muster fuettern.
+    t_ohne = _DAUER_FALLE.sub(" ", t)
+
+    for muster in _DAUER_MUSTER:
+        m = re.search(muster, t_ohne, re.IGNORECASE)
+        if m:
+            grenze = _monate_grenze(int(m.group(1)))
+            if grenze:
+                return grenze
+    return None
+
+
+_NEUKUNDEN = re.compile(
+    r"neukund(?:e|en|in|innen)|neu\s*kunden|kundenkreis\s*:?\s*neu|"
+    r"nur\s*f(?:ue|u)r\s*neu|erstanlage|erstkund|willkommens(?:zins|angebot|bonus)|"
+    r"new\s*customers?|nouveaux\s*clients|nuovi\s*clienti|nieuwe\s*klanten|"
+    r"nuevos\s*clientes|nowi\s*klienci",
+    re.IGNORECASE,
+)
+
+# Gegenbeleg: "auch fuer Bestandskunden" hebt den Neukunden-Vorbehalt auf.
+_AUCH_BESTAND = re.compile(
+    r"auch\s*f(?:ue|u)r\s*bestandskund|bestands-?\s*und\s*neukund|"
+    r"neu-?\s*und\s*bestandskund|alle\s*kunden",
+    re.IGNORECASE,
+)
+
+
+def neukunden_erkannt(*texte: str | None) -> bool:
+    """True, wenn der Zins nur fuer Neukunden gilt.
+
+    Wichtig fuer die App: solche Angebote kann man nur einmal mitnehmen.
+    Wer sie schon genutzt hat, hakt sie ab und sieht sie nicht mehr.
+    """
+    zusammen = entschaerfe(" ".join(t for t in texte if t))
+    if not zusammen:
+        return False
+    if _AUCH_BESTAND.search(zusammen):
+        return False
+    return bool(_NEUKUNDEN.search(zusammen))
+
+
 def _monate_grenze(n: int) -> int | None:
     return n if 0 <= n <= 360 else None
 
@@ -354,6 +433,17 @@ _RECHTSFORM = re.compile(
 )
 
 
+# Zinsplattformen haengen ihren Namen an die Bank: "Nordax Bank (via
+# Raisin)", "Avida Finans ueber Raisin". Ohne das steht dieselbe Bank
+# zweimal in der Liste - einmal direkt, einmal ueber die Plattform.
+# Wo das Angebot herkommt, steht ohnehin in der Quellenliste.
+_PLATTFORM_ZUSATZ = re.compile(
+    r"\s*[\(\[]?\s*\b(?:via|ueber|über|över|through|tramite|par)\s+"
+    r"(?:raisin|weltsparen|zinspilot|savedo|deposit\s*solutions)\b[^\)\]]*[\)\]]?\s*$",
+    re.IGNORECASE,
+)
+
+
 def bank_normalisieren(name: str | None) -> str:
     """Anzeigename der Bank saeubern (Rechtsform bleibt erhalten)."""
     n = aufraeumen(name)
@@ -362,7 +452,98 @@ def bank_normalisieren(name: str | None) -> str:
     n = _BANK_MUELL.sub("", n)
     n = re.sub(r"\s*[|·•>–—]\s*.*$", "", n)  # alles nach Trennern weg
     n = re.sub(r"\s{2,}", " ", n).strip(" -–—|,;:")
+    n = _fussnoten_kuerzen(n)
+    n = _PLATTFORM_ZUSATZ.sub("", n).strip(" -–—(,;:")
+    n = _produktzusatz_kuerzen(n)
     return n[:80]
+
+
+# Vergleichstabellen haengen Fussnotenzeichen an den Namen: "Ayvens Bank³",
+# "Cosmos Direkt 8", "Yapi Kredi Bank Deutschland 42". Ohne das zaehlen
+# dieselbe Bank auf zwei Seiten als zwei Banken.
+_FUSSNOTE = re.compile(r"(?:\s+\d{1,3}|[¹²³⁴⁵⁶⁷⁸⁹⁰*†‡]+)\s*$")
+
+
+def _fussnoten_kuerzen(name: str) -> str:
+    """Fussnotenzeichen am Ende abschneiden - aber nur die.
+
+    "1822direkt" und "N26" tragen ihre Ziffern mitten im Wort und bleiben
+    deshalb unberuehrt; abgeschnitten wird nur eine allein stehende Zahl
+    oder ein hochgestelltes Zeichen ganz am Schluss.
+    """
+    vorher = None
+    while vorher != name:
+        vorher = name
+        gekuerzt = _FUSSNOTE.sub("", name).strip()
+        # Nie den ganzen Namen wegkuerzen.
+        if len(gekuerzt) >= 3:
+            name = gekuerzt
+    return name
+
+
+# Produktbezeichnungen gehoeren nicht in den Anzeigenamen - das Produkt
+# steht schon in einer eigenen Spalte. "Chase Tagesgeld" -> "Chase".
+# \w* davor, weil Banken ihre Produkte zusammenschreiben:
+# "NetSp@rkonto", "Extrakonto", "Flexgeldkonto".
+_ANHAENGSEL = re.compile(
+    r"\s*[(-]?\s*\b\w*(?:tagesgeldkonto|tagesgeld|festgeldkonto|festgeld|"
+    r"sparkonto|sparbuch|extra[- ]?konto|flexgeld|zinskonto|geldmarktkonto|"
+    r"spaarrekening|sparkontot)\w*\b.*$",
+    re.IGNORECASE,
+)
+
+# Woerter, nach denen der Institutsname zu Ende ist. Nur als eigenstaendiges
+# Wort und nie am Anfang - "Bank of Scotland" und "Banca Progetto" bleiben
+# heil, "Ikano Bank Fleks Horten" wird zu "Ikano Bank".
+_BANK_WORT = {"bank", "banca", "banque", "banken", "bankas", "pankki"}
+
+
+def _produktzusatz_kuerzen(name: str) -> str:
+    """Produktnamen und Wortwiederholungen hinten abschneiden.
+
+    Zwei Muster aus den echten Daten:
+      "Revolut Tagesgeld(Standard)"  -> "Revolut"
+      "DHB Bank DHB NetSp@rkonto"    -> "DHB Bank"   (Name doppelt gelesen)
+
+    Greift nur, wenn davor ein echter Name uebrig bleibt - sonst wuerde
+    aus dem franzoesischen Produkt "Livret A" nichts mehr.
+    """
+    # "@" ist in keinem Institutsnamen echt, wohl aber in Produktnamen
+    # ("NetSp@rkonto"). Erst aufloesen, dann greift das Muster.
+    name = name.replace("@", "a")
+
+    gekuerzt = _ANHAENGSEL.sub("", name).strip(" -–—(,;:")
+    if len(gekuerzt) >= 3 and re.search(r"[A-Za-zÀ-ÿ]{3}", gekuerzt):
+        name = gekuerzt
+
+    # Nach "… Bank" folgt der Produktname, nicht mehr das Institut.
+    teile = name.split()
+    for i in range(1, len(teile)):
+        # Erst ab ZWEI Folgewoertern kuerzen. Bei einem einzigen ist es
+        # meist noch Teil des Namens ("Yapi Kredi Bank Deutschland",
+        # "Lea Bank AB", "Renault Bank direkt").
+        if teile[i].lower().strip(".,") in _BANK_WORT and i + 2 < len(teile):
+            kandidat = " ".join(teile[:i + 1])
+            if len(kandidat) >= 5:
+                name = kandidat
+            break
+
+    # Wortwiederholung: faengt ein spaeteres Wort den Namen von vorne an,
+    # beginnt dort der zweite, angeklebte Treffer.
+    woerter = name.split()
+    if len(woerter) >= 3:
+        erstes = woerter[0].lower()
+        if len(erstes) >= 3:
+            for i in range(1, len(woerter)):
+                # "1822 Direkt 1822direkt": das spaetere Wort faengt mit dem
+                # ersten an, ist aber nicht identisch - trotzdem dieselbe
+                # Wiederholung.
+                spaeter = woerter[i].lower()
+                if spaeter == erstes or (len(erstes) >= 4 and spaeter.startswith(erstes)):
+                    kandidat = " ".join(woerter[:i]).strip()
+                    if len(kandidat) >= 3:
+                        return kandidat
+    return name
 
 
 # Produktbezeichnungen, die am Banknamen kleben ("Revolut Tagesgeld(Standard)").
@@ -401,10 +582,50 @@ _NAME_VERDAECHTIG = re.compile(
     r"zinsgutschrift|gutschrift|kontotyp|kontofuehrung|laufzeit|"
     r"geldanlage|kapitalanlage|sparplan|anlageziel|"
     r"\bmonat(?:e|en)?\b|\bjahr(?:e|en)?\b|\bmesi\b|\bmois\b|\bmaanden\b|"
-    r"^(?:bis|ab|bei|fuer|max|min|von|unter|ueber|mind)\b|"
-    r"cookie|newsletter|datenschutz|impressum|werbung",
+    r"^(?:bis|ab|bei|f(?:ue|u)r|max|min|von|unter|(?:ue|u)ber|mind)\b|"
+    r"cookie|newsletter|datenschutz|impressum|werbung|"
+    # Chart- und Index-Kacheln. Neben der Zinstabelle stehen auf Portalen
+    # oft Kursmodule ("Wykres notowania DAX"); die Heuristik sah dort
+    # Name + Prozentzahl und hielt das fuer ein Angebot.
+    r"wykres|notowania|\bchart\b|\bkursverlauf\b|"
+    r"\b(?:dax|nasdaq|sp500|dow\s*jones|euro\s*stoxx|stoxx|ftse|"
+    r"[ms]?wig\d*)\b|"
+    # Zeitadverbien und Newszeilen ("Derzeit", "22.06.2026: Zinserhoehung")
+    r"^(?:derzeit|aktuell|jetzt|heute|top)\b|"
+    r"^\d{1,2}\.\d{1,2}\.\d{2,4}|"
+    # Beschriftungen von Werbeknoepfen. Die stehen in Vergleichstabellen
+    # in derselben Zelle wie der Name und rutschen sonst durch.
+    r"^(?:er(?:oe|o)ffnen|jetzt\b|zum\s*angebot|mehr\s*erfahren|details|"
+    r"weiter\b|hier\b|antrag|konto\s*er(?:oe|o)ffnen)|"
+    # Spaltenueberschriften der nicht-deutschen Quellen
+    r"^(?:rente\b|spaarrente|actierente|variabele\s*rente|inleg\b|"
+    r"spar(?:ranta|konto(?:t)?)\b|rantesats|oprocentowanie|taux\b|tasso\b)|"
+    # Produktkategorien statt Institute. "Livret bancaire (non reglemente)"
+    # ist die Ueberschrift einer Rubrik, keine Bank - stand aber mit 5,00 %
+    # ganz oben in der Liste.
+    r"\bbancaire\b|non\s*reglemente|\bregle?mente\b|"
+    r"^compte\s*(?:a\s*)?terme|^conto\s*deposito|^spaarrekening\b|"
+    r"^(?:livret|compte|conto|cuenta|konto|konta)$",
     re.IGNORECASE,
 )
+
+
+def fussnote_ist_zins(roh_name: str | None, zins: float | None) -> bool:
+    """True, wenn der "Zins" in Wahrheit die Fussnotenziffer des Namens ist.
+
+    "Cosmos Direkt 8" mit 8,00 % Zins ist kein 8-Prozent-Angebot, sondern
+    Spalte 2 einer Vergleichstabelle: die Fussnote. Der Fehler faellt
+    sonst nicht auf, weil 8 % durchaus im plausiblen Fenster liegt.
+    """
+    if not roh_name or zins is None:
+        return False
+    m = re.search(r"(?:^|\s)(\d{1,3})\s*$", str(roh_name).strip())
+    if not m:
+        return False
+    try:
+        return abs(float(m.group(1)) - float(zins)) < 1e-9
+    except (TypeError, ValueError):
+        return False
 
 
 def bank_plausibel(name: str | None) -> bool:
@@ -424,6 +645,15 @@ def bank_plausibel(name: str | None) -> bool:
         return False
     if re.search(r"[%€£]|\bp\.?\s*a\.?\b", t):
         return False
+    # Ein Doppelpunkt im Namen heisst Schlagzeile, nicht Institut:
+    # "Sikorski: Nasz sojusznik zostal zaatakowany" oder "Bundesschatz
+    # 2026: Zinsen, Steuern". Nachrichtenkacheln stehen auf Portalen
+    # direkt neben der Zinstabelle und haben denselben Aufbau.
+    if ":" in t:
+        return False
+    # Abgeschnittene Ueberschriften enden auf einer Konjunktion.
+    if re.search(r"(?:&|\bund|\band|\bo[dm]er|,)\s*$", t):
+        return False
     # Ganze Saetze sind Werbetexte, keine Namen.
     if re.search(r"[?!]|\.\s+\w", t):
         return False
@@ -435,6 +665,38 @@ def bank_plausibel(name: str | None) -> bool:
     if zahlwoerter * 2 >= len(woerter):
         return False
     return any(len(w) >= 3 for w in woerter)
+
+
+# Anlagebetraege aus dem Seitentext sind der unzuverlaessigste Wert
+# ueberhaupt: neben dem Zins steht meist noch eine zweite Prozentzahl, und
+# die landete bisher als "Mindestanlage 4,25 EUR" im Angebot. Eine
+# Mindestanlage von 4,25 EUR gibt es nicht - deshalb hier ein hartes
+# Plausibilitaetsfenster statt einer schoen aussehenden Falschangabe.
+def betrag_plausibel(betrag: float | None, zins: float | None = None,
+                     folgezins: float | None = None) -> bool:
+    """True, wenn der Betrag als Anlagegrenze durchgehen kann.
+
+    Erlaubt ist 0 ("keine Mindestanlage") und alles ab 100. Dazwischen
+    liegt kein echtes Bankprodukt, wohl aber jede versehentlich
+    mitgelesene Prozentzahl.
+    """
+    if betrag is None:
+        return False
+    try:
+        wert = float(betrag)
+    except (TypeError, ValueError):
+        return False
+    if wert < 0:
+        return False
+    if wert == 0:
+        return True
+    if wert < 100:
+        return False
+    # Betrag identisch zum Zins ist immer die danebengegriffene Prozentzahl.
+    for vergleich in (zins, folgezins):
+        if vergleich is not None and abs(wert - float(vergleich)) < 1e-9:
+            return False
+    return True
 
 
 def dedupe_key(bank: str | None, produkt: str | None, land: str | None) -> str:
@@ -453,6 +715,107 @@ def override_key(bank: str | None, produkt: str | None, land: str | None) -> str
         entschaerfe(produkt) or "tagesgeld",
         (land or "??").lower(),
     ])
+
+
+# ------------------------------------------------------------ Altbestand
+
+def altbestand_saeubern(angebote: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[str]]:
+    """Uebernommene Vortagseintraege denselben Regeln unterwerfen.
+
+    Faellt eine Quelle aus, behaelt validate.py den Eintrag von gestern.
+    Der stammt aber aus einem Lauf mit den alten, laxeren Regeln - ohne
+    diesen Durchgang haengen unplausible Betraege und Chart-Kacheln noch
+    Tage in der Liste, obwohl der Filter laengst steht.
+
+    Gibt die bereinigte Liste und ein Protokoll fuer den Report zurueck.
+    """
+    behalten: list[dict[str, Any]] = []
+    protokoll: list[str] = []
+
+    # Obergrenze fuer uebernommene Altwerte: kein Angebot von gestern darf
+    # den heutigen Spitzenreiter um mehr als die Haelfte uebertreffen.
+    # Solche Ausreisser sind fast immer Lesefehler von damals - und die
+    # ueberleben sonst tagelang, weil ihre Quelle inzwischen weg ist.
+    frisch = [float(a["zinssatz_pct"]) for a in angebote
+              if not a.get("stale") and isinstance(a.get("zinssatz_pct"), (int, float))]
+    obergrenze = max(frisch) * 1.5 if frisch else None
+
+    for a in angebote:
+        name = a.get("bank")
+        if not bank_plausibel(name):
+            protokoll.append(f"verworfen (kein Bankname): {name!r}")
+            continue
+
+        if (obergrenze is not None and a.get("stale")
+                and isinstance(a.get("zinssatz_pct"), (int, float))
+                and float(a["zinssatz_pct"]) > obergrenze):
+            protokoll.append(
+                f"verworfen (Altwert-Ausreisser): {name} mit {a['zinssatz_pct']} % "
+                f"liegt ueber der Grenze {obergrenze:.2f} % (1,5x bester frischer Wert)")
+            continue
+
+        sauber = bank_normalisieren(name)
+        if sauber and sauber != name:
+            protokoll.append(f"Name gekuerzt: {name!r} -> {sauber!r}")
+            a["bank"] = sauber
+
+        zins = a.get("zinssatz_pct")
+        folge = a.get("folgezins_pct")
+        for feld in ("mindestanlage", "hoechstanlage"):
+            wert = a.get(feld)
+            if wert is not None and not betrag_plausibel(wert, zins, folge):
+                protokoll.append(f"{a['bank']}: {feld} {wert} unplausibel - entfernt")
+                a[feld] = None
+                a[feld + "_eur"] = None
+
+        aktion_konsistent(a)
+        behalten.append(a)
+
+    behalten, protokoll = _nachdedupe(behalten, protokoll)
+
+    # Auch die Land-Aufloesung muss hier noch einmal laufen: validate.py
+    # traegt uebernommene Vortagseintraege erst NACH dem Merge nach, und die
+    # haben die Aufloesung deshalb nie gesehen. So stand Nordax Bank zweimal
+    # in der Liste - einmal Schweden (belegt), einmal Niederlande (geraten).
+    vorher = len(behalten)
+    behalten = _laender_dopplungen_aufloesen(behalten)
+    if len(behalten) < vorher:
+        protokoll.append(f"Land-Dopplungen im Altbestand aufgeloest: "
+                         f"{vorher - len(behalten)} Eintraege verschmolzen")
+    return behalten, protokoll
+
+
+def _nachdedupe(angebote: list[dict[str, Any]],
+                protokoll: list[str]) -> tuple[list[dict[str, Any]], list[str]]:
+    """Nach dem Kuerzen koennen zwei Eintraege denselben Schluessel haben.
+
+    "DHB Bank" und "DHB Bank DHB NetSp@rkonto" waren im Lauf noch zwei
+    Namen, nach der Saeuberung sind es zwei Zeilen derselben Bank. Der
+    frischere Eintrag gewinnt, danach der mit mehr Quellen.
+    """
+    nach_schluessel: dict[str, dict[str, Any]] = {}
+    reihenfolge: list[str] = []
+
+    for a in angebote:
+        key = dedupe_key(a.get("bank"), a.get("produkt"),
+                         a.get("einlagensicherung_land") or a.get("land"))
+        a["dedupe_key"] = key
+        vorhanden = nach_schluessel.get(key)
+        if vorhanden is None:
+            nach_schluessel[key] = a
+            reihenfolge.append(key)
+            continue
+
+        gewicht = lambda x: (not x.get("stale"), x.get("quellen_anzahl") or 1,
+                             x.get("confidence") or 0.0)
+        sieger, verlierer = (a, vorhanden) if gewicht(a) > gewicht(vorhanden) else (vorhanden, a)
+        nach_schluessel[key] = sieger
+        protokoll.append(
+            f"Dopplung nach Saeuberung: {verlierer.get('bank')} "
+            f"({verlierer.get('zinssatz_pct')} %) faellt weg, "
+            f"{sieger.get('bank')} ({sieger.get('zinssatz_pct')} %) bleibt")
+
+    return [nach_schluessel[k] for k in reihenfolge], protokoll
 
 
 # ------------------------------------------------------------------ FX
@@ -485,6 +848,7 @@ def normalisiere(roh: dict[str, Any], quelle: dict[str, Any],
     if not bank_plausibel(bank):
         return None
 
+
     zins = roh.get("zinssatz_pct")
     if zins is None:
         zins = parse_zins(roh.get("zinssatz"), sprache)
@@ -497,8 +861,29 @@ def normalisiere(roh: dict[str, Any], quelle: dict[str, Any],
         return None
 
     dauer = roh.get("aktionsdauer_monate")
+    # Fussnotenziffer als Zins gelesen -> der ganze Treffer ist Muell.
+    # Steht erst hier, weil der Zins vorher geparst werden muss.
+    if fussnote_ist_zins(roh.get("bank"), zins):
+        log().info("Verworfen: %r - die %s stammt aus der Fussnotenspalte, nicht aus der Zinsspalte",
+                   roh.get("bank"), zins)
+        return None
+
     if not isinstance(dauer, int):
-        dauer = parse_monate(roh.get("aktionsdauer_monate"))
+        # Kurze Zellen ("6 Monate") kann parse_monate; bei ganzen
+        # Textbloecken aus der Heuristik braucht es die beschrifteten
+        # Muster, sonst wird "Zinsgutschrift / Jahr 12" zur Aktionsdauer.
+        roh_dauer = roh.get("aktionsdauer_monate")
+        if isinstance(roh_dauer, str) and len(roh_dauer) > 60:
+            dauer = aktionsdauer_aus_text(roh_dauer)
+        else:
+            dauer = parse_monate(roh_dauer)
+
+    # Der Fliesstext des Treffers ist die beste Quelle fuer beides.
+    _texte = [roh.get("_kontext"), roh.get("zinstyp"), roh.get("produkt"),
+              roh.get("besonderheiten")]
+    if dauer is None:
+        dauer = aktionsdauer_aus_text(" ".join(t for t in _texte if isinstance(t, str)))
+    nur_neukunden = neukunden_erkannt(*[t for t in _texte if isinstance(t, str)])
 
     folge = roh.get("folgezins_pct")
     if folge is None:
@@ -512,8 +897,20 @@ def normalisiere(roh: dict[str, Any], quelle: dict[str, Any],
     #    "4,25 % für 48 Monate, danach 4,25 %" ist keine Aktion, sondern ein
     #    falsch gelesener Text (oft ein Festgeld-Block auf derselben Seite)
     #  - ohne Folgezins laeuft der Aktionszins ins Leere -> selber Zins
+    # Steht eine Aktionsdauer im Text, ist es eine Aktion - auch wenn das
+    # Wort "Aktionszins" nirgends faellt. Ohne diese Zeile stand Chase mit
+    # 4 % als Dauerzins in der Liste, obwohl es die nur vier Monate gibt.
+    if dauer and 0 < dauer < 12 and zinstyp == "variabel" and folge is not None \
+            and abs(float(folge) - zins) > 1e-9:
+        zinstyp = "aktion"
     if zinstyp == "aktion" and not dauer:
         zinstyp = "variabel"
+    # Ein "Folgezins" ueber dem Aktionszins ist immer ein Lesefehler:
+    # eine Aktion lockt mit MEHR, nicht mit weniger.
+    if zinstyp == "aktion" and folge is not None and float(folge) > zins + 1e-9:
+        folge = None
+        zinstyp = "variabel"
+        dauer = 0
     if (zinstyp == "aktion" and folge is not None
             and abs(float(folge) - zins) < 1e-9):
         zinstyp = "variabel"
@@ -529,6 +926,16 @@ def normalisiere(roh: dict[str, Any], quelle: dict[str, Any],
         min_betrag = float(roh["mindestanlage_wert"])
     if isinstance(roh.get("hoechstanlage_wert"), (int, float)):
         max_betrag = float(roh["hoechstanlage_wert"])
+
+    # Unplausible Betraege lieber weglassen als falsch anzeigen; die App
+    # schreibt dann ehrlich "keine Angabe". Ohne diesen Filter stand bei
+    # zwei Dritteln der Angebote der Zinssatz als Mindestanlage.
+    if not betrag_plausibel(min_betrag, zins, folge):
+        min_betrag = None
+    if not betrag_plausibel(max_betrag, zins, folge):
+        max_betrag = None
+    if min_betrag is not None and max_betrag is not None and max_betrag < min_betrag:
+        min_betrag = max_betrag = None
 
     # Land der Einlagensicherung. Wurde es nicht im Treffer gefunden, wird
     # das Land der Quelle angenommen - bei einer Bankseite ist das richtig,
@@ -554,6 +961,7 @@ def normalisiere(roh: dict[str, Any], quelle: dict[str, Any],
         "zinssatz_pct": round(zins, 4),
         "zinstyp": zinstyp,
         "aktionsdauer_monate": int(dauer or 0),
+        "nur_neukunden": bool(nur_neukunden),
         "folgezins_pct": round(float(folge), 4) if folge is not None else None,
         "mindestanlage": min_betrag,
         "mindestanlage_eur": fx_umrechnen(min_betrag, min_waehrung, fx),
@@ -625,6 +1033,47 @@ def _rang(angebot: dict[str, Any]) -> tuple:
     return (tier, -conf, -_QUELLTYP_GEWICHT.get(typ, 0.5))
 
 
+def aktion_konsistent(angebot: dict[str, Any]) -> dict[str, Any]:
+    """Aktionsangaben in sich stimmig machen. Aendert das Dict direkt.
+
+    Muss NACH dem Merge noch einmal laufen: dort werden Folgezins und
+    Aktionsdauer aus anderen Quellen nachgetragen, und dabei kann wieder
+    Unsinn entstehen - etwa Santander mit 0,30 % "Aktionszins" und 3,01 %
+    Folgezins. Eine Aktion lockt mit mehr, nicht mit weniger.
+    """
+    zins = angebot.get("zinssatz_pct")
+    folge = angebot.get("folgezins_pct")
+    typ = angebot.get("zinstyp")
+    dauer = angebot.get("aktionsdauer_monate") or 0
+
+    if zins is None:
+        return angebot
+
+    # Folgezins ueber dem Aktionszins -> keine Aktion, sondern ein Lesefehler.
+    if typ == "aktion" and folge is not None and float(folge) > float(zins) + 1e-9:
+        angebot["zinstyp"] = "variabel"
+        angebot["aktionsdauer_monate"] = 0
+        angebot["folgezins_pct"] = zins
+        return angebot
+
+    # Gleicher Folgezins heisst: nach der "Aktion" aendert sich nichts.
+    if typ == "aktion" and folge is not None and abs(float(folge) - float(zins)) < 1e-9:
+        angebot["zinstyp"] = "variabel"
+        angebot["aktionsdauer_monate"] = 0
+        return angebot
+
+    # Aktion ohne Dauer ist keine.
+    if typ == "aktion" and not dauer:
+        angebot["zinstyp"] = "variabel"
+        angebot["folgezins_pct"] = zins
+
+    # Umgekehrt: kein Aktionstyp, aber eine Dauer -> Dauer ist bedeutungslos.
+    if angebot.get("zinstyp") != "aktion":
+        angebot["aktionsdauer_monate"] = 0
+
+    return angebot
+
+
 def merge(angebote: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
     """Dedupe ueber (bank, produkt, land) + Multi-Quellen-Merge.
 
@@ -654,6 +1103,30 @@ def merge(angebote: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
             for feld in fuellbar:
                 if basis.get(feld) in (None, "") and weiterer.get(feld) not in (None, ""):
                     basis[feld] = weiterer[feld]
+            # Eine erkannte Aktion schlaegt ein "variabel" - auch aus einer
+            # schwaecheren Quelle. Dass ein Zins befristet ist, steht immer
+            # nur an einer Stelle; dass er es NICHT ist, steht nirgends.
+            # Vergleichsportale zeigen dieselbe Bank zweimal: einmal als
+            # Werbekachel ohne Details, einmal als Datenblock mit
+            # "Aktionszins 4 % / Dauer 4 / danach 2 %". Ohne diese Regel
+            # gewann die Kachel, und aus vier Monaten wurde "für immer".
+            if (weiterer.get("zinstyp") == "aktion"
+                    and weiterer.get("aktionsdauer_monate")
+                    and basis.get("zinstyp") != "aktion"):
+                basis["zinstyp"] = "aktion"
+                basis["aktionsdauer_monate"] = weiterer["aktionsdauer_monate"]
+                if weiterer.get("folgezins_pct") is not None:
+                    basis["folgezins_pct"] = weiterer["folgezins_pct"]
+                log().info(
+                    "%s: Aktion aus zweitem Block uebernommen (%s Monate, danach %s %%)",
+                    basis.get("bank"), weiterer["aktionsdauer_monate"],
+                    weiterer.get("folgezins_pct"))
+
+            # Ein Neukunden-Vorbehalt steht oft nur im Kleingedruckten einer
+            # einzigen Quelle. Einmal gefunden gilt er.
+            if weiterer.get("nur_neukunden"):
+                basis["nur_neukunden"] = True
+
             # Ein sicher erkanntes Land schlaegt ein bloss angenommenes -
             # auch wenn die andere Quelle sonst schwaecher ist.
             rang_land = {"erkannt": 2, "bankseite": 1, "quellenland_angenommen": 0}
@@ -664,7 +1137,12 @@ def merge(angebote: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
                 basis["land_quelle"] = weiterer.get("land_quelle")
             if weiterer.get("zinssatz_pct") is not None and basis.get("zinssatz_pct") is not None:
                 diff = abs(float(weiterer["zinssatz_pct"]) - float(basis["zinssatz_pct"]))
-                if diff >= 0.05:
+                # Kein Widerspruch, wenn die andere Quelle schlicht den
+                # Folgezins nennt statt des Aktionszinses.
+                folge = basis.get("folgezins_pct")
+                ist_folgezins = (folge is not None
+                                 and abs(float(weiterer["zinssatz_pct"]) - float(folge)) < 0.05)
+                if diff >= 0.05 and not ist_folgezins:
                     abweichungen.append({
                         "quelle": (weiterer.get("quellen") or [{}])[0].get("id"),
                         "zinssatz_pct": weiterer["zinssatz_pct"],
@@ -680,6 +1158,7 @@ def merge(angebote: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
                 ", ".join(f"{a['quelle']}={a['zinssatz_pct']}%" for a in abweichungen),
             )
 
+        aktion_konsistent(basis)
         basis["quellen"] = _quellen_dedupe(basis["quellen"])
         basis["quellen_anzahl"] = len(basis["quellen"])
         # Nach dem Merge kann sich das Land geaendert haben -> Key nachziehen.
@@ -720,8 +1199,33 @@ def _laender_dopplungen_aufloesen(angebote: list[dict[str, Any]]) -> list[dict[s
                           if a is not beste and _LAND_RANG.get(a.get("land_quelle"), 0) < bester_rang]
 
         if not zusammenlegbar:
-            ergebnis.extend(gruppe)      # echte Mehrfachangebote, z.B. zwei Laender
-            continue
+            # Kein Rangunterschied. Dann entscheidet der Zins: gleiche Bank,
+            # gleicher Zins, zwei Laender - das ist zweimal dasselbe Angebot,
+            # nur einmal ueber ein niederlaendisches und einmal ueber ein
+            # deutsches Portal gefunden. Unterschiedliche Zinsen dagegen sind
+            # echte Mehrfachangebote (ING Deutschland 3,75 %, ING NL 1,25 %).
+            # Nur wenn mindestens ein Land geraten ist. Zwei BELEGTE Laender
+            # mit demselben Zins sind zwei echte Angebote derselben Bank -
+            # etwa eine Tochter in Frankreich und eine in Spanien.
+            geraten = any(_LAND_RANG.get(a.get("land_quelle"), 0) == 0 for a in gruppe)
+            zusammenlegbar = [
+                a for a in gruppe
+                if geraten and a is not beste
+                and a.get("zinssatz_pct") is not None
+                and beste.get("zinssatz_pct") is not None
+                and abs(float(a["zinssatz_pct"]) - float(beste["zinssatz_pct"])) < 0.05
+            ]
+            if zusammenlegbar:
+                # Der frischere Eintrag mit mehr Quellen fuehrt.
+                gewicht = lambda x: (not x.get("stale"), x.get("quellen_anzahl") or 1,
+                                     _LAND_RANG.get(x.get("land_quelle"), 0))
+                beste = max([beste] + zusammenlegbar, key=gewicht)
+                zusammenlegbar = [a for a in gruppe if a is not beste
+                                  and a.get("zinssatz_pct") is not None
+                                  and abs(float(a["zinssatz_pct"]) - float(beste["zinssatz_pct"])) < 0.05]
+            else:
+                ergebnis.extend(gruppe)  # echte Mehrfachangebote, z.B. zwei Laender
+                continue
 
         for a in zusammenlegbar:
             beste["quellen"] = list(beste.get("quellen") or []) + list(a.get("quellen") or [])

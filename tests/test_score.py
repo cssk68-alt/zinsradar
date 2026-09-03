@@ -162,3 +162,56 @@ def test_sortierung_nach_score():
                 _angebot(bank="B", zinssatz_pct=5.0, folgezins_pct=5.0)]
     ergebnis = s.berechne_alle(angebote, None)
     assert ergebnis[0]["bank"] == "B"
+
+
+# ------------------------------------------- Klartext statt Fachjargon (v1.1)
+
+QST_TEXTE = {
+    "FR": {"quellensteuer_standard_pct": 12.8, "quellensteuer_mit_dba_pct": 0.0,
+           "rueckerstattung_aufwand": "niedrig"},
+    "IT": {"quellensteuer_standard_pct": 26.0, "quellensteuer_mit_dba_pct": 0.0,
+           "rueckerstattung_aufwand": "hoch"},
+    "BE": {"quellensteuer_standard_pct": 30.0, "quellensteuer_mit_dba_pct": 15.0,
+           "rueckerstattung_aufwand": "hoch"},
+    "SE": {"quellensteuer_standard_pct": 0.0, "quellensteuer_mit_dba_pct": 0.0,
+           "rueckerstattung_aufwand": "keiner"},
+    "AT": {"quellensteuer_standard_pct": 25.0, "quellensteuer_mit_dba_pct": 10.0,
+           "rueckerstattung_aufwand": "niedrig"},
+}
+
+
+@pytest.mark.parametrize("land", ["DE", "FR", "IT", "BE", "SE", "AT", "XX"])
+@pytest.mark.parametrize("erstattung", [True, False])
+def test_begruendung_ohne_fachjargon(land, erstattung):
+    """Der Text landet unverändert in der App – kein DBA, kein '0 % statt 0.00 %'."""
+    _, grund = s.qst_effektiv_pct(land, QST_TEXTE, erstattung)
+    assert grund and grund[0].isupper() and grund.endswith(".")
+    for wort in ("DBA", "qst", "Rückerstattungsaufwand '", "statt 0,0", "statt 0 %"):
+        assert wort not in grund, f"{wort!r} steht noch in: {grund}"
+
+
+def test_pct_wort_kuerzt_nullen():
+    assert s.pct_wort(12.8) == "12,8 %"
+    assert s.pct_wort(15.0) == "15 %"
+    assert s.pct_wort(0) == "0 %"
+
+
+def test_kein_abzug_sagt_das_auch_so():
+    satz = s.qst_effektiv_pct("SE", QST_TEXTE, True)[1]
+    assert "nichts ein" in satz
+
+
+def test_erstattung_schalter_aendert_satz_und_wert():
+    an_pct, an_satz = s.qst_effektiv_pct("AT", QST_TEXTE, True)
+    aus_pct, aus_satz = s.qst_effektiv_pct("AT", QST_TEXTE, False)
+    assert an_pct == 0.0 and aus_pct == pytest.approx(10.0)
+    assert an_satz != aus_satz
+    assert "abgeschaltet" in aus_satz
+
+
+def test_reibung_nur_wo_wirklich_erst_einbehalten_wird():
+    assert s.qst_reibung("IT", QST_TEXTE)      # 26 % weg, Rückholen aufwendig
+    assert s.qst_reibung("BE", QST_TEXTE)
+    assert s.qst_reibung("SE", QST_TEXTE) is None   # es wird nichts einbehalten
+    assert s.qst_reibung("FR", QST_TEXTE) is None   # Rückholen ist einfach
+    assert s.qst_reibung("DE", QST_TEXTE) is None   # Inlandsfall

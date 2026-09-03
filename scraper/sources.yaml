@@ -149,7 +149,7 @@ quellen:
       einlagensicherung_land: "td.sicherung-land"
     fallstricke: "Offizielles Portal der Arbeiterkammer; sehr stabiles HTML, aber unregelmaessige Update-Zyklen."
 
-  - url: "https://www.sparente.nl/sparen/vrij-opneembaar"
+  - url: "https://www.spaarrente.nl/spaarrekening/"
     land: "NL"
     sprache: "nl"
     typ: "portal"
@@ -289,7 +289,7 @@ quellen:
       einlagensicherung_land: "td.colGwarancja"
     fallstricke: "Zinsen in PLN (Zloty); Umrechnung und Waehrungsrisiko beachten. QSt ('Belka-Steuer') 19%."
 
-  - url: "https://www.compracer.se/spara/sparkonto/"
+  - url: "https://www.compricer.se/sparkonto/"
     land: "SE"
     sprache: "sv"
     typ: "portal"
@@ -389,7 +389,7 @@ quellen:
       einlagensicherung_land: "literal:'DE'"
     fallstricke: "GEPRUEFT 01.09.2026: HTTP 401, Bot-Schutz blockt. Aktionszinssaetze gelten oft nur fuer Neukunden oder bei gleichzeitigem Depotuebertrag."
 
-  - url: "https://trade-republic.com/de-de/zinsen"
+  - url: "https://traderepublic.com/de-de/zinsen"
     land: "DE"
     sprache: "de"
     typ: "bank"
@@ -468,3 +468,115 @@ quellen:
       hoechstanlage: ".max-savings-amount"
       einlagensicherung_land: "literal:'SE'"
     fallstricke: "Schwedische Einlagensicherung (Riksgaelden); Konten laut Recherche in EUR gefuehrt, SE erhebt 0% QSt fuer Gebietsfremde."
+
+  # ------------------------------------------------------------------
+  # Ab hier: am 03.09.2026 live durchgeprobt (scraper/bootstrap.py).
+  # Aufgenommen wurde nur, was echte Institutsnamen liefert - Seiten mit
+  # Knopftexten ("Tagesgeld freischalten") oder Newszeilen ("NIBC erhoehte
+  # am 17.7.26") sind bewusst draussen geblieben.
+  # Selektoren sind auch hier nur Hinweise; getragen hat die Heuristik.
+  # ------------------------------------------------------------------
+
+  - url: "https://www.tagesgeld.info/"
+    land: "DE"
+    sprache: "de"
+    typ: "portal"
+    rendering: "static_html"
+    json_endpoint: null
+    robots_txt_erlaubt: "ja"
+    bot_schutz: "nein"
+    container_selector: "table tbody tr, div.produkt-zeile"
+    felder:
+      bank: "td:nth-child(1), .anbieter"
+      zinssatz: "td.zins, .zinssatz"
+      zinstyp: "td.zinsart"
+      aktionsdauer_monate: "td.dauer"
+      folgezins: "td.folgezins"
+      mindestanlage: "td.mindestanlage"
+      hoechstanlage: "td.hoechstanlage"
+      einlagensicherung_land: "td.land"
+    fallstricke: "GEPRUEFT 03.09.2026: 24 saubere Treffer ueber die Heuristik. Mischt Tagesgeld und Festgeld in einer Tabelle - die Produktbezeichnung im Namen wird beim Normalisieren abgeschnitten."
+
+  - url: "https://www.tagesgeldvergleich.com/"
+    land: "DE"
+    sprache: "de"
+    typ: "portal"
+    rendering: "static_html"
+    json_endpoint: null
+    robots_txt_erlaubt: "ja"
+    bot_schutz: "nein"
+    container_selector: null
+    felder: {}
+    fallstricke: "GEPRUEFT 03.09.2026: 10 Treffer ueber die Heuristik, durchweg saubere Institutsnamen (Consorsbank, ING, Openbank, Ford Money). BEWUSST OHNE SELEKTOREN: geratene Spaltennummern trafen hier die falsche Spalte."
+
+  - url: "https://www.verivox.de/tagesgeld/"
+    land: "DE"
+    sprache: "de"
+    typ: "portal"
+    rendering: "static_html"
+    json_endpoint: null
+    robots_txt_erlaubt: "ja"
+    bot_schutz: "teilweise"
+    container_selector: "div.result-row, table tbody tr"
+    felder:
+      bank: ".provider-name, td:nth-child(1)"
+      zinssatz: ".interest-rate, td.zins"
+      zinstyp: ".rate-type"
+      aktionsdauer_monate: ".promo-duration"
+      folgezins: ".follow-rate"
+      mindestanlage: ".min-amount"
+      hoechstanlage: ".max-amount"
+      einlagensicherung_land: ".protection-country"
+    fallstricke: "GEPRUEFT 03.09.2026: 8 Treffer. Fussnotenzeichen kleben am Namen (Ayvens Bank3) und werden beim Normalisieren entfernt."
+
+  - url: "https://www.finanztip.de/tagesgeld/"
+    land: "DE"
+    sprache: "de"
+    typ: "portal"
+    rendering: "static_html"
+    json_endpoint: null
+    robots_txt_erlaubt: "ja"
+    bot_schutz: "nein"
+    container_selector: null
+    felder: {}
+    fallstricke: "GEPRUEFT 03.09.2026: 9 Treffer ueber die Heuristik. BEWUSST OHNE SELEKTOREN: td:nth-child(2) ist hier die Fussnotenspalte - damit wurde aus 'Cosmos Direkt 8' ein Zins von 8 %. Redaktionelle Auswahl statt Vollmarkt."
+
+  - url: "https://www.spaarrente.nl/spaarrekening/"
+    land: "NL"
+    sprache: "nl"
+    typ: "portal"
+    rendering: "static_html"
+    json_endpoint: null
+    robots_txt_erlaubt: "ja"
+    bot_schutz: "nein"
+    container_selector: "table tbody tr, div.rente-rij"
+    felder:
+      bank: "td:nth-child(1), .aanbieder"
+      zinssatz: "td.rente, .rentepercentage"
+      zinstyp: "td.soort"
+      aktionsdauer_monate: "td.duur"
+      folgezins: "td.vervolgrente"
+      mindestanlage: "td.minimum"
+      hoechstanlage: "td.maximum"
+      einlagensicherung_land: "td.garantiestelsel"
+    fallstricke: "GEPRUEFT 03.09.2026: 48 Treffer, beste Quelle fuer die Niederlande. Loest die tote Domain sparente.nl ab. Punkt ist Tausendertrenner (nl)."
+
+  - url: "https://www.compricer.se/sparkonto/"
+    land: "SE"
+    sprache: "sv"
+    typ: "portal"
+    rendering: "static_html"
+    json_endpoint: null
+    robots_txt_erlaubt: "ja"
+    bot_schutz: "nein"
+    container_selector: "table tbody tr, div.product-row"
+    felder:
+      bank: "td:nth-child(1), .bank-namn"
+      zinssatz: "td.ranta, .rantesats"
+      zinstyp: "td.typ"
+      aktionsdauer_monate: "td.period"
+      folgezins: "td.grundranta"
+      mindestanlage: "td.minsta"
+      hoechstanlage: "td.hogsta"
+      einlagensicherung_land: "literal:'SE'"
+    fallstricke: "GEPRUEFT 03.09.2026: 45 saubere Treffer. Zinsen in SEK - Waehrungsrisiko, Umrechnung nur fuer Betraege."

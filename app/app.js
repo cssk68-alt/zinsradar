@@ -1,27 +1,47 @@
-/* Zinsradar - Vanilla JS, kein Framework, kein Build-Step.
+/* Zinsradar – Vanilla JS, kein Framework, kein Build-Step.
  *
  * Datenfluss:
  *   GitHub Actions -> data/zinsen.json -> raw.githubusercontent -> hier.
- *   Kein Server, keine API. Geladene Daten landen im localStorage und
- *   im Service-Worker-Cache, damit die App offline weiterläuft.
+ *   Kein Server, keine API. Geladene Daten landen im localStorage und im
+ *   Service-Worker-Cache, damit die App offline weiterläuft.
+ *
+ * Leitgedanke der Oberfläche:
+ *   Zuerst die Zahl, mit der die Bank selbst wirbt. Danach – kleiner –
+ *   was davon in Euro übrig bleibt. Prozentwerte allein sagen niemandem
+ *   etwas; "425 € im Jahr" schon.
+ *
+ * Alle Sheets teilen sich EIN Element (#sheet). Ein einziger Öffnen- und
+ * Schließen-Weg heißt: ein einziger Ort, an dem etwas klemmen kann.
  */
 (function () {
   "use strict";
 
   var CFG = window.ZINSRADAR_CONFIG || {};
+
   var SPEICHER = {
     daten: "zr_daten",
     einst: "zr_einstellungen",
     watch: "zr_watchlist",
     theme: "zr_theme",
     gemeldet: "zr_gemeldet",
+    betrag: "zr_betrag",
+    erledigt: "zr_erledigt",
   };
+
+  var SEITE = 40;
+  var BETRAG_STANDARD = 10000;
+  var BETRAG_VORSCHLAEGE = [1000, 5000, 10000, 25000, 50000, 100000];
 
   var zustand = {
     daten: null,
     sortierung: "score",
     suche: "",
-    filter: { land: "", typ: "", betrag: "", quelltyp: "", nurEur: false, nurWatch: false, ohneStale: false },
+    filter: {
+      land: "", typ: "", quelltyp: "", rating: "", minZins: "",
+      aktion: "", neukunden: "",
+      nurEur: false, nurWatch: false, ohneStale: false, passtZuBetrag: false,
+      vollGesichert: false, zeigeErledigt: false,
+    },
     einstellungen: {
       erstattung: true,
       abgeltung: false,
@@ -29,26 +49,61 @@
       benachrichtigung: false,
       quelle: "",
     },
+    betrag: BETRAG_STANDARD,
     watchlist: [],
+    // Neukunden-Angebote kann man nur einmal mitnehmen. Wer eins schon
+    // genutzt hat, hakt es ab: raus aus der Liste, rein in die
+    // Einstellungen - rückgängig machen geht dort jederzeit.
+    erledigt: [],
     laedt: false,
+    sichtbar: [],
+    // Mit 190 Angeboten dauert ein voller Neuaufbau der Liste ~250 ms -
+    // das merkt man beim Tippen in der Suche. Deshalb erst ein Schwung,
+    // den Rest auf Knopfdruck.
+    limit: SEITE,
   };
 
-  // ------------------------------------------------------------- Hilfen
+  /* ================================================================ Hilfen */
 
-  var $ = function (id) { return document.getElementById(id); };
+  function $(id) { return document.getElementById(id); }
 
-  var nfProzent = new Intl.NumberFormat("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  var nfProzent3 = new Intl.NumberFormat("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 3 });
-  var nfGeld = new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 });
+  var nfZins = new Intl.NumberFormat("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  var nfFein = new Intl.NumberFormat("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 3 });
+  var nfEuro = new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 });
+  var nfEuroGenau = new Intl.NumberFormat("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-  function pct(wert, formatierer) {
-    if (wert === null || wert === undefined || isNaN(wert)) return "–";
-    return (formatierer || nfProzent).format(wert) + " %";
+  function istZahl(wert) {
+    return wert !== null && wert !== undefined && wert !== "" && !isNaN(wert);
   }
 
-  function geld(wert) {
-    if (wert === null || wert === undefined || isNaN(wert)) return "–";
-    return nfGeld.format(wert) + " €";
+  function pct(wert, formatierer) {
+    if (!istZahl(wert)) return "–";
+    return (formatierer || nfZins).format(wert) + " %";
+  }
+
+  /* Steuersätze sind meist glatt: "15 %" liest sich besser als "15,00 %".
+     Beim Zinssatz bleiben die zwei Stellen, so wirbt die Bank ja auch. */
+  var nfSchlank = new Intl.NumberFormat("de-DE", { maximumFractionDigits: 2 });
+
+  function pctSchlank(wert) {
+    if (!istZahl(wert)) return "–";
+    return nfSchlank.format(wert) + " %";
+  }
+
+  function euro(wert) {
+    if (!istZahl(wert)) return "–";
+    return nfEuro.format(wert) + " €";
+  }
+
+  function euroGenau(wert) {
+    if (!istZahl(wert)) return "–";
+    return nfEuroGenau.format(wert) + " €";
+  }
+
+  /* Zinsen in Euro auf den eingestellten Betrag. */
+  function inEuro(prozent) {
+    if (!istZahl(prozent)) return null;
+    return zustand.betrag * prozent / 100;
   }
 
   function datumKurz(iso) {
@@ -58,10 +113,67 @@
     return d.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
   }
 
-  function escape(text) {
+  function tageSeit(iso) {
+    if (!iso) return null;
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return null;
+    return Math.floor((Date.now() - d.getTime()) / 86400000);
+  }
+
+  /* Bewusst NICHT `escape` genannt: das gibt es global schon. */
+  function esc(text) {
     return String(text === null || text === undefined ? "" : text)
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+
+  /* Zahl aus einem Eingabefeld, in deutscher Schreibweise gedacht.
+     `type="number"` liefert bei einem Komma einen LEEREN Wert, und
+     Number("1.000") wäre 1 – ein Anlagebetrag von einem Euro. Deshalb
+     stehen die Felder auf type="text" und werden hier selbst gelesen.
+
+       "1.000"    -> 1000     (Tausenderpunkt)
+       "12,5"     -> 12.5     (Dezimalkomma)
+       "1.234,56" -> 1234.56
+       "1,234.56" -> 1234.56  (englische Schreibweise)
+       "10 000 €" -> 10000
+  */
+  function zahlAusEingabe(roh) {
+    var t = String(roh === null || roh === undefined ? "" : roh)
+      .replace(/[\s\u00a0€%]/g, "");
+    if (!t) return NaN;
+    if (!/^[+-]?[\d.,]+$/.test(t)) return NaN;
+
+    var hatKomma = t.indexOf(",") !== -1;
+    var hatPunkt = t.indexOf(".") !== -1;
+
+    if (hatKomma && hatPunkt) {
+      // Das zuletzt stehende Zeichen trennt die Nachkommastellen.
+      t = t.lastIndexOf(",") > t.lastIndexOf(".")
+        ? t.replace(/\./g, "").replace(",", ".")
+        : t.replace(/,/g, "");
+    } else if (hatKomma) {
+      t = t.replace(/,/g, ".");
+    } else if (hatPunkt) {
+      // Ein Punkt vor genau drei Ziffern ist ein Tausenderpunkt.
+      if (/^[+-]?\d{1,3}(\.\d{3})+$/.test(t)) t = t.replace(/\./g, "");
+    }
+    var wert = parseFloat(t);
+    return isFinite(wert) ? wert : NaN;
+  }
+
+  /* Nur http(s) in ein href lassen. esc() verhindert zwar den Ausbruch aus
+     dem Attribut, nicht aber ein "javascript:"-Ziel. Die Daten stammen aus
+     fremden Webseiten – da gilt: Schema prüfen, nicht hoffen. */
+  function sicherLink(url) {
+    var t = String(url || "").trim();
+    if (!/^https?:\/\//i.test(t)) return "";
+    return t;
+  }
+
+  function ikon(name, klasse) {
+    return '<svg class="ikon-svg' + (klasse ? " " + klasse : "") + '" aria-hidden="true">' +
+      '<use href="#i-' + name + '"></use></svg>';
   }
 
   function lies(schluessel, standard) {
@@ -72,7 +184,7 @@
   }
 
   function schreib(schluessel, wert) {
-    try { localStorage.setItem(schluessel, JSON.stringify(wert)); } catch (e) { /* voll o. privat */ }
+    try { localStorage.setItem(schluessel, JSON.stringify(wert)); } catch (e) { /* voll oder privat */ }
   }
 
   var toastTimer = null;
@@ -80,11 +192,41 @@
     var el = $("toast");
     el.textContent = text;
     el.hidden = false;
+    // Animation neu starten, sonst bleibt sie beim zweiten Toast aus.
+    el.style.animation = "none";
+    void el.offsetWidth;
+    el.style.animation = "";
     clearTimeout(toastTimer);
     toastTimer = setTimeout(function () { el.hidden = true; }, dauer || 2600);
   }
 
-  // ------------------------------------------------------- Daten laden
+  /* Suchtext vergleichbar machen: Kleinschreibung, Umlaute aufgelöst.
+     Damit findet "muenchen" auch "München" und "oster" auch "Österreich". */
+  function suchform(text) {
+    var t = String(text || "").toLowerCase();
+    t = t.replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss");
+    if (t.normalize) t = t.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return t.replace(/[^a-z0-9]+/g, " ").trim();
+  }
+
+  /* Ländernamen ausgeschrieben – Kürzel wie "LV" sagen niemandem etwas. */
+  var LAENDER = {
+    DE: "Deutschland", AT: "Österreich", NL: "Niederlande", FR: "Frankreich",
+    IT: "Italien", ES: "Spanien", PT: "Portugal", IE: "Irland", SE: "Schweden",
+    NO: "Norwegen", DK: "Dänemark", FI: "Finnland", PL: "Polen", CZ: "Tschechien",
+    BE: "Belgien", LU: "Luxemburg", LV: "Lettland", LT: "Litauen", EE: "Estland",
+    MT: "Malta", CY: "Zypern", SI: "Slowenien", SK: "Slowakei", HR: "Kroatien",
+    HU: "Ungarn", RO: "Rumänien", BG: "Bulgarien", GR: "Griechenland",
+    CH: "Schweiz", LI: "Liechtenstein", IS: "Island", UK: "Großbritannien",
+    U2: "Euroraum",
+  };
+
+  function landName(code) {
+    if (!code) return "unbekannt";
+    return LAENDER[String(code).toUpperCase()] || String(code).toUpperCase();
+  }
+
+  /* ============================================================ Daten laden */
 
   function datenUrl() {
     return (zustand.einstellungen.quelle || CFG.datenUrl || "").trim();
@@ -109,30 +251,26 @@
     $("btnAktualisieren").classList.add("dreht");
 
     var url = datenUrl();
-    var kette;
-
-    if (!url) {
-      kette = Promise.reject(new Error("Keine Daten-URL gesetzt"));
-    } else {
-      kette = holeMitTimeout(url).then(function (r) {
-        if (!r.ok) throw new Error("HTTP " + r.status);
-        return r.json();
-      });
-    }
+    var kette = url
+      ? holeMitTimeout(url).then(function (r) {
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          return r.json();
+        })
+      : Promise.reject(new Error("Keine Daten-Adresse eingestellt"));
 
     return kette
       .then(function (daten) {
         if (!pruefeStruktur(daten)) throw new Error("Unerwartetes Datenformat");
         schreib(SPEICHER.daten, { geholt: new Date().toISOString(), daten: daten });
         uebernehmen(daten, "netz");
-        if (erzwingen) toast("Aktualisiert: " + daten.angebote.length + " Angebote");
+        if (erzwingen) toast(daten.angebote.length + " Angebote aktualisiert");
         pruefeSchwelle(daten);
       })
       .catch(function (fehler) {
         var zwischen = lies(SPEICHER.daten, null);
         if (zwischen && pruefeStruktur(zwischen.daten)) {
           uebernehmen(zwischen.daten, "cache", fehler.message, zwischen.geholt);
-          if (erzwingen) toast("Offline – zeige gespeicherten Stand");
+          if (erzwingen) toast("Kein Netz – gespeicherter Stand");
           return;
         }
         return holeMitTimeout(CFG.lokalerFallback || "data/zinsen.json", 6000)
@@ -159,16 +297,10 @@
     } else {
       hinweis.hidden = false;
       hinweis.className = "hinweis";
-      if (quelle === "cache") {
-        hinweis.textContent = "Kein Netz – gespeicherter Stand vom " + datumKurz(geholtAm) +
-          (fehlertext ? " (" + fehlertext + ")" : "");
-      } else {
-        hinweis.textContent = "Mitgelieferte Daten werden angezeigt. Datenquelle in den " +
-          "Einstellungen prüfen" + (fehlertext ? " (" + fehlertext + ")" : "") + ".";
-      }
+      hinweis.textContent = quelle === "cache"
+        ? "Gerade kein Netz. Du siehst den gespeicherten Stand vom " + datumKurz(geholtAm) + "."
+        : "Es werden die mitgelieferten Daten angezeigt. Die Daten-Adresse steht in den Einstellungen.";
     }
-    landfilterFuellen();
-    referenzleiste();
     rendern();
   }
 
@@ -177,114 +309,133 @@
     var hinweis = $("hinweis");
     hinweis.hidden = false;
     hinweis.className = "hinweis fehler";
-    hinweis.innerHTML = "Daten konnten nicht geladen werden (" + escape(text) + ").<br>" +
-      "Bitte die JSON-URL in den Einstellungen prüfen.";
+    hinweis.textContent = "Die Daten konnten nicht geladen werden (" + text +
+      "). Prüf die Daten-Adresse in den Einstellungen.";
   }
 
-  // -------------------------------------------------- Referenzleiste (F4)
-
-  function referenzWaehlen() {
-    var ref = (zustand.daten && zustand.daten.referenz) || {};
-    var mir = ref.ezb_mir || {};
-    var land = zustand.filter.land;
-    if (land && mir[land]) return { land: land, eintrag: mir[land] };
-    if (mir.U2) return { land: "Euroraum", eintrag: mir.U2 };
-    var ersteKeys = Object.keys(mir);
-    if (ersteKeys.length) return { land: ersteKeys[0], eintrag: mir[ersteKeys[0]] };
-    return null;
-  }
-
-  function referenzleiste() {
-    var ref = (zustand.daten && zustand.daten.referenz) || {};
-    var leiste = $("referenzleiste");
-    if (!zustand.daten) { leiste.hidden = true; return; }
-    leiste.hidden = false;
-
-    var wahl = referenzWaehlen();
-    if (wahl) {
-      $("mirLabel").textContent = "EZB-Schnitt " + (wahl.land === "Euroraum" ? "Euroraum" : wahl.land);
-      $("mirWert").textContent = pct(wahl.eintrag.wert_pct);
-      $("mirSub").textContent = wahl.eintrag.periode || "";
-    } else {
-      $("mirLabel").textContent = "EZB-Schnitt";
-      $("mirWert").textContent = "–";
-      $("mirSub").textContent = "keine Daten";
-    }
-
-    var estr = ref.estr || {};
-    $("estrWert").textContent = pct(estr.aktuell_pct, nfProzent3);
-    var pfeil = estr.trend === "steigend" ? "▲" : (estr.trend === "fallend" ? "▼" : "▬");
-    var delta = estr.veraenderung_30t_pp;
-    $("estrSub").textContent = pfeil + " " + (estr.trend || "unbekannt") +
-      (delta !== null && delta !== undefined ? " (" + (delta > 0 ? "+" : "") + nfProzent3.format(delta) + " pp)" : "");
-    $("estrSub").className = "referenz-sub " + (estr.trend || "");
-
-    $("standWert").textContent = datumKurz(zustand.daten.stand_datum || zustand.daten.stand);
-    var stat = zustand.daten.statistik || {};
-    $("standSub").textContent = (stat.angebote || zustand.daten.angebote.length) + " Angebote";
-  }
-
-  // ------------------------------------------------------ Filter/Sortierung
-
-  function landfilterFuellen() {
-    var sel = $("fLand");
-    var vorher = sel.value;
-    var laender = {};
-    (zustand.daten.angebote || []).forEach(function (a) {
-      var l = a.einlagensicherung_land || a.land;
-      if (l) laender[l] = (laender[l] || 0) + 1;
-    });
-    var keys = Object.keys(laender).sort();
-    sel.innerHTML = '<option value="">alle Länder</option>' + keys.map(function (l) {
-      return '<option value="' + escape(l) + '">' + escape(l) + " (" + laender[l] + ")</option>";
-    }).join("");
-    sel.value = vorher;
-  }
+  /* ============================================== Felder je nach Einstellung */
 
   function nettoFeld() {
+    if (zustand.einstellungen.abgeltung) {
+      return zustand.einstellungen.erstattung
+        ? "netto_nach_abgeltungssteuer_mit_erstattung_pct"
+        : "netto_nach_abgeltungssteuer_ohne_erstattung_pct";
+    }
     return zustand.einstellungen.erstattung
-      ? "netto_12m_mit_erstattung_pct" : "netto_12m_ohne_erstattung_pct";
+      ? "netto_12m_mit_erstattung_pct"
+      : "netto_12m_ohne_erstattung_pct";
   }
 
   function scoreFeld() {
     return zustand.einstellungen.erstattung ? "score_mit_erstattung" : "score_ohne_erstattung";
   }
 
-  function anzeigeNetto(a) {
-    if (zustand.einstellungen.abgeltung) {
-      return a[zustand.einstellungen.erstattung
-        ? "netto_nach_abgeltungssteuer_mit_erstattung_pct"
-        : "netto_nach_abgeltungssteuer_ohne_erstattung_pct"];
+  function nettoWert(a) { return a[nettoFeld()]; }
+
+  /* "nach Steuern bleiben 425 €" ist irrefuehrend, wenn gar keine Steuer
+     abgezogen wurde - bei deutschen Banken ist brutto gleich netto, weil
+     die Abgeltungssteuer bewusst draussen bleibt. Dann lieber sagen,
+     warum nichts abgeht. */
+  function nettoSatz(a) {
+    var netto = inEuro(nettoWert(a));
+    var qst = qstWert(a);
+    if (istZahl(qst) && qst > 0) {
+      return "nach Quellensteuer bleiben " + euro(netto);
     }
-    return a[nettoFeld()];
+    if (zustand.einstellungen.abgeltung) {
+      return "nach Steuern bleiben " + euro(netto);
+    }
+    return "ohne Abzug – hier fällt keine ausländische Steuer an";
+  }
+
+  function qstWert(a) {
+    return zustand.einstellungen.erstattung
+      ? a.qst_effektiv_mit_erstattung_pct
+      : a.qst_effektiv_ohne_erstattung_pct;
+  }
+
+  function grenzenVon(a) {
+    var min = istZahl(a.mindestanlage_eur) ? a.mindestanlage_eur : a.mindestanlage;
+    var max = istZahl(a.hoechstanlage_eur) ? a.hoechstanlage_eur : a.hoechstanlage;
+    return { min: istZahl(min) ? min : null, max: istZahl(max) ? max : null };
+  }
+
+  function passtZumBetrag(a) {
+    var g = grenzenVon(a);
+    if (g.min !== null && zustand.betrag < g.min) return false;
+    if (g.max !== null && zustand.betrag > g.max) return false;
+    return true;
+  }
+
+  /* ================================================== Filtern und Sortieren */
+
+  /* Alles, worin gesucht werden soll, in einem Text. Wird je Angebot
+     einmal gebaut und am Objekt gemerkt – bei 200 Angeboten und jedem
+     Tastendruck lohnt sich das. */
+  function suchtext(a) {
+    if (a._suchtext) return a._suchtext;
+    var teile = [
+      a.bank, a.produkt, landName(a.einlagensicherung_land),
+      a.einlagensicherung_land, a.waehrung, a.sicherungssystem_name,
+      a.staatsrating_sp,
+      a.zinstyp === "aktion" ? "aktion aktionszins befristet" : "",
+      a.zinstyp === "fest" ? "festzins fest" : "",
+      a.zinstyp === "variabel" ? "variabel" : "",
+      a.nur_neukunden ? "neukunden neukundenangebot" : "bestandskunden",
+      a.waehrungsrisiko ? "fremdwaehrung waehrungsrisiko" : "euro",
+      a.stale ? "veraltet alt" : "",
+    ];
+    (a.quellen || []).forEach(function (q) { teile.push(q.id, q.typ); });
+    a._suchtext = suchform(teile.join(" "));
+    return a._suchtext;
+  }
+
+  /* Mehrere Wörter heißt UND: "chase neukunden" findet nur, was beides hat. */
+  function passtZurSuche(a, worte) {
+    var heu = suchtext(a);
+    for (var i = 0; i < worte.length; i++) {
+      if (heu.indexOf(worte[i]) === -1) return false;
+    }
+    return true;
   }
 
   function gefiltert() {
     var f = zustand.filter;
-    var suche = zustand.suche.trim().toLowerCase();
-    var betrag = parseFloat(f.betrag);
+    var worte = suchform(zustand.suche).split(" ").filter(Boolean);
+    var minZins = zahlAusEingabe(f.minZins);
+    var ratingRang = { AAA: 4, AA: 4, A: 3, BBB: 2 };
+    var minRang = f.rating ? (ratingRang[f.rating] || 0) : 0;
 
     return (zustand.daten.angebote || []).filter(function (a) {
-      if (suche) {
-        var heu = ((a.bank || "") + " " + (a.produkt || "") + " " + (a.land || "")).toLowerCase();
-        if (heu.indexOf(suche) === -1) return false;
-      }
+      // Abgehakte Angebote sind aus der Hauptliste raus – außer man
+      // schaut sie in den Einstellungen bewusst an.
+      var abgehakt = zustand.erledigt.indexOf(a.dedupe_key) !== -1;
+      if (f.zeigeErledigt) { if (!abgehakt) return false; }
+      else if (abgehakt) return false;
+
+      if (worte.length && !passtZurSuche(a, worte)) return false;
       if (f.land && (a.einlagensicherung_land || a.land) !== f.land) return false;
       if (f.typ && a.zinstyp !== f.typ) return false;
+      if (f.aktion === "nur" && a.zinstyp !== "aktion") return false;
+      if (f.aktion === "ohne" && a.zinstyp === "aktion") return false;
+      if (f.neukunden === "nur" && !a.nur_neukunden) return false;
+      if (f.neukunden === "ohne" && a.nur_neukunden) return false;
       if (f.nurEur && a.waehrung && a.waehrung !== "EUR") return false;
       if (f.ohneStale && a.stale) return false;
       if (f.nurWatch && zustand.watchlist.indexOf(a.dedupe_key) === -1) return false;
+      if (f.passtZuBetrag && !passtZumBetrag(a)) return false;
+      if (!isNaN(minZins) && (!istZahl(a.zinssatz_pct) || a.zinssatz_pct < minZins)) return false;
+      if (minRang) {
+        var rang = ratingRang[a.rating_gruppe] || 0;
+        if (rang < minRang) return false;
+      }
+      if (f.vollGesichert) {
+        var deckung = a.einlagensicherung_betrag_eur;
+        if (!istZahl(deckung) || deckung < zustand.betrag) return false;
+      }
       if (f.quelltyp) {
         var typen = (a.quellen || []).map(function (q) { return q.typ; });
         if (typen.indexOf(f.quelltyp) === -1) return false;
-      }
-      if (!isNaN(betrag) && betrag > 0) {
-        var min = a.mindestanlage_eur !== null && a.mindestanlage_eur !== undefined
-          ? a.mindestanlage_eur : a.mindestanlage;
-        var max = a.hoechstanlage_eur !== null && a.hoechstanlage_eur !== undefined
-          ? a.hoechstanlage_eur : a.hoechstanlage;
-        if (min !== null && min !== undefined && betrag < min) return false;
-        if (max !== null && max !== undefined && betrag > max) return false;
       }
       return true;
     });
@@ -292,321 +443,1076 @@
 
   function sortiert(liste) {
     var s = zustand.sortierung;
-    var kopie = liste.slice();
-    var zahl = function (wert) {
-      return (wert === null || wert === undefined || isNaN(wert)) ? -999 : wert;
-    };
-    kopie.sort(function (a, b) {
+    var zahl = function (wert) { return istZahl(wert) ? wert : -999; };
+
+    return liste.slice().sort(function (a, b) {
       switch (s) {
-        case "brutto": return zahl(b.brutto_12m_pct) - zahl(a.brutto_12m_pct);
-        case "netto": return zahl(anzeigeNetto(b)) - zahl(anzeigeNetto(a));
-        case "bank": return (a.bank || "").localeCompare(b.bank || "", "de");
+        // "Höchster Zins" meint das, womit die Bank wirbt.
+        case "werbezins": return zahl(b.zinssatz_pct) - zahl(a.zinssatz_pct);
+        // "Erstes Jahr" rechnet befristete Aktionen ehrlich herunter.
+        case "brutto":    return zahl(b.brutto_12m_pct) - zahl(a.brutto_12m_pct);
+        case "netto":  return zahl(nettoWert(b)) - zahl(nettoWert(a));
+        case "bank":   return (a.bank || "").localeCompare(b.bank || "", "de");
         case "land":
-          var la = (a.einlagensicherung_land || ""), lb = (b.einlagensicherung_land || "");
+          var la = landName(a.einlagensicherung_land), lb = landName(b.einlagensicherung_land);
           if (la !== lb) return la.localeCompare(lb, "de");
           return zahl(b[scoreFeld()]) - zahl(a[scoreFeld()]);
-        default: return zahl(b[scoreFeld()]) - zahl(a[scoreFeld()]);
+        default:       return zahl(b[scoreFeld()]) - zahl(a[scoreFeld()]);
       }
     });
-    return kopie;
   }
 
-  // ------------------------------------------------------------- Rendern
+  var FILTER_TEXT = ["land", "typ", "quelltyp", "rating", "minZins", "aktion", "neukunden"];
+  var FILTER_SCHALTER = ["nurEur", "nurWatch", "ohneStale", "passtZuBetrag", "vollGesichert"];
 
-  var RATING_KLASSE = { AAA: "gut", AA: "gut", A: "mittel", BBB: "mittel" };
+  function filterAnzahl() {
+    var f = zustand.filter, n = 0;
+    FILTER_TEXT.forEach(function (k) { if (f[k]) n++; });
+    FILTER_SCHALTER.forEach(function (k) { if (f[k]) n++; });
+    return n;
+  }
+
+  /* ================================================================ Rendern */
+
+  var RATING_KLASSE = { AAA: "gut", AA: "gut", A: "gut", BBB: "mittel" };
 
   function ratingKlasse(gruppe) {
-    return RATING_KLASSE[gruppe] || (gruppe ? "schlecht" : "neutral");
+    return RATING_KLASSE[gruppe] || (gruppe ? "schwach" : "");
+  }
+
+  function ratingWort(gruppe) {
+    if (gruppe === "AAA" || gruppe === "AA") return "sehr sicher";
+    if (gruppe === "A") return "sicher";
+    if (gruppe === "BBB") return "solide";
+    if (!gruppe) return "unbekannt";
+    return "erhöhtes Risiko";
   }
 
   function karteHtml(a, index) {
-    var netto = anzeigeNetto(a);
     var beobachtet = zustand.watchlist.indexOf(a.dedupe_key) !== -1;
     var klassen = ["karte"];
     if (a.stale) klassen.push("stale");
     if (beobachtet) klassen.push("watch");
 
-    var badges = [];
-    var sicher = a.einlagensicherung_betrag_eur;
-    badges.push('<span class="badge ' + (sicher >= 100000 ? "gut" : (sicher ? "mittel" : "neutral")) + '">' +
-      "&#128274; " + (sicher ? geld(sicher) : "Sicherung unbekannt") + "</span>");
+    var land = a.einlagensicherung_land || a.land;
+    var zinsenBrutto = inEuro(a.brutto_12m_pct);
 
-    if (a.staatsrating_sp) {
-      badges.push('<span class="badge ' + ratingKlasse(a.rating_gruppe) + '">' +
-        escape(a.einlagensicherung_land || "") + " " + escape(a.staatsrating_sp) + "</span>");
+    /* Zeile 1: Wer, und was wirbt die Bank */
+    var kopf =
+      '<div class="karte-kopf">' +
+        '<div class="karte-titel">' +
+          '<span class="bank">' + esc(a.bank) + "</span>" +
+          '<span class="bank-sub">' + esc(a.produkt || "Tagesgeld") + " · " +
+            esc(landName(land)) + "</span>" +
+        "</div>" +
+        '<div class="karte-knoepfe">' +
+          (a.nur_neukunden
+            ? '<button class="haken" type="button" data-erledigt="' + index + '"' +
+              ' aria-label="Schon genutzt – ausblenden" title="Schon genutzt – ausblenden">' +
+              ikon("haken") + "</button>"
+            : "") +
+          '<button class="stern' + (beobachtet ? " an" : "") + '" type="button" data-watch="' + index + '"' +
+            ' aria-pressed="' + (beobachtet ? "true" : "false") + '"' +
+            ' aria-label="' + (beobachtet ? "Von der Merkliste nehmen" : "Auf die Merkliste setzen") + '">' +
+            ikon(beobachtet ? "stern-voll" : "stern") +
+          "</button>" +
+        "</div>" +
+      "</div>";
+
+    var zins =
+      '<div class="zins-zeile">' +
+        '<span class="zins">' + pct(a.zinssatz_pct) + "</span>" +
+        '<span class="zins-dazu">pro Jahr</span>' +
+      "</div>" +
+      '<div class="werbung">So wirbt die Bank</div>';
+
+    /* Aktionszins: der große Wert gilt nur eine Weile. Das muss auf die
+       Karte, sonst wirkt die Euro-Zeile darunter wie ein Rechenfehler. */
+    var aktion = "";
+    if (a.zinstyp === "aktion" && a.aktionsdauer_monate > 0) {
+      aktion =
+        '<div class="aktion-hinweis">' + ikon("uhr") +
+        "<span><b>Nur " + a.aktionsdauer_monate + " Monate lang.</b> Danach " +
+        pct(a.folgezins_pct) + (a.folgezins_geschaetzt ? " (geschätzt)" : "") +
+        " – über zwölf Monate also " + pct(a.brutto_12m_pct) + ".</span></div>";
+    }
+
+    /* Der Rechenkasten: die eigentliche Antwort auf "was bringt mir das?" */
+    var rechnung =
+      '<div class="rechenkasten">' + ikon("muenze") +
+        '<div class="rechen-text">' +
+          '<div class="rechen-haupt"><b>' + euro(zinsenBrutto) + "</b> Zinsen im ersten Jahr</div>" +
+          '<div class="rechen-neben">bei ' + euro(zustand.betrag) + " · " + nettoSatz(a) + "</div>" +
+        "</div>" +
+      "</div>";
+
+    /* Merkzeichen */
+    var pillen = [];
+    var sicher = a.einlagensicherung_betrag_eur;
+    if (sicher) {
+      var gedeckt = zustand.betrag <= sicher;
+      pillen.push('<span class="marke-pille ' + (gedeckt ? "gut" : "mittel") + '">' + ikon("schloss") +
+        (gedeckt ? "geschützt bis " + euro(sicher) : "nur " + euro(sicher) + " geschützt") + "</span>");
+    } else {
+      pillen.push('<span class="marke-pille">' + ikon("schloss") + "Schutz unbekannt</span>");
+    }
+
+    if (a.rating_gruppe) {
+      pillen.push('<span class="marke-pille ' + ratingKlasse(a.rating_gruppe) + '">' +
+        esc(landName(land)) + ": " + esc(ratingWort(a.rating_gruppe)) + "</span>");
     }
     if (a.zinstyp === "aktion" && a.aktionsdauer_monate) {
-      badges.push('<span class="badge info">Aktion ' + a.aktionsdauer_monate + " Mon.</span>");
+      pillen.push('<span class="marke-pille info">' + ikon("funke") +
+        a.aktionsdauer_monate + " Monate Aktion</span>");
+    }
+    if (a.nur_neukunden) {
+      pillen.push('<span class="marke-pille mittel">' + ikon("person") + "nur für Neukunden</span>");
+    }
+    if (a.zinstyp === "fest") {
+      pillen.push('<span class="marke-pille info">Zins fest</span>');
     }
     if (a.waehrungsrisiko) {
-      badges.push('<span class="badge mittel">' + escape(a.waehrung) + "-Währungsrisiko</span>");
+      pillen.push('<span class="marke-pille mittel">Währung ' + esc(a.waehrung) + "</span>");
     }
-    if (a.extraction_tier === 3) {
-      badges.push('<span class="badge neutral">automatisch erkannt</span>');
+    var g = grenzenVon(a);
+    if (g.min !== null && g.min > 0) {
+      pillen.push('<span class="marke-pille' + (zustand.betrag < g.min ? " mittel" : "") + '">ab ' +
+        euro(g.min) + "</span>");
     }
-    if (a.flag === "pruefen") {
-      badges.push('<span class="badge schlecht">prüfen</span>');
+    if (a.land_quelle === "quellenland_angenommen") {
+      pillen.push('<span class="marke-pille" title="Aus dem Land der Quelle abgeleitet">' +
+        ikon("info") + "Land angenommen</span>");
+    }
+    if (a.qst_reibung) {
+      pillen.push('<span class="marke-pille mittel">' + ikon("uhr") + "Steuer erst zurückholen</span>");
     }
     if (a.stale) {
-      badges.push('<span class="badge neutral">Stand ' + escape(a.stale_seit || a.stand || "") + "</span>");
+      pillen.push('<span class="marke-pille">' + ikon("uhr") + "Stand " + esc(datumKurz(a.stale_seit || a.stand)) + "</span>");
+    }
+    if (a.flag === "pruefen") {
+      pillen.push('<span class="marke-pille mittel">' + ikon("warnung") + "ungewöhnlich hoch</span>");
+    }
+    if (a.extraction_tier === 3) {
+      pillen.push('<span class="marke-pille">automatisch erkannt</span>');
     }
     if (a.override) {
-      badges.push('<span class="badge info">manuell geprüft</span>');
+      pillen.push('<span class="marke-pille info">von Hand geprüft</span>');
     }
 
-    if (a.land_quelle === "quellenland_angenommen") {
-      badges.push('<span class="badge neutral" title="Sicherungsland aus der Quelle abgeleitet">' +
-        "Land angenommen</span>");
-    }
-
-    var nettoText = zustand.einstellungen.abgeltung
-      ? "netto " + pct(netto) + " über 12 Monate, nach Quellen- und Abgeltungssteuer"
-      : "netto " + pct(netto) + " über 12 Monate, nach Quellensteuer";
-
-    // Bei einer befristeten Aktion ist der grosse Zins nicht das, was über
-    // 12 Monate hängen bleibt. Das muss auf der Karte stehen, sonst wirkt
-    // die Netto-Zeile wie ein Rechenfehler.
-    var aktionszeile = "";
-    if (a.zinstyp === "aktion" && a.aktionsdauer_monate > 0) {
-      aktionszeile = '<div class="netto-zeile"><span>' +
-        pct(a.zinssatz_pct) + " für " + a.aktionsdauer_monate + " Monate, danach " +
-        pct(a.folgezins_pct) + (a.folgezins_geschaetzt ? " (geschätzt)" : "") +
-        " · brutto " + pct(a.brutto_12m_pct) + " über 12 Monate</span></div>";
-    }
-
-    return '<li class="' + klassen.join(" ") + '" data-index="' + index + '">' +
-      '<div class="karte-kopf">' +
-        '<span class="bank">' + escape(a.bank) + "</span>" +
-        '<span class="zins">' + pct(a.zinssatz_pct) +
-          (a.zinstyp === "aktion" ? "<small>Aktion</small>" : "") + "</span>" +
-      "</div>" +
-      aktionszeile +
-      '<div class="netto-zeile">' +
-        '<span class="netto-wert">' + escape(nettoText) + "</span>" +
-        '<span class="tipp">Rechnung ansehen</span>' +
-      "</div>" +
-      '<div class="badges">' + badges.join("") + "</div>" +
-      '<div class="karte-fuss">' +
-        "<span>" + escape(a.produkt || "Tagesgeld") + " · Score " +
-          (a[scoreFeld()] !== null && a[scoreFeld()] !== undefined ? nfProzent.format(a[scoreFeld()]) : "–") +
-          " · " + (a.quellen_anzahl || 1) + " Quelle" + ((a.quellen_anzahl || 1) > 1 ? "n" : "") + "</span>" +
-        '<button class="stern' + (beobachtet ? " an" : "") + '" data-watch="' + index +
-          '" aria-label="Zur Watchlist" title="Watchlist">' + (beobachtet ? "&#9733;" : "&#9734;") + "</button>" +
-      "</div>" +
-    "</li>";
+    return '<li class="' + klassen.join(" ") + '" data-index="' + index +
+      '" style="animation-delay:' + Math.min(index, 9) * 28 + 'ms" tabindex="0" role="button">' +
+      kopf + zins + aktion + rechnung +
+      '<div class="marken">' + pillen.join("") + "</div>" +
+      "</li>";
   }
-
-  var sichtbar = [];
 
   function rendern() {
     if (!zustand.daten) return;
-    sichtbar = sortiert(gefiltert());
+    zustand.sichtbar = sortiert(gefiltert());
 
-    $("liste").innerHTML = sichtbar.map(karteHtml).join("");
-    $("leer").hidden = sichtbar.length > 0;
+    var zeigen = Math.min(zustand.limit, zustand.sichtbar.length);
+    $("liste").innerHTML = zustand.sichtbar.slice(0, zeigen).map(karteHtml).join("");
+    $("leer").hidden = zustand.sichtbar.length > 0;
 
-    var aktiv = 0, f = zustand.filter;
-    ["land", "typ", "betrag", "quelltyp"].forEach(function (k) { if (f[k]) aktiv++; });
-    ["nurEur", "nurWatch", "ohneStale"].forEach(function (k) { if (f[k]) aktiv++; });
-    $("filterAnzahl").textContent = aktiv;
-    $("filterAnzahl").hidden = aktiv === 0;
-    $("btnFilter").classList.toggle("aktiv", aktiv > 0);
+    var rest = zustand.sichtbar.length - zeigen;
+    var mehr = $("btnMehr");
+    mehr.hidden = rest <= 0;
+    mehr.textContent = rest > 0
+      ? "Weitere " + Math.min(rest, SEITE) + " von " + rest + " anzeigen" : "";
 
-    var stat = zustand.daten.statistik || {};
-    var tiers = stat.tier_verteilung || {};
-    var tierText = Object.keys(tiers).sort().map(function (t) {
-      return "Stufe " + t + ": " + tiers[t];
-    }).join(" · ");
-    $("fussStatistik").textContent = sichtbar.length + " von " + (zustand.daten.angebote || []).length +
-      " Angeboten sichtbar" + (tierText ? " · " + tierText : "") +
-      (stat.stale ? " · " + stat.stale + " veraltet" : "");
+    var n = filterAnzahl();
+    $("filterAnzahl").textContent = n;
+    $("filterAnzahl").hidden = n === 0;
+    $("btnFilter").classList.toggle("aktiv", n > 0);
 
-    referenzleiste();
+    aktiveFilterZeigen();
+    heldZeigen();
+    referenzZeigen();
+    statistikZeigen();
   }
 
-  // ------------------------------------------------- Detail-Sheet (F2)
+  var TYP_TEXT = { variabel: "variabler Zins", aktion: "Aktionszins", fest: "fester Zins" };
+  var QUELLTYP_TEXT = {
+    bank: "direkt von der Bank", plattform: "über eine Zinsplattform",
+    portal: "über ein Vergleichsportal",
+  };
+  var RATING_TEXT = { AAA: "nur sehr sichere Länder", A: "mindestens sicher", BBB: "mindestens solide" };
 
-  function detailHtml(a) {
-    var erst = zustand.einstellungen.erstattung;
-    var qst = erst ? a.qst_effektiv_mit_erstattung_pct : a.qst_effektiv_ohne_erstattung_pct;
-    var grund = erst ? a.qst_begruendung_mit_erstattung : a.qst_begruendung_ohne_erstattung;
-    var netto = erst ? a.netto_12m_mit_erstattung_pct : a.netto_12m_ohne_erstattung_pct;
-    var score = a[scoreFeld()];
-    var dauer = a.aktionsdauer_monate || 0;
-    var rest = Math.max(0, 12 - Math.min(dauer, 12));
+  function aktiveFilterZeigen() {
+    var f = zustand.filter;
+    var chips = [];
+    if (f.land) chips.push({ k: "land", t: landName(f.land) });
+    if (f.typ) chips.push({ k: "typ", t: TYP_TEXT[f.typ] || f.typ });
+    if (f.quelltyp) chips.push({ k: "quelltyp", t: QUELLTYP_TEXT[f.quelltyp] || f.quelltyp });
+    if (f.rating) chips.push({ k: "rating", t: RATING_TEXT[f.rating] || f.rating });
+    if (f.minZins && !isNaN(zahlAusEingabe(f.minZins))) {
+      chips.push({ k: "minZins", t: "ab " + pctSchlank(zahlAusEingabe(f.minZins)) });
+    }
+    if (f.aktion) chips.push({ k: "aktion", t: f.aktion === "nur" ? "nur Aktionen" : "ohne Aktionen" });
+    if (f.neukunden) chips.push({ k: "neukunden", t: f.neukunden === "nur" ? "nur für Neukunden" : "ohne Neukunden-Angebote" });
+    if (f.nurEur) chips.push({ k: "nurEur", t: "nur Euro" });
+    if (f.nurWatch) chips.push({ k: "nurWatch", t: "nur Merkliste" });
+    if (f.ohneStale) chips.push({ k: "ohneStale", t: "ohne alte Werte" });
+    if (f.passtZuBetrag) chips.push({ k: "passtZuBetrag", t: "passt zu " + euro(zustand.betrag) });
+    if (f.vollGesichert) chips.push({ k: "vollGesichert", t: euro(zustand.betrag) + " voll geschützt" });
 
-    var h = [];
-    h.push('<h2 id="sheetTitel">' + escape(a.bank) + "</h2>");
-    h.push('<p class="klein">' + escape(a.produkt || "Tagesgeld") + " · " +
-      escape(a.einlagensicherung_land || a.land || "?") + " · " + escape(a.waehrung || "EUR") + "</p>");
+    var el = $("aktiveFilter");
+    el.hidden = chips.length === 0;
+    el.innerHTML = chips.map(function (c) {
+      return '<button class="filter-chip" type="button" data-filter-weg="' + c.k + '">' +
+        esc(c.t) + ikon("x") + "</button>";
+    }).join("");
+  }
 
-    h.push("<h3>Bruttozins über 12 Monate</h3>");
-    h.push('<table class="rechnung">');
-    if (dauer > 0) {
-      h.push("<tr><td>Aktionszins " + pct(a.zinssatz_pct) + " × " + Math.min(dauer, 12) + " Monate</td><td>" +
-        nfProzent3.format(a.zinssatz_pct * Math.min(dauer, 12) / 12) + " pp</td></tr>");
-      h.push("<tr><td>Folgezins " + pct(a.folgezins_pct) +
-        (a.folgezins_geschaetzt ? " <em>(geschätzt)</em>" : "") + " × " + rest + " Monate</td><td>" +
-        nfProzent3.format((a.folgezins_pct || 0) * rest / 12) + " pp</td></tr>");
-    } else {
-      h.push("<tr><td>Zins " + pct(a.zinssatz_pct) + " × 12 Monate</td><td>" +
-        nfProzent3.format(a.zinssatz_pct) + " pp</td></tr>");
-    }
-    h.push('<tr class="summe"><td>Brutto 12 Monate</td><td>' + pct(a.brutto_12m_pct, nfProzent3) + "</td></tr>");
-    h.push("</table>");
-    h.push('<div class="formel">brutto_12m = (aktionszins × min(aktionsdauer,12)\n' +
-           "              + folgezins × max(0, 12 − aktionsdauer)) / 12</div>");
-
-    h.push("<h3>Quellensteuer</h3>");
-    h.push('<table class="rechnung">');
-    h.push("<tr><td>Standardsatz " + escape(a.einlagensicherung_land || "") + "</td><td>" +
-      pct(a.qst_standard_pct) + "</td></tr>");
-    h.push("<tr><td>Mit DBA</td><td>" + pct(a.qst_mit_dba_pct) + "</td></tr>");
-    h.push("<tr><td>Rückerstattung</td><td>" + escape(a.rueckerstattung_aufwand || "unbekannt") + "</td></tr>");
-    h.push('<tr class="zwischen"><td colspan="2">' + escape(grund || "") + "</td></tr>");
-    h.push('<tr class="summe"><td>Effektiv angesetzt</td><td>' + pct(qst) + "</td></tr>");
-    h.push("</table>");
-    if (a.rueckerstattung_formular) {
-      h.push('<p class="klein">Formular: ' + escape(a.rueckerstattung_formular) +
-        (a.rueckerstattung_quelle ? ' · <a href="' + escape(a.rueckerstattung_quelle) +
-          '" target="_blank" rel="noopener">Behörde</a>' : "") + "</p>");
-    }
-
-    h.push("<h3>Netto und Score</h3>");
-    h.push('<table class="rechnung">');
-    h.push("<tr><td>Brutto 12 Monate</td><td>" + pct(a.brutto_12m_pct, nfProzent3) + "</td></tr>");
-    h.push("<tr><td>abzüglich Quellensteuer " + pct(qst) + "</td><td>" + pct(netto, nfProzent3) + "</td></tr>");
-    h.push("<tr><td>Risikoabschlag Rating " + escape(a.staatsrating_sp || "?") +
-      " (" + escape(a.rating_gruppe || "?") + ")</td><td>− " +
-      nfProzent3.format(a.risiko_abschlag_pp || 0) + " pp</td></tr>");
-    h.push('<tr class="summe"><td>Score</td><td>' + pct(score, nfProzent3) + "</td></tr>");
-    if (zustand.einstellungen.abgeltung) {
-      h.push('<tr class="zwischen"><td>Nach dt. Abgeltungssteuer (nur Anzeige)</td><td>' +
-        pct(anzeigeNetto(a), nfProzent3) + "</td></tr>");
-    }
-    h.push("</table>");
-    h.push('<div class="formel">netto_12m = brutto_12m × (1 − qst_effektiv)\n' +
-           "score     = netto_12m − risiko_abschlag[staatsrating_sp]</div>");
-    h.push('<p class="klein">Die deutsche Abgeltungssteuer ist bewusst nicht im Score: ' +
-           "sie trifft alle Anbieter gleich und würde die Reihenfolge nicht ändern.</p>");
-
-    h.push("<h3>Konditionen</h3>");
-    h.push('<table class="rechnung">');
-    h.push("<tr><td>Zinstyp</td><td>" + escape(a.zinstyp || "–") + "</td></tr>");
-    h.push("<tr><td>Aktionsdauer</td><td>" + (dauer ? dauer + " Monate" : "keine") + "</td></tr>");
-    h.push("<tr><td>Mindestanlage</td><td>" + (a.mindestanlage === null || a.mindestanlage === undefined
-      ? "keine Angabe" : geld(a.mindestanlage_eur !== null && a.mindestanlage_eur !== undefined
-        ? a.mindestanlage_eur : a.mindestanlage)) + "</td></tr>");
-    h.push("<tr><td>Höchstanlage</td><td>" + (a.hoechstanlage === null || a.hoechstanlage === undefined
-      ? "keine Angabe" : geld(a.hoechstanlage_eur !== null && a.hoechstanlage_eur !== undefined
-        ? a.hoechstanlage_eur : a.hoechstanlage)) + "</td></tr>");
-    h.push("<tr><td>Einlagensicherung</td><td>" + geld(a.einlagensicherung_betrag_eur) + "</td></tr>");
-    h.push("<tr><td>Sicherungsland</td><td>" + escape(a.einlagensicherung_land || "?") +
-      (a.land_quelle === "quellenland_angenommen" ? " (angenommen)" : "") + "</td></tr>");
-    if (a.sicherungssystem_name) {
-      h.push('<tr class="zwischen"><td colspan="2">' + escape(a.sicherungssystem_name) +
-        (a.sicherung_quelle ? ' · <a href="' + escape(a.sicherung_quelle) +
-          '" target="_blank" rel="noopener">Quelle</a>' : "") + "</td></tr>");
-    }
-    if (a.ezb_landesdurchschnitt_pct !== null && a.ezb_landesdurchschnitt_pct !== undefined) {
-      h.push("<tr><td>EZB-Landesdurchschnitt (" + escape(a.ezb_periode || "") + ")</td><td>" +
-        pct(a.ezb_landesdurchschnitt_pct) + "</td></tr>");
-      h.push("<tr><td>Abstand zum Durchschnitt</td><td>" +
-        (a.differenz_zu_ezb_pp > 0 ? "+" : "") + nfProzent.format(a.differenz_zu_ezb_pp || 0) + " pp</td></tr>");
-    }
-    h.push("</table>");
-
-    if (a.flag === "pruefen" && a.flag_grund) {
-      h.push('<p class="hinweis">' + escape(a.flag_grund) + "</p>");
-    }
-    if (a.stale) {
-      h.push('<p class="hinweis">Veralteter Wert: ' + escape(a.stale_grund || "") +
-        " (seit " + escape(a.stale_seit || "?") + ")</p>");
-    }
-    if (a.extraction_tier === 3) {
-      h.push('<p class="hinweis">Dieser Eintrag wurde automatisch aus dem Seitentext erkannt ' +
-        "(Sprachmodell). Vor Abschluss unbedingt beim Anbieter prüfen.</p>");
-    }
-    if (a.land_quelle === "quellenland_angenommen") {
-      h.push('<p class="hinweis">Das Sicherungsland stand nicht im Angebot und wurde vom Land ' +
-        "der Quelle übernommen. Quellensteuer und Rating beruhen deshalb auf einer Annahme – " +
-        "bei einer ausländischen Bank auf einem deutschen Vergleichsportal kann das falsch sein.</p>");
-    }
-    if (a.quellen_abweichung && a.quellen_abweichung.length) {
-      h.push('<p class="hinweis">Quellen widersprechen sich: ' +
-        escape(a.quellen_abweichung.map(function (q) {
-          return q.quelle + " meldet " + q.zinssatz_pct + " %";
-        }).join(", ")) + "</p>");
-    }
-
-    h.push("<h3>Quellen</h3>");
-    h.push('<ul class="quellenliste">');
-    (a.quellen || []).forEach(function (q) {
-      h.push("<li>" + (q.url ? '<a href="' + escape(q.url) + '" target="_blank" rel="noopener">' +
-        escape(q.id || q.url) + "</a>" : escape(q.id || "unbekannt")) +
-        " · " + escape(q.typ || "?") + " · Stufe " + escape(q.extraction_tier) +
-        " (" + escape(q.extraction_method || "?") + ")</li>");
+  function heldZeigen() {
+    var el = $("heldKarte");
+    // Der Held zeigt immer den Spitzenreiter der Empfehlung – unabhängig
+    // davon, wonach die Liste gerade sortiert ist.
+    var beste = null;
+    zustand.sichtbar.forEach(function (a) {
+      if (a.stale) return;
+      if (!beste || (a[scoreFeld()] || -99) > (beste[scoreFeld()] || -99)) beste = a;
     });
-    h.push("</ul>");
 
-    h.push('<div class="sheet-aktionen">' +
-      '<button class="primaer" data-watch-detail="' + escape(a.dedupe_key) + '">' +
-      (zustand.watchlist.indexOf(a.dedupe_key) !== -1 ? "Aus Watchlist entfernen" : "Zur Watchlist") +
-      '</button><button class="text-knopf" data-schliessen>Schließen</button></div>');
-
-    return h.join("");
-  }
-
-  // Merkt sich, ob für ein offenes Sheet ein History-Eintrag liegt. Damit
-  // schließt die Android-Zurück-Taste das Sheet, statt die ganze App zu
-  // beenden - sonst gäbe es aus einem offenen Sheet nur den Weg über das X.
-  var sheetHistorie = false;
-
-  function sheetOeffnen(el) {
+    if (!beste || zustand.suche || zustand.sichtbar.length < 3) { el.hidden = true; return; }
     el.hidden = false;
-    document.body.style.overflow = "hidden";
-    if (!sheetHistorie) {
-      try {
-        history.pushState({ zrSheet: true }, "");
-        sheetHistorie = true;
-      } catch (e) { /* file:// erlaubt kein pushState */ }
+    el.dataset.key = beste.dedupe_key;
+
+    $("heldSatz").innerHTML = esc(beste.bank) + " zahlt " +
+      "<strong>" + pct(beste.zinssatz_pct) + "</strong>" +
+      (beste.zinstyp === "aktion" ? " für " + beste.aktionsdauer_monate + " Monate" : "");
+    $("heldSub").textContent = "Das sind " + euro(inEuro(beste.brutto_12m_pct)) +
+      " im ersten Jahr bei " + euro(zustand.betrag) + ".";
+  }
+
+  function referenzWaehlen() {
+    var mir = ((zustand.daten && zustand.daten.referenz) || {}).ezb_mir || {};
+    var land = zustand.filter.land;
+    if (land && mir[land]) return { land: land, eintrag: mir[land] };
+    if (mir.U2) return { land: "U2", eintrag: mir.U2 };
+    var keys = Object.keys(mir);
+    return keys.length ? { land: keys[0], eintrag: mir[keys[0]] } : null;
+  }
+
+  function referenzZeigen() {
+    var el = $("referenzZeile");
+    if (!zustand.daten) { el.hidden = true; return; }
+
+    var wahl = referenzWaehlen();
+    var estr = ((zustand.daten.referenz) || {}).estr || {};
+    if (!wahl) { el.hidden = true; return; }
+    el.hidden = false;
+
+    var beste = 0;
+    (zustand.daten.angebote || []).forEach(function (a) {
+      if (!a.stale && istZahl(a.zinssatz_pct) && a.zinssatz_pct > beste) beste = a.zinssatz_pct;
+    });
+
+    var schnitt = wahl.eintrag.wert_pct;
+    var satz = "Im Schnitt zahlen Banken <strong>" + pct(schnitt) + "</strong> (" +
+      esc(landName(wahl.land)) + ").";
+    if (beste && istZahl(schnitt)) {
+      satz += " Hier gibt es bis zu <strong>" + pct(beste) + "</strong>.";
     }
+    $("referenzSatz").innerHTML = satz;
+    $("referenzPunkt").className = "referenz-punkt " + (estr.trend || "");
   }
 
-  function einSheetOffen() {
-    return !$("sheet").hidden || !$("einstellungen").hidden;
+  function statistikZeigen() {
+    var alle = zustand.daten.angebote || [];
+    var gesamt = alle.length;
+    var stat = zustand.daten.statistik || {};
+    var stand = datumKurz(zustand.daten.stand_datum || zustand.daten.stand);
+
+    var teile = [];
+    teile.push(zustand.sichtbar.length === gesamt
+      ? gesamt + " Angebote"
+      : zustand.sichtbar.length + " von " + gesamt + " Angeboten");
+    teile.push("Stand " + stand);
+
+    if (stat.quellen_erfolg && stat.quellen_gesamt) {
+      teile.push(stat.quellen_erfolg + " von " + stat.quellen_gesamt + " Quellen erreichbar");
+    }
+    var veraltet = alle.filter(function (a) { return a.stale; }).length;
+    if (veraltet) teile.push(veraltet + " mit älterem Stand");
+
+    var erkannt = alle.filter(function (a) { return a.extraction_tier === 3; }).length;
+    if (erkannt) teile.push(erkannt + " automatisch erkannt");
+
+    if (zustand.erledigt.length) teile.push(zustand.erledigt.length + " abgehakt");
+
+    $("fussStatistik").textContent = teile.join(" · ");
   }
 
-  function detailOeffnen(index) {
-    var a = sichtbar[index];
-    if (!a) return;
-    $("sheetBody").innerHTML = detailHtml(a);
-    $("sheet").scrollTop = 0;
-    var inhalt = $("sheet").querySelector(".sheet-inhalt");
-    if (inhalt) inhalt.scrollTop = 0;
-    sheetOeffnen($("sheet"));
+  /* ================================================================== Sheet
+   *
+   * Ein Element für alle Inhalte. `sheetZeigen` bekommt Titel, optionale
+   * Reiter und den Körper; Öffnen, Schließen, Zurück-Taste und Fokus
+   * laufen immer durch dieselben zwei Funktionen.
+   */
+
+  var sheetHistorie = false;
+  var aktuelleFolien = null;   // { titel, reiter:[{name, bau}], index }
+  var vorherFokus = null;
+
+  function sheetOffen() { return !$("sheet").hidden; }
+
+  function sheetZeigen(opt) {
+    var sheet = $("sheet");
+    if (!sheetOffen()) vorherFokus = document.activeElement;
+
+    $("sheetTitel").textContent = opt.titel || "";
+
+    var reiterEl = $("sheetReiter");
+    if (opt.reiter && opt.reiter.length > 1) {
+      aktuelleFolien = { reiter: opt.reiter, index: opt.start || 0 };
+      reiterEl.hidden = false;
+      reiterEl.innerHTML = opt.reiter.map(function (r, i) {
+        return '<button class="reiter' + (i === aktuelleFolien.index ? " aktiv" : "") +
+          '" type="button" role="tab" aria-selected="' + (i === aktuelleFolien.index) +
+          '" data-folie="' + i + '">' + esc(r.name) + "</button>";
+      }).join("");
+      folieZeigen(aktuelleFolien.index, 0);
+    } else {
+      aktuelleFolien = null;
+      reiterEl.hidden = true;
+      reiterEl.innerHTML = "";
+      $("sheetBody").innerHTML = opt.koerper || "";
+      $("sheetBody").scrollTop = 0;
+    }
+
+    var fuss = $("sheetFuss");
+    if (opt.fuss) { fuss.hidden = false; fuss.innerHTML = opt.fuss; }
+    else { fuss.hidden = true; fuss.innerHTML = ""; }
+
+    sheet.hidden = false;
+    document.body.style.overflow = "hidden";
+
+    // Ein eigener History-Eintrag, damit die Android-Zurück-Taste das
+    // Sheet schließt statt die App zu beenden.
+    if (!sheetHistorie) {
+      try { history.pushState({ zrSheet: true }, ""); sheetHistorie = true; }
+      catch (e) { /* file:// erlaubt kein pushState */ }
+    }
+
+    if (typeof opt.danach === "function") opt.danach();
+    // Fokus in den Dialog, sonst hängt er hinter der Abdeckung.
+    setTimeout(function () { $("btnSheetX").focus({ preventScroll: true }); }, 30);
   }
 
-  function sheetsSchliessen(vonZurueckTaste) {
+  function folieZeigen(index, richtung) {
+    if (!aktuelleFolien) return;
+    var anzahl = aktuelleFolien.reiter.length;
+    index = Math.max(0, Math.min(anzahl - 1, index));
+    aktuelleFolien.index = index;
+
+    var body = $("sheetBody");
+    var punkte = '<div class="folie-punkte">' +
+      aktuelleFolien.reiter.map(function (r, i) {
+        return '<button class="folie-punkt' + (i === index ? " aktiv" : "") +
+          '" type="button" data-folie="' + i + '" aria-label="' + esc(r.name) + '"></button>';
+      }).join("") + "</div>";
+
+    body.innerHTML = '<div class="folie' + (richtung < 0 ? " rueckwaerts" : "") + '">' +
+      aktuelleFolien.reiter[index].bau() + punkte + "</div>";
+    body.scrollTop = 0;
+
+    Array.prototype.forEach.call($("sheetReiter").children, function (knopf, i) {
+      knopf.classList.toggle("aktiv", i === index);
+      knopf.setAttribute("aria-selected", i === index ? "true" : "false");
+    });
+  }
+
+  function folieWechseln(schritt) {
+    if (!aktuelleFolien) return;
+    var neu = aktuelleFolien.index + schritt;
+    if (neu < 0 || neu >= aktuelleFolien.reiter.length) return;
+    folieZeigen(neu, schritt);
+  }
+
+  function sheetSchliessen(vonZurueckTaste) {
+    if (!sheetOffen()) return;
     $("sheet").hidden = true;
-    $("einstellungen").hidden = true;
+    $("sheetBody").innerHTML = "";
+    aktuelleFolien = null;
     document.body.style.overflow = "";
+
     if (sheetHistorie) {
       sheetHistorie = false;
-      // Beim Schließen per X oder Hintergrund den eigenen History-Eintrag
-      // wieder abräumen; kommt der Ruf von der Zurück-Taste, ist er weg.
       if (!vonZurueckTaste) {
         try { history.back(); } catch (e) { /* egal */ }
       }
     }
+    if (vorherFokus && typeof vorherFokus.focus === "function") {
+      try { vorherFokus.focus({ preventScroll: true }); } catch (e) { /* egal */ }
+    }
+    vorherFokus = null;
   }
 
-  // -------------------------------------------- Watchlist + Meldung (F6)
+  /* ======================================================= Inhalt: Angebot */
+
+  function detailOeffnen(index) {
+    var a = zustand.sichtbar[index];
+    if (!a) return;
+
+    sheetZeigen({
+      titel: a.bank,
+      reiter: [
+        { name: "Angebot",     bau: function () { return folieAngebot(a); } },
+        { name: "Nach Steuern", bau: function () { return folieSteuern(a); } },
+        { name: "Sicherheit",  bau: function () { return folieSicherheit(a); } },
+        { name: "Herkunft",    bau: function () { return folieHerkunft(a); } },
+      ],
+      fuss: '<button class="primaer" type="button" data-watch-key="' + esc(a.dedupe_key) + '">' +
+        (zustand.watchlist.indexOf(a.dedupe_key) !== -1 ? "Von der Merkliste nehmen" : "Auf die Merkliste") +
+        "</button>" +
+        (a.nur_neukunden
+          ? '<button class="zweit" type="button" data-erledigt-key="' + esc(a.dedupe_key) + '">' +
+            "Schon genutzt</button>"
+          : '<button class="zweit" type="button" data-schliessen>Schließen</button>'),
+    });
+  }
+
+  function folieAngebot(a) {
+    var land = a.einlagensicherung_land || a.land;
+    var h = [];
+
+    h.push('<div class="gross-zins"><span class="wert">' + pct(a.zinssatz_pct) + "</span>" +
+      '<span class="label">So wirbt ' + esc(a.bank) + "</span></div>");
+
+    if (a.zinstyp === "aktion" && a.aktionsdauer_monate > 0) {
+      h.push('<div class="info-karte warnung"><div class="kopfzeile">' + ikon("uhr") +
+        "Das ist ein Angebot auf Zeit</div>" +
+        "Die " + pct(a.zinssatz_pct) + " gibt es " + a.aktionsdauer_monate +
+        " Monate lang. Danach zahlt die Bank " + pct(a.folgezins_pct) +
+        (a.folgezins_geschaetzt
+          ? " – dieser Wert stand nicht im Angebot und ist geschätzt."
+          : ".") +
+        " Übers ganze erste Jahr gerechnet sind es deshalb " + pct(a.brutto_12m_pct) + ".</div>");
+    }
+
+    if (a.nur_neukunden) {
+      h.push('<div class="info-karte"><div class="kopfzeile">' + ikon("person") +
+        "Nur für Neukunden</div>Diesen Zins gibt es nur, wenn du dort noch kein " +
+        "Konto hattest. Einmal genutzt, ist er für dich weg – dann kannst du das " +
+        "Angebot unten abhaken und siehst es nicht mehr in der Liste.</div>");
+    }
+
+    h.push("<h3>Was das bei " + euro(zustand.betrag) + " bedeutet</h3>");
+    h.push('<div class="schritte">');
+    h.push(schritt("Zinsen im ersten Jahr", pct(a.brutto_12m_pct) + " von " + euro(zustand.betrag),
+      euroGenau(inEuro(a.brutto_12m_pct))));
+    var qstJetzt = qstWert(a);
+    h.push(schritt(
+      (istZahl(qstJetzt) && qstJetzt > 0) || zustand.einstellungen.abgeltung
+        ? "Davon bleiben nach Steuern" : "Davon geht nichts ab",
+      "mehr dazu auf der nächsten Seite", euroGenau(inEuro(nettoWert(a))), "summe"));
+    h.push("</div>");
+
+    h.push('<p class="satz zart">Der Betrag lässt sich oben in der App jederzeit ändern. ' +
+      "Zinsen werden hier einfach gerechnet, ohne Zinseszins innerhalb des Jahres.</p>");
+
+    h.push("<h3>Auf einen Blick</h3>");
+    h.push('<dl class="paare">');
+    h.push(paar("Produkt", esc(a.produkt || "Tagesgeld")));
+    h.push(paar("Land der Bank", esc(landName(land)) +
+      (a.land_quelle === "quellenland_angenommen" ? " (angenommen)" : "")));
+    h.push(paar("Art des Zinses", { variabel: "variabel – kann sich ändern",
+      aktion: "Aktionszins auf Zeit", fest: "fest für die Laufzeit" }[a.zinstyp] || esc(a.zinstyp || "–")));
+    h.push(paar("Währung", esc(a.waehrung || "EUR") +
+      (a.waehrungsrisiko ? " – Wechselkurs kann den Gewinn auffressen" : "")));
+
+    var g = grenzenVon(a);
+    h.push(paar("Mindestanlage", g.min === null ? "keine Angabe" : (g.min === 0 ? "keine" : euro(g.min))));
+    h.push(paar("Höchstanlage", g.max === null ? "keine Angabe" : euro(g.max)));
+    h.push("</dl>");
+
+    if (g.min !== null && g.min > 0 && zustand.betrag < g.min) {
+      h.push('<div class="info-karte warnung"><div class="kopfzeile">' + ikon("info") +
+        "Dein Betrag ist zu klein</div>Die Bank verlangt mindestens " + euro(g.min) +
+        ", du hast " + euro(zustand.betrag) + " eingestellt.</div>");
+    }
+    return h.join("");
+  }
+
+  function folieSteuern(a) {
+    var qst = qstWert(a);
+    var grund = zustand.einstellungen.erstattung
+      ? a.qst_begruendung_mit_erstattung : a.qst_begruendung_ohne_erstattung;
+    var brutto = inEuro(a.brutto_12m_pct);
+    var netto = inEuro(nettoWert(a));
+    var abzug = (istZahl(brutto) && istZahl(netto)) ? brutto - netto : 0;
+    var gehtWasAb = abzug > 0.005;
+
+    var h = [];
+
+    if (gehtWasAb) {
+      var anteil = brutto > 0 ? Math.max(0, Math.min(100, netto / brutto * 100)) : 100;
+      h.push('<p class="satz">Von den <strong>' + euroGenau(brutto) + "</strong> Zinsen " +
+        "gehen <strong>" + euroGenau(abzug) + "</strong> an Steuern ab.</p>");
+      h.push('<div class="balken">' +
+        '<div class="balken-teil bleibt" style="width:' + anteil.toFixed(1) + '%">' +
+          (anteil > 30 ? euro(netto) : "") + "</div>" +
+        '<div class="balken-teil steuer" style="width:' + (100 - anteil).toFixed(1) + '%">' +
+          (100 - anteil > 30 ? euro(abzug) : "") + "</div>" +
+        "</div>");
+      h.push('<div class="balken-legende">' +
+        '<span><i class="legende-punkt" style="background:var(--akzent)"></i>bleibt dir</span>' +
+        '<span><i class="legende-punkt" style="background:var(--rot)"></i>Steuern</span>' +
+        "</div>");
+    } else {
+      h.push('<div class="info-karte"><div class="kopfzeile">' + ikon("muenze") +
+        "Hier geht nichts ab</div>Die vollen <strong>" + euroGenau(brutto) +
+        "</strong> Zinsen bleiben dir." +
+        (zustand.einstellungen.abgeltung ? "" :
+          " Die deutsche Abgeltungssteuer ist dabei nicht eingerechnet – " +
+          "die kannst du in den Einstellungen einblenden.") + "</div>");
+    }
+
+    h.push("<h3>Schritt für Schritt</h3>");
+    h.push('<div class="schritte">');
+    h.push(schritt("Zinsen im ersten Jahr", pct(a.brutto_12m_pct) + " von " + euro(zustand.betrag),
+      euroGenau(brutto)));
+
+    if (istZahl(qst) && qst > 0) {
+      h.push(schritt("Quellensteuer " + esc(landName(a.einlagensicherung_land)),
+        pctSchlank(qst) + " behält das Land direkt ein",
+        "− " + euroGenau(brutto * qst / 100), "abzug"));
+    } else {
+      h.push(schritt("Quellensteuer", "wird hier nicht fällig", "0,00 €"));
+    }
+
+    if (zustand.einstellungen.abgeltung) {
+      var vorAbg = zustand.einstellungen.erstattung
+        ? a.netto_12m_mit_erstattung_pct : a.netto_12m_ohne_erstattung_pct;
+      h.push(schritt("Deutsche Abgeltungssteuer", "25 % plus Solidaritätszuschlag",
+        "− " + euroGenau(inEuro(vorAbg) - netto), "abzug"));
+    }
+
+    h.push(schritt("Das bleibt dir", pct(nettoWert(a)) + " im ersten Jahr",
+      euroGenau(netto), "summe"));
+    h.push("</div>");
+
+    if (grund) {
+      h.push('<div class="info-karte"><div class="kopfzeile">' + ikon("info") +
+        "Warum?</div>" + esc(grund) + "</div>");
+    }
+
+    // Der Score rechnet mit dem Satz nach Steuerabkommen. Wo die Bank aber
+    // erst einbehält und du selbst zurückfordern musst, gehört das dazu.
+    if (a.qst_reibung) {
+      h.push('<div class="info-karte warnung"><div class="kopfzeile">' + ikon("uhr") +
+        "Erst weg, dann zurück</div>" + esc(a.qst_reibung) + "</div>");
+    }
+
+    if (a.rueckerstattung_formular && (a.qst_reibung || (istZahl(qst) && qst > 0))) {
+      h.push('<p class="satz zart">Dafür brauchst du: ' + esc(a.rueckerstattung_formular) +
+        (sicherLink(a.rueckerstattung_quelle)
+          ? ' · <a href="' + esc(sicherLink(a.rueckerstattung_quelle)) +
+            '" target="_blank" rel="noopener noreferrer">zur Behörde</a>'
+          : "") + "</p>");
+    }
+
+    h.push('<div class="info-karte"><div class="kopfzeile">' + ikon("info") +
+      "Was ist Quellensteuer?</div>" +
+      "Zinsen aus dem Ausland werden oft schon dort besteuert, bevor das Geld " +
+      "bei dir ankommt. Zwischen Deutschland und den meisten Ländern gibt es " +
+      "Abkommen, mit denen du dir das zurückholen kannst – gegen Formulare " +
+      "und Wartezeit.</div>");
+
+    if (!zustand.einstellungen.abgeltung && gehtWasAb) {
+      h.push('<p class="satz zart">Die deutsche Abgeltungssteuer von 25 % plus ' +
+        "Solidaritätszuschlag kommt hier noch obendrauf. Sie trifft jeden Anbieter " +
+        "gleich und ist deshalb ausgeblendet – einblenden kannst du sie in den " +
+        "Einstellungen.</p>");
+    }
+    return h.join("");
+  }
+
+  function folieSicherheit(a) {
+    var land = a.einlagensicherung_land || a.land;
+    var sicher = a.einlagensicherung_betrag_eur;
+    var gedeckt = istZahl(sicher) && zustand.betrag <= sicher;
+    var h = [];
+
+    h.push('<div class="info-karte' + (gedeckt ? "" : " warnung") + '">' +
+      '<div class="kopfzeile">' + ikon("schloss") +
+      (gedeckt ? "Dein Geld ist abgesichert" : "Achtung beim Betrag") + "</div>" +
+      (istZahl(sicher)
+        ? (gedeckt
+            ? "Geht die Bank pleite, bekommst du bis " + euro(sicher) +
+              " ersetzt. Deine " + euro(zustand.betrag) + " liegen darunter."
+            : "Abgesichert sind nur " + euro(sicher) + ". Von deinen " +
+              euro(zustand.betrag) + " wären " + euro(zustand.betrag - sicher) + " ungeschützt.")
+        : "Für dieses Angebot liegt keine Angabe zur Einlagensicherung vor.") +
+      "</div>");
+
+    if (a.sicherungssystem_name) {
+      h.push('<p class="satz zart">Zuständig ist die ' + esc(a.sicherungssystem_name) +
+        (sicherLink(a.sicherung_quelle)
+          ? ' · <a href="' + esc(sicherLink(a.sicherung_quelle)) +
+            '" target="_blank" rel="noopener noreferrer">Website</a>'
+          : "") + ".</p>");
+    }
+
+    h.push("<h3>Wie stabil ist das Land?</h3>");
+    h.push('<p class="satz"><strong>' + esc(landName(land)) + "</strong> gilt als <strong>" +
+      esc(ratingWort(a.rating_gruppe)) + "</strong>." +
+      (a.staatsrating_sp
+        ? " Die Ratingagentur Standard &amp; Poor's vergibt die Note " + esc(a.staatsrating_sp) + "."
+        : "") + "</p>");
+
+    if (istZahl(a.risiko_abschlag_pp) && a.risiko_abschlag_pp > 0) {
+      h.push('<p class="satz zart">Weil ein Ausfall dort etwas wahrscheinlicher ist, zieht ' +
+        "Zinsradar in der Empfehlung " + nfZins.format(a.risiko_abschlag_pp) +
+        " Prozentpunkte ab. Der Zins selbst bleibt davon unberührt.</p>");
+    } else {
+      h.push('<p class="satz zart">Für die Empfehlung wird hier nichts abgezogen – ' +
+        "die Bewertung ist so gut, wie sie sein kann.</p>");
+    }
+
+    h.push("<h3>Die Empfehlung dieses Angebots</h3>");
+    h.push('<div class="schritte">');
+    h.push(schritt("Zins nach Steuern", "über zwölf Monate", pct(nettoWert(a))));
+    if (istZahl(a.risiko_abschlag_pp) && a.risiko_abschlag_pp > 0) {
+      h.push(schritt("Abzug fürs Länderrisiko", esc(landName(land)),
+        "− " + nfZins.format(a.risiko_abschlag_pp) + " %", "abzug"));
+    }
+    h.push(schritt("Empfehlungswert", "danach ist die Liste sortiert",
+      pct(a[scoreFeld()], nfFein), "summe"));
+    h.push("</div>");
+
+    if (a.waehrungsrisiko) {
+      h.push('<div class="info-karte warnung"><div class="kopfzeile">' + ikon("warnung") +
+        "Fremde Währung</div>Dieses Konto läuft in " + esc(a.waehrung) +
+        ". Ändert sich der Wechselkurs, kann das mehr ausmachen als der ganze Zins.</div>");
+    }
+    return h.join("");
+  }
+
+  function folieHerkunft(a) {
+    var h = [];
+
+    h.push('<p class="satz">Diese Zahlen kommen nicht von Zinsradar, sondern von ' +
+      "öffentlichen Seiten. Ein Programm liest sie einmal am Tag automatisch aus. " +
+      "Vor dem Abschluss also bitte immer beim Anbieter selbst nachsehen.</p>");
+
+    h.push("<h3>Gefunden bei</h3>");
+    h.push('<ul class="quellen">');
+    (a.quellen || []).forEach(function (q) {
+      var wie = q.extraction_tier === 1 ? "aus den strukturierten Daten der Seite"
+        : q.extraction_tier === 3 ? "automatisch aus dem Fließtext erkannt"
+        : "aus der Tabelle der Seite gelesen";
+      h.push('<li class="quelle">' +
+        (sicherLink(q.url)
+          ? '<a href="' + esc(sicherLink(q.url)) +
+            '" target="_blank" rel="noopener noreferrer">' + esc(q.id || q.url) + "</a>"
+          : esc(q.id || "unbekannt")) +
+        '<span class="klein">' + esc(wie) + "</span></li>");
+    });
+    h.push("</ul>");
+
+    if (a.quellen_abweichung && a.quellen_abweichung.length) {
+      h.push('<div class="info-karte warnung"><div class="kopfzeile">' + ikon("warnung") +
+        "Die Quellen sind sich uneinig</div>" +
+        esc(a.quellen_abweichung.map(function (q) {
+          return q.quelle + " nennt " + nfZins.format(q.zinssatz_pct) + " %";
+        }).join(", ")) + ". Angezeigt wird der Wert der verlässlichsten Quelle.</div>");
+    }
+
+    if (a.stale) {
+      var tage = tageSeit(a.stale_seit || a.stand);
+      h.push('<div class="info-karte warnung"><div class="kopfzeile">' + ikon("uhr") +
+        "Der Wert ist nicht mehr frisch</div>" +
+        "Stand vom " + esc(datumKurz(a.stale_seit || a.stand)) +
+        (tage !== null ? " – das ist " + tage + " Tage her" : "") + ". " +
+        esc(a.stale_grund || "Die Quelle war zuletzt nicht erreichbar.") + "</div>");
+    }
+
+    if (a.flag === "pruefen") {
+      h.push('<div class="info-karte warnung"><div class="kopfzeile">' + ikon("warnung") +
+        "Ungewöhnlich hoher Wert</div>" + esc(a.flag_grund || "") +
+        " Das kann ein Lockangebot sein – oder ein Lesefehler. Bitte nachprüfen.</div>");
+    }
+
+    if (a.extraction_tier === 3) {
+      h.push('<div class="info-karte warnung"><div class="kopfzeile">' + ikon("info") +
+        "Automatisch erkannt</div>Ein Sprachmodell hat diesen Eintrag aus dem Seitentext " +
+        "gezogen, weil die Seite keine saubere Tabelle hatte. Solche Werte stimmen " +
+        "meistens, aber nicht immer.</div>");
+    }
+
+    if (a.land_quelle === "quellenland_angenommen") {
+      h.push('<div class="info-karte"><div class="kopfzeile">' + ikon("info") +
+        "Land angenommen</div>Im Angebot stand nicht, in welchem Land dein Geld " +
+        "abgesichert ist. Angenommen wurde das Land der Website. Bei einer " +
+        "ausländischen Bank auf einem deutschen Vergleichsportal kann das falsch sein – " +
+        "und dann stimmen auch Steuer und Rating nicht.</div>");
+    }
+
+    h.push("<h3>Vergleich mit der Zentralbank</h3>");
+    if (istZahl(a.ezb_landesdurchschnitt_pct)) {
+      h.push('<p class="satz">Banken in ' + esc(landName(a.einlagensicherung_land)) +
+        " zahlen laut Europäischer Zentralbank im Schnitt " +
+        pct(a.ezb_landesdurchschnitt_pct) + " (Stand " + esc(a.ezb_periode || "?") + "). " +
+        "Dieses Angebot liegt " +
+        (a.differenz_zu_ezb_pp > 0 ? nfZins.format(a.differenz_zu_ezb_pp) + " Prozentpunkte darüber"
+                                   : nfZins.format(Math.abs(a.differenz_zu_ezb_pp || 0)) + " Prozentpunkte darunter") +
+        ".</p>");
+      h.push('<p class="satz zart">Der Schnitt der Zentralbank enthält auch Girokonten ' +
+        "mit null Zinsen. Gute Angebote liegen deshalb fast immer deutlich darüber.</p>");
+    } else {
+      h.push('<p class="satz zart">Für dieses Land liegt kein Vergleichswert der ' +
+        "Zentralbank vor.</p>");
+    }
+    return h.join("");
+  }
+
+  function schritt(text, hilfe, wert, klasse) {
+    return '<div class="schritt' + (klasse ? " " + klasse : "") + '">' +
+      '<span class="schritt-text">' + text +
+        (hilfe ? '<span class="schritt-hilf">' + hilfe + "</span>" : "") + "</span>" +
+      '<span class="schritt-wert">' + wert + "</span></div>";
+  }
+
+  function paar(dt, dd) {
+    return '<div class="paar"><dt>' + dt + "</dt><dd>" + dd + "</dd></div>";
+  }
+
+  /* ======================================================== Inhalt: Betrag */
+
+  function betragOeffnen() {
+    sheetZeigen({
+      titel: "Wie viel möchtest du anlegen?",
+      koerper:
+        '<p class="satz">Alle Euro-Beträge in der App rechnen mit dieser Zahl.</p>' +
+        '<div class="chips" id="betragChips">' +
+          BETRAG_VORSCHLAEGE.map(function (b) {
+            return '<button class="chip' + (b === zustand.betrag ? " aktiv" : "") +
+              '" type="button" data-betrag="' + b + '">' + euro(b) + "</button>";
+          }).join("") +
+        "</div>" +
+        '<label class="feld"><span>Oder einen eigenen Betrag</span>' +
+        '<input type="text" id="betragEingabe" inputmode="decimal" ' +
+        'autocomplete="off" enterkeyhint="done" value="' + esc(nfEuro.format(zustand.betrag)) +
+        '"></label>' +
+        '<p class="satz zart">Tipp: Die gesetzliche Einlagensicherung deckt in der ' +
+        "ganzen EU 100.000 € je Bank und Person ab. Wer mehr anlegt, verteilt " +
+        "besser auf mehrere Banken.</p>",
+      fuss: '<button class="primaer" type="button" id="btnBetragSpeichern">Übernehmen</button>',
+    });
+  }
+
+  function betragSetzen(wert, schliessen) {
+    var zahl = Math.round(zahlAusEingabe(wert));
+    if (!isFinite(zahl) || zahl < 1) { toast("Bitte einen Betrag über 0 € eingeben"); return; }
+    zustand.betrag = Math.min(zahl, 10000000);
+    schreib(SPEICHER.betrag, zustand.betrag);
+    betragAnzeigen();
+    rendern();
+    if (schliessen) { sheetSchliessen(); toast("Gerechnet wird jetzt mit " + euro(zustand.betrag)); }
+  }
+
+  function betragAnzeigen() {
+    $("betragAnzeige").textContent = euro(zustand.betrag);
+  }
+
+  /* ======================================================== Inhalt: Filter */
+
+  function filterOeffnen() {
+    var laender = {};
+    (zustand.daten ? zustand.daten.angebote || [] : []).forEach(function (a) {
+      var l = a.einlagensicherung_land || a.land;
+      if (l) laender[l] = (laender[l] || 0) + 1;
+    });
+    var sortiertLaender = Object.keys(laender).sort(function (x, y) {
+      return landName(x).localeCompare(landName(y), "de");
+    });
+
+    var f = zustand.filter;
+    var wahl = function (id, label, hilfe, optionen, wert) {
+      return '<label class="feld"><span>' + label +
+        (hilfe ? ' <em class="feld-hilfe">' + hilfe + "</em>" : "") + "</span><select id=\"" + id + "\">" +
+        optionen.map(function (o) {
+          return '<option value="' + esc(o[0]) + '"' + (String(wert) === String(o[0]) ? " selected" : "") +
+            ">" + esc(o[1]) + "</option>";
+        }).join("") + "</select></label>";
+    };
+    var schalter = function (id, an, titel, text) {
+      return '<label class="schalter"><input type="checkbox" id="' + id + '"' + (an ? " checked" : "") +
+        "><span><strong>" + titel + "</strong><em>" + text + "</em></span></label>";
+    };
+
+    sheetZeigen({
+      titel: "Filter",
+      koerper:
+        wahl("fLand", "Land der Bank", "", [["", "alle Länder"]].concat(
+          sortiertLaender.map(function (l) {
+            return [l, landName(l) + " (" + laender[l] + ")"];
+          })), f.land) +
+
+        wahl("fAktion", "Befristete Aktionen", "", [
+          ["", "alle Angebote"],
+          ["nur", "nur Aktionsangebote"],
+          ["ohne", "keine Aktionen – nur Dauerzins"],
+        ], f.aktion) +
+
+        wahl("fNeukunden", "Neukunden", "", [
+          ["", "alle Angebote"],
+          ["nur", "nur Neukunden-Angebote"],
+          ["ohne", "ohne Neukunden-Angebote"],
+        ], f.neukunden) +
+
+        wahl("fTyp", "Art des Zinses", "", [
+          ["", "alle"],
+          ["variabel", "variabel – kann sich ändern"],
+          ["aktion", "Aktionszins auf Zeit"],
+          ["fest", "fest für die Laufzeit"],
+        ], f.typ) +
+
+        wahl("fRating", "Wie stabil muss das Land sein?", "", [
+          ["", "egal"],
+          ["AAA", "nur sehr sichere Länder"],
+          ["A", "mindestens sicher"],
+          ["BBB", "mindestens solide"],
+        ], f.rating) +
+
+        wahl("fQuelltyp", "Woher das Angebot kommt", "", [
+          ["", "alle"],
+          ["bank", "direkt von der Bank"],
+          ["plattform", "über eine Zinsplattform"],
+          ["portal", "über ein Vergleichsportal"],
+        ], f.quelltyp) +
+
+        '<label class="feld"><span>Mindestzins</span>' +
+        '<input type="text" id="fMinZins" inputmode="decimal" autocomplete="off" ' +
+        'placeholder="z. B. 3" value="' + esc(f.minZins) + '"></label>' +
+
+        schalter("fPasst", f.passtZuBetrag, "Nur was zu " + euro(zustand.betrag) + " passt",
+          "Blendet aus, wo dein Betrag unter dem Mindest- oder über dem Höchstbetrag liegt.") +
+        schalter("fVoll", f.vollGesichert, euro(zustand.betrag) + " voll geschützt",
+          "Nur Banken, deren Einlagensicherung deinen ganzen Betrag abdeckt.") +
+        schalter("fNurEur", f.nurEur, "Nur Euro", "Kein Wechselkursrisiko.") +
+        schalter("fNurWatch", f.nurWatch, "Nur meine Merkliste",
+          "Zeigt die " + zustand.watchlist.length + " gemerkten Angebote.") +
+        schalter("fOhneStale", f.ohneStale, "Alte Werte ausblenden",
+          "Versteckt Angebote, deren Quelle zuletzt nicht erreichbar war."),
+
+      fuss: '<button class="zweit" type="button" id="btnFilterReset">Zurücksetzen</button>' +
+        '<button class="primaer" type="button" id="btnFilterFertig">' +
+        zustand.sichtbar.length + " Angebote zeigen</button>",
+
+      danach: function () {
+        var binde = function (id, schluessel, istSchalter) {
+          var el = $(id);
+          if (!el) return;
+          var reagiere = function (e) {
+            zustand.filter[schluessel] = istSchalter ? e.target.checked : e.target.value;
+            zustand.limit = SEITE;
+            rendern();
+            var fertig = $("btnFilterFertig");
+            if (fertig) fertig.textContent = zustand.sichtbar.length + " Angebote zeigen";
+          };
+          el.addEventListener("change", reagiere);
+          // Textfelder feuern "change" erst beim Verlassen - für die
+          // Live-Zahl im Knopf braucht es "input". (Die Zinsfelder stehen
+          // auf type="text", weil type="number" ein Komma verschluckt.)
+          if (el.tagName === "INPUT" && el.type !== "checkbox") {
+            el.addEventListener("input", reagiere);
+          }
+        };
+        binde("fLand", "land"); binde("fTyp", "typ"); binde("fQuelltyp", "quelltyp");
+        binde("fRating", "rating"); binde("fMinZins", "minZins");
+        binde("fAktion", "aktion"); binde("fNeukunden", "neukunden");
+        binde("fPasst", "passtZuBetrag", true);
+        binde("fVoll", "vollGesichert", true);
+        binde("fNurEur", "nurEur", true);
+        binde("fNurWatch", "nurWatch", true);
+        binde("fOhneStale", "ohneStale", true);
+      },
+    });
+  }
+
+  function filterZuruecksetzen() {
+    zustand.filter = {
+      land: "", typ: "", quelltyp: "", rating: "", minZins: "",
+      aktion: "", neukunden: "",
+      nurEur: false, nurWatch: false, ohneStale: false, passtZuBetrag: false,
+      vollGesichert: false, zeigeErledigt: false,
+    };
+    zustand.limit = SEITE;
+    zustand.suche = "";
+    var feld = $("suche");
+    if (feld) { feld.value = ""; $("btnSucheLeeren").hidden = true; }
+    rendern();
+  }
+
+  /* ================================================= Inhalt: Einstellungen */
+
+  function einstellungenOeffnen() {
+    var e = zustand.einstellungen;
+    sheetZeigen({
+      titel: "Einstellungen",
+      koerper:
+        "<h3>Steuern</h3>" +
+        '<label class="schalter"><input type="checkbox" id="sErstattung"' + (e.erstattung ? " checked" : "") + ">" +
+          "<span><strong>Ich hole mir ausländische Steuern zurück</strong>" +
+          "<em>Bei Ländern, wo das einfach geht, wird dann mit 0 % Quellensteuer " +
+          "gerechnet. Schalte es aus, wenn du den Papierkram nicht machen willst.</em></span></label>" +
+
+        '<label class="schalter"><input type="checkbox" id="sAbgeltung"' + (e.abgeltung ? " checked" : "") + ">" +
+          "<span><strong>Deutsche Abgeltungssteuer mitrechnen</strong>" +
+          "<em>25 % plus Solidaritätszuschlag. Trifft alle Anbieter gleich und ändert " +
+          "die Reihenfolge nicht – deshalb standardmäßig aus.</em></span></label>" +
+
+        genutzteListe() +
+
+        "<h3>Erinnerung</h3>" +
+        '<label class="feld"><span>Melde mir Angebote auf meiner Merkliste über … Prozent</span>' +
+        '<input type="text" id="sSchwelle" inputmode="decimal" autocomplete="off" value="' +
+        esc(String(e.schwelle).replace(".", ",")) + '"></label>' +
+        '<label class="schalter"><input type="checkbox" id="sBenachrichtigung"' + (e.benachrichtigung ? " checked" : "") + ">" +
+          "<span><strong>Benachrichtigung einschalten</strong>" +
+          "<em>Wird beim Aktualisieren geprüft. Es werden keine Daten verschickt.</em></span></label>" +
+
+        "<h3>Daten</h3>" +
+        '<label class="feld"><span>Adresse der Zinsdaten</span>' +
+        '<input type="url" id="sQuelle" placeholder="' + esc(CFG.datenUrl || "") + '" value="' +
+        esc(e.quelle || "") + '"></label>' +
+        '<p class="satz zart">Leer lassen heißt: die mitgelieferte Adresse wird benutzt. ' +
+        "Aktuell aktiv: " + esc(datenUrl() || "keine") + "</p>" +
+
+        "<h3>Wie Zinsradar sortiert</h3>" +
+        '<div class="info-karte">Die <strong>Empfehlung</strong> ist der Zins nach Steuern, ' +
+        "abzüglich eines kleinen Abzugs für Länder mit schwächerer Bonität. " +
+        "Damit steht nicht automatisch das lauteste Angebot oben, sondern das, " +
+        "von dem am ehesten etwas ankommt.</div>" +
+
+        '<p class="satz zart">Version ' + esc(CFG.version || "1.0.0") +
+        " · Die Daten liegen auch offline auf dem Gerät.</p>",
+      fuss: '<button class="zweit" type="button" data-schliessen>Abbrechen</button>' +
+        '<button class="primaer" type="button" id="btnEinstSpeichern">Speichern</button>',
+    });
+  }
+
+  /* Abgehakte Neukunden-Angebote: hier stehen sie, hier kommen sie zurück. */
+  function genutzteListe() {
+    var liste = erledigteAngebote();
+    if (!liste.length) {
+      return "<h3>Schon genutzte Angebote</h3>" +
+        '<p class="satz zart">Noch nichts abgehakt. Neukunden-Angebote kannst du ' +
+        "in der Liste mit dem Haken ausblenden, sobald du sie einmal genutzt hast – " +
+        "sie tauchen dann hier auf.</p>";
+    }
+    return "<h3>Schon genutzt (" + liste.length + ")</h3>" +
+      '<p class="satz zart">Diese Angebote sind aus der Hauptliste ausgeblendet.</p>' +
+      '<ul class="genutzt">' + liste.map(function (a) {
+        return '<li class="genutzt-zeile"><span class="genutzt-name">' + esc(a.bank) +
+          (a._fehlt ? ' <em class="zart">(nicht mehr im Vergleich)</em>'
+                    : ' <em class="zart">' + pct(a.zinssatz_pct) + " · " +
+                      esc(landName(a.einlagensicherung_land)) + "</em>") +
+          '</span><button class="knopf-klein" type="button" data-erledigt-key="' +
+          esc(a.dedupe_key) + '">zurückholen</button></li>';
+      }).join("") + "</ul>";
+  }
+
+  function einstellungenSpeichern() {
+    var vorherQuelle = datenUrl();
+    var e = zustand.einstellungen;
+    if ($("sErstattung")) e.erstattung = $("sErstattung").checked;
+    if ($("sAbgeltung")) e.abgeltung = $("sAbgeltung").checked;
+    if ($("sSchwelle")) {
+      var schwelle = zahlAusEingabe($("sSchwelle").value);
+      e.schwelle = isNaN(schwelle) ? 0 : schwelle;
+    }
+    if ($("sBenachrichtigung")) e.benachrichtigung = $("sBenachrichtigung").checked;
+    if ($("sQuelle")) e.quelle = ($("sQuelle").value || "").trim();
+
+    schreib(SPEICHER.einst, e);
+    sheetSchliessen();
+    rendern();
+
+    if (e.benachrichtigung) {
+      lokaleNotiz("Erinnerung ist an",
+        "Du hörst von uns, wenn ein Angebot auf deiner Merkliste über " +
+        pct(e.schwelle) + " steigt.");
+    }
+    if (datenUrl() !== vorherQuelle) laden(true);
+    else toast("Gespeichert");
+  }
+
+  /* ==================================================== Inhalt: Erklärungen */
+
+  function referenzOeffnen() {
+    var ref = (zustand.daten && zustand.daten.referenz) || {};
+    var estr = ref.estr || {};
+    var mir = ref.ezb_mir || {};
+    var pfeil = estr.trend === "steigend" ? "pfeil-hoch"
+      : estr.trend === "fallend" ? "pfeil-runter" : "strich-quer";
+
+    var zeilen = Object.keys(mir).sort(function (x, y) {
+      return landName(x).localeCompare(landName(y), "de");
+    }).map(function (l) {
+      return paar(esc(landName(l)), pct(mir[l].wert_pct));
+    }).join("");
+
+    sheetZeigen({
+      titel: "Woran du dich orientieren kannst",
+      koerper:
+        '<p class="satz">Die Europäische Zentralbank veröffentlicht jeden Monat, ' +
+        "was Banken in einem Land im Schnitt für täglich verfügbares Geld zahlen. " +
+        "Das ist der ehrlichste Maßstab dafür, ob ein Angebot wirklich gut ist.</p>" +
+
+        '<div class="info-karte"><div class="kopfzeile">' + ikon(pfeil) +
+        "Zins zwischen den Banken</div>" +
+        "Aktuell " + pct(estr.aktuell_pct, nfFein) + ", Tendenz " +
+        esc(estr.trend || "unbekannt") +
+        (istZahl(estr.veraenderung_30t_pp)
+          ? " (" + (estr.veraenderung_30t_pp > 0 ? "+" : "") +
+            nfFein.format(estr.veraenderung_30t_pp) + " Prozentpunkte in 30 Tagen)"
+          : "") +
+        ". Zu diesem Satz leihen sich Banken über Nacht gegenseitig Geld. " +
+        "Steigt er, steigen die Sparzinsen meist mit – fällt er, geht es bald abwärts.</div>" +
+
+        "<h3>Durchschnitt je Land</h3>" +
+        '<dl class="paare">' + (zeilen || paar("keine Daten", "–")) + "</dl>" +
+
+        '<p class="satz zart">Der Durchschnitt enthält auch Girokonten ohne Zinsen. ' +
+        "Gute Tagesgeldangebote liegen deshalb fast immer deutlich darüber. " +
+        "Stand der Zahlen: " + esc(datumKurz(ref.stand)) + ".</p>",
+    });
+  }
+
+  /* ============================================= Merkliste und Erinnerung */
+
+  function erledigtUmschalten(key) {
+    var i = zustand.erledigt.indexOf(key);
+    if (i === -1) {
+      zustand.erledigt.push(key);
+      toast("Abgehakt – liegt jetzt in den Einstellungen");
+    } else {
+      zustand.erledigt.splice(i, 1);
+      toast("Wieder in der Liste");
+    }
+    schreib(SPEICHER.erledigt, zustand.erledigt);
+    rendern();
+  }
+
+  /* Angebote zu den abgehakten Schlüsseln, auch wenn Filter aktiv sind. */
+  function erledigteAngebote() {
+    var alle = (zustand.daten && zustand.daten.angebote) || [];
+    return zustand.erledigt.map(function (key) {
+      for (var i = 0; i < alle.length; i++) {
+        if (alle[i].dedupe_key === key) return alle[i];
+      }
+      return { dedupe_key: key, bank: key.split("|")[0], _fehlt: true };
+    });
+  }
 
   function watchUmschalten(key) {
     var i = zustand.watchlist.indexOf(key);
-    if (i === -1) { zustand.watchlist.push(key); toast("Zur Watchlist hinzugefügt"); }
-    else { zustand.watchlist.splice(i, 1); toast("Aus der Watchlist entfernt"); }
+    if (i === -1) { zustand.watchlist.push(key); toast("Gemerkt"); }
+    else { zustand.watchlist.splice(i, 1); toast("Von der Merkliste genommen"); }
     schreib(SPEICHER.watch, zustand.watchlist);
     rendern();
   }
@@ -632,7 +1538,7 @@
         catch (e) { /* WebView ohne Service-Worker-Registrierung */ }
       } else if (Notification.permission !== "denied") {
         return Notification.requestPermission().then(function (p) {
-          if (p === "granted") { try { new Notification(titel, { body: text }); } catch (e) {} }
+          if (p === "granted") { try { new Notification(titel, { body: text }); } catch (e) { /* egal */ } }
           else { toast(titel + ": " + text, 5000); }
         });
       }
@@ -643,9 +1549,8 @@
 
   function pruefeSchwelle(daten) {
     if (!zustand.einstellungen.benachrichtigung) return;
-    var schwelle = parseFloat(zustand.einstellungen.schwelle);
-    if (isNaN(schwelle)) return;
-    if (!zustand.watchlist.length) return;
+    var schwelle = zahlAusEingabe(zustand.einstellungen.schwelle);
+    if (isNaN(schwelle) || !zustand.watchlist.length) return;
 
     var gemeldet = lies(SPEICHER.gemeldet, {});
     var heute = new Date().toISOString().slice(0, 10);
@@ -653,11 +1558,9 @@
 
     (daten.angebote || []).forEach(function (a) {
       if (zustand.watchlist.indexOf(a.dedupe_key) === -1) return;
-      if (a.stale) return;
-      var wert = a.zinssatz_pct;
-      if (wert === null || wert === undefined || wert <= schwelle) return;
-      if (gemeldet[a.dedupe_key] === heute + "|" + wert) return;
-      gemeldet[a.dedupe_key] = heute + "|" + wert;
+      if (a.stale || !istZahl(a.zinssatz_pct) || a.zinssatz_pct <= schwelle) return;
+      if (gemeldet[a.dedupe_key] === heute + "|" + a.zinssatz_pct) return;
+      gemeldet[a.dedupe_key] = heute + "|" + a.zinssatz_pct;
       treffer.push(a);
     });
 
@@ -665,7 +1568,7 @@
     schreib(SPEICHER.gemeldet, gemeldet);
 
     var titel = treffer.length === 1
-      ? treffer[0].bank + ": " + pct(treffer[0].zinssatz_pct)
+      ? treffer[0].bank + " zahlt " + pct(treffer[0].zinssatz_pct)
       : treffer.length + " Angebote über " + pct(schwelle);
     var text = treffer.slice(0, 4).map(function (a) {
       return a.bank + " " + pct(a.zinssatz_pct);
@@ -673,25 +1576,35 @@
     lokaleNotiz(titel, text);
   }
 
-  // ------------------------------------------------------------ Theme (F8)
+  /* ================================================================= Theme */
 
   function themeSetzen(wert) {
     if (wert === "auto") document.documentElement.removeAttribute("data-theme");
     else document.documentElement.setAttribute("data-theme", wert);
     schreib(SPEICHER.theme, wert);
-    var farbe = wert === "dark" ? "#0d1117" : (wert === "light" ? "#ffffff" : "#0f172a");
+
+    var dunkel = wert === "dark" ||
+      (wert === "auto" && window.matchMedia &&
+       window.matchMedia("(prefers-color-scheme: dark)").matches);
+
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", farbe);
+    if (meta) meta.setAttribute("content", dunkel ? "#16181c" : "#faf7f2");
+
+    var knopf = $("btnTheme");
+    if (knopf) {
+      knopf.innerHTML = '<svg class="ikon-svg"><use href="#i-' + (dunkel ? "mond" : "sonne") + '"></use></svg>';
+    }
   }
 
   function themeUmschalten() {
     var jetzt = lies(SPEICHER.theme, "auto");
     var naechstes = jetzt === "auto" ? "light" : (jetzt === "light" ? "dark" : "auto");
     themeSetzen(naechstes);
-    toast("Farbschema: " + (naechstes === "auto" ? "System" : naechstes === "light" ? "hell" : "dunkel"));
+    toast(naechstes === "auto" ? "Folgt dem System"
+      : naechstes === "light" ? "Immer hell" : "Immer dunkel");
   }
 
-  // ------------------------------------------------- Pull-to-Refresh (F8)
+  /* =================================================== Ziehen zum Neuladen */
 
   function ptrEinrichten() {
     var startY = 0, ziehend = false, ausgeloest = false;
@@ -699,7 +1612,7 @@
     var SCHWELLE = 70;
 
     document.addEventListener("touchstart", function (e) {
-      if (window.scrollY > 0 || zustand.laedt) return;
+      if (window.scrollY > 0 || zustand.laedt || sheetOffen()) return;
       if (!e.touches || e.touches.length !== 1) return;
       startY = e.touches[0].clientY;
       ziehend = true;
@@ -712,7 +1625,7 @@
       if (delta > 12 && window.scrollY <= 0) {
         ptr.classList.add("aktiv");
         ausgeloest = delta > SCHWELLE;
-        $("ptrText").textContent = ausgeloest ? "Loslassen zum Aktualisieren" : "Zum Aktualisieren ziehen";
+        $("ptrText").textContent = ausgeloest ? "Loslassen" : "Zum Aktualisieren ziehen";
       } else if (delta <= 0) {
         ptr.classList.remove("aktiv");
         ziehend = false;
@@ -722,117 +1635,86 @@
     document.addEventListener("touchend", function () {
       if (!ziehend) return;
       ziehend = false;
-      if (ausgeloest) {
-        ptr.classList.add("laedt");
-        $("ptrText").textContent = "Wird aktualisiert …";
-        laden(true).then(function () {
-          ptr.classList.remove("aktiv", "laedt");
-        });
-      } else {
-        ptr.classList.remove("aktiv");
-      }
+      if (!ausgeloest) { ptr.classList.remove("aktiv"); return; }
+      ptr.classList.add("laedt");
+      $("ptrText").textContent = "Wird geholt …";
+      laden(true).then(function () {
+        ptr.classList.remove("aktiv", "laedt");
+        $("ptrText").textContent = "Zum Aktualisieren ziehen";
+      });
     });
   }
 
-  // ------------------------------------------------------- Einstellungen
-
-  function einstellungenOeffnen() {
-    var e = zustand.einstellungen;
-    $("sErstattung").checked = !!e.erstattung;
-    $("sAbgeltung").checked = !!e.abgeltung;
-    $("sSchwelle").value = e.schwelle;
-    $("sBenachrichtigung").checked = !!e.benachrichtigung;
-    $("sQuelle").value = e.quelle || "";
-    $("sQuelle").placeholder = CFG.datenUrl || "";
-    $("quelleStatus").textContent = "Aktiv: " + (datenUrl() || "keine URL gesetzt");
-    $("appVersion").textContent = CFG.version || "1.0.0";
-    var inhalt = $("einstellungen").querySelector(".sheet-inhalt");
-    if (inhalt) inhalt.scrollTop = 0;
-    sheetOeffnen($("einstellungen"));
-  }
-
-  function einstellungenSpeichern() {
-    var vorherQuelle = datenUrl();
-    zustand.einstellungen.erstattung = $("sErstattung").checked;
-    zustand.einstellungen.abgeltung = $("sAbgeltung").checked;
-    zustand.einstellungen.schwelle = parseFloat($("sSchwelle").value) || 0;
-    zustand.einstellungen.benachrichtigung = $("sBenachrichtigung").checked;
-    zustand.einstellungen.quelle = ($("sQuelle").value || "").trim();
-    schreib(SPEICHER.einst, zustand.einstellungen);
-    sheetsSchliessen();
-    rendern();
-
-    if (zustand.einstellungen.benachrichtigung) {
-      lokaleNotiz("Benachrichtigung aktiv",
-        "Du bekommst Bescheid, wenn ein Wert aus der Watchlist über " +
-        pct(zustand.einstellungen.schwelle) + " liegt.");
-    }
-    if (datenUrl() !== vorherQuelle) laden(true);
-    else toast("Gespeichert");
-  }
-
-  // ------------------------------------------------------------ Ereignisse
+  /* ============================================================ Ereignisse */
 
   function ereignisse() {
     $("btnAktualisieren").addEventListener("click", function () { laden(true); });
     $("btnTheme").addEventListener("click", themeUmschalten);
     $("btnEinstellungen").addEventListener("click", einstellungenOeffnen);
-    $("btnEinstellungenSpeichern").addEventListener("click", einstellungenSpeichern);
+    $("betragKarte").addEventListener("click", betragOeffnen);
+    $("btnFilter").addEventListener("click", filterOeffnen);
+    $("referenzZeile").addEventListener("click", referenzOeffnen);
+    $("btnLeerReset").addEventListener("click", filterZuruecksetzen);
 
-    $("btnFilter").addEventListener("click", function () {
-      var b = $("filterBereich");
-      b.hidden = !b.hidden;
+    $("btnMehr").addEventListener("click", function () {
+      zustand.limit += SEITE;
+      rendern();
+      // Fokus auf die erste neue Karte, damit die Tastaturbedienung
+      // nicht am Seitenanfang landet.
+      var neu = $("liste").children[zustand.limit - SEITE];
+      if (neu) neu.focus({ preventScroll: true });
     });
 
+    $("heldKarte").addEventListener("click", function () {
+      var key = $("heldKarte").dataset.key;
+      var i = zustand.sichtbar.findIndex(function (a) { return a.dedupe_key === key; });
+      if (i >= 0) detailOeffnen(i);
+    });
+
+    var sucheTimer = null;
     $("suche").addEventListener("input", function (e) {
       zustand.suche = e.target.value;
+      $("btnSucheLeeren").hidden = !e.target.value;
+      clearTimeout(sucheTimer);
+      sucheTimer = setTimeout(function () {
+        zustand.limit = SEITE;
+        rendern();
+      }, 140);
+    });
+
+    $("btnSucheLeeren").addEventListener("click", function () {
+      $("suche").value = "";
+      zustand.suche = "";
+      $("btnSucheLeeren").hidden = true;
       rendern();
     });
 
     document.querySelectorAll(".sort").forEach(function (knopf) {
       knopf.addEventListener("click", function () {
-        document.querySelectorAll(".sort").forEach(function (k) { k.classList.remove("aktiv"); });
+        document.querySelectorAll(".sort").forEach(function (k) {
+          k.classList.remove("aktiv");
+          k.setAttribute("aria-selected", "false");
+        });
         knopf.classList.add("aktiv");
+        knopf.setAttribute("aria-selected", "true");
         zustand.sortierung = knopf.dataset.sort;
         rendern();
       });
     });
 
-    var filterFelder = {
-      fLand: "land", fTyp: "typ", fBetrag: "betrag", fQuelltyp: "quelltyp",
-    };
-    Object.keys(filterFelder).forEach(function (id) {
-      $(id).addEventListener("change", function (e) {
-        zustand.filter[filterFelder[id]] = e.target.value;
-        rendern();
-      });
-      if (id === "fBetrag") {
-        $(id).addEventListener("input", function (e) {
-          zustand.filter.betrag = e.target.value;
-          rendern();
-        });
-      }
-    });
-    [["fNurEur", "nurEur"], ["fNurWatchlist", "nurWatch"], ["fOhneStale", "ohneStale"]]
-      .forEach(function (paar) {
-        $(paar[0]).addEventListener("change", function (e) {
-          zustand.filter[paar[1]] = e.target.checked;
-          rendern();
-        });
-      });
-
-    $("btnFilterReset").addEventListener("click", function () {
-      zustand.filter = { land: "", typ: "", betrag: "", quelltyp: "", nurEur: false, nurWatch: false, ohneStale: false };
-      $("fLand").value = ""; $("fTyp").value = ""; $("fBetrag").value = ""; $("fQuelltyp").value = "";
-      $("fNurEur").checked = false; $("fNurWatchlist").checked = false; $("fOhneStale").checked = false;
-      rendern();
-    });
-
+    /* Liste: Stern oder Karte */
     $("liste").addEventListener("click", function (e) {
+      var haken = e.target.closest("[data-erledigt]");
+      if (haken) {
+        e.stopPropagation();
+        var h = zustand.sichtbar[parseInt(haken.dataset.erledigt, 10)];
+        if (h) erledigtUmschalten(h.dedupe_key);
+        return;
+      }
       var stern = e.target.closest("[data-watch]");
       if (stern) {
         e.stopPropagation();
-        var a = sichtbar[parseInt(stern.dataset.watch, 10)];
+        var a = zustand.sichtbar[parseInt(stern.dataset.watch, 10)];
         if (a) watchUmschalten(a.dedupe_key);
         return;
       }
@@ -840,42 +1722,147 @@
       if (karte) detailOeffnen(parseInt(karte.dataset.index, 10));
     });
 
+    /* Karten sind per Tastatur erreichbar – dann muss Enter auch öffnen. */
+    $("liste").addEventListener("keydown", function (e) {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      var karte = e.target.closest(".karte");
+      if (!karte || e.target.closest("[data-watch]")) return;
+      e.preventDefault();
+      detailOeffnen(parseInt(karte.dataset.index, 10));
+    });
+
+    $("aktiveFilter").addEventListener("click", function (e) {
+      var chip = e.target.closest("[data-filter-weg]");
+      if (!chip) return;
+      var k = chip.dataset.filterWeg;
+      zustand.filter[k] = typeof zustand.filter[k] === "boolean" ? false : "";
+      zustand.limit = SEITE;
+      rendern();
+    });
+
+    /* Alles im Sheet läuft über einen Delegierten – die Inhalte werden
+       ja bei jedem Öffnen neu gebaut. */
     document.addEventListener("click", function (e) {
-      if (e.target.closest("[data-schliessen]")) { sheetsSchliessen(); return; }
-      var wd = e.target.closest("[data-watch-detail]");
-      if (wd) {
-        watchUmschalten(wd.dataset.watchDetail);
-        wd.textContent = zustand.watchlist.indexOf(wd.dataset.watchDetail) !== -1
-          ? "Aus Watchlist entfernen" : "Zur Watchlist";
+      if (e.target.closest("[data-schliessen]")) { sheetSchliessen(); return; }
+
+      var folie = e.target.closest("[data-folie]");
+      if (folie) {
+        var ziel = parseInt(folie.dataset.folie, 10);
+        folieZeigen(ziel, aktuelleFolien ? ziel - aktuelleFolien.index : 0);
+        return;
       }
+
+      var erledigtKnopf = e.target.closest("[data-erledigt-key]");
+      if (erledigtKnopf) {
+        var eKey = erledigtKnopf.dataset.erledigtKey;
+        var warDrin = zustand.erledigt.indexOf(eKey) !== -1;
+        erledigtUmschalten(eKey);
+        // Aus dem Detail-Sheet heraus schließen; in der Einstellungsliste
+        // stattdessen die Liste neu aufbauen, damit man weitermachen kann.
+        if (!warDrin) sheetSchliessen();
+        else einstellungenOeffnen();
+        return;
+      }
+
+      var watchKnopf = e.target.closest("[data-watch-key]");
+      if (watchKnopf) {
+        var key = watchKnopf.dataset.watchKey;
+        watchUmschalten(key);
+        watchKnopf.textContent = zustand.watchlist.indexOf(key) !== -1
+          ? "Von der Merkliste nehmen" : "Auf die Merkliste";
+        return;
+      }
+
+      var betragChip = e.target.closest("[data-betrag]");
+      if (betragChip) {
+        var eingabe = $("betragEingabe");
+        if (eingabe) eingabe.value = betragChip.dataset.betrag;
+        betragSetzen(betragChip.dataset.betrag, true);
+        return;
+      }
+
+      if (e.target.closest("#btnBetragSpeichern")) {
+        betragSetzen($("betragEingabe") ? $("betragEingabe").value : zustand.betrag, true);
+        return;
+      }
+      if (e.target.closest("#btnEinstSpeichern")) { einstellungenSpeichern(); return; }
+      if (e.target.closest("#btnFilterReset")) { filterZuruecksetzen(); sheetSchliessen(); return; }
+      if (e.target.closest("#btnFilterFertig")) { sheetSchliessen(); return; }
     });
 
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") sheetsSchliessen();
+      if (!sheetOffen()) return;
+      if (e.key === "Escape") { sheetSchliessen(); return; }
+      if (e.key === "ArrowRight") folieWechseln(1);
+      if (e.key === "ArrowLeft") folieWechseln(-1);
     });
 
-    // Android-Zurück-Taste: schließt das Sheet statt der App.
+    /* Wischen zwischen den Folien */
+    var wischX = 0, wischY = 0;
+    $("sheetBody").addEventListener("touchstart", function (e) {
+      if (!e.touches || e.touches.length !== 1) return;
+      wischX = e.touches[0].clientX;
+      wischY = e.touches[0].clientY;
+    }, { passive: true });
+
+    $("sheetBody").addEventListener("touchend", function (e) {
+      if (!aktuelleFolien || !e.changedTouches || !e.changedTouches.length) return;
+      var dx = e.changedTouches[0].clientX - wischX;
+      var dy = e.changedTouches[0].clientY - wischY;
+      if (Math.abs(dx) < 60 || Math.abs(dy) > 45) return;
+      folieWechseln(dx < 0 ? 1 : -1);
+    }, { passive: true });
+
+    // Android-Zurück-Taste schließt das Sheet statt die App.
     window.addEventListener("popstate", function () {
-      if (einSheetOffen()) sheetsSchliessen(true);
+      if (sheetOffen()) sheetSchliessen(true);
     });
 
     window.addEventListener("online", function () { laden(false); });
+
+    /* Schatten unter der Kopfzeile erst beim Scrollen */
+    var ticking = false;
+    window.addEventListener("scroll", function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        $("kopfMarker").classList.toggle("gescrollt", window.scrollY > 4);
+        ticking = false;
+      });
+    }, { passive: true });
+
+    /* Systemwechsel hell/dunkel mitnehmen, solange "auto" eingestellt ist */
+    if (window.matchMedia) {
+      var mq = window.matchMedia("(prefers-color-scheme: dark)");
+      var reagiere = function () {
+        if (lies(SPEICHER.theme, "auto") === "auto") themeSetzen("auto");
+      };
+      if (mq.addEventListener) mq.addEventListener("change", reagiere);
+      else if (mq.addListener) mq.addListener(reagiere);
+    }
   }
 
-  // ------------------------------------------------------------- Start
+  /* ================================================================= Start */
 
   function start() {
     zustand.einstellungen = Object.assign(zustand.einstellungen, lies(SPEICHER.einst, {}));
-    zustand.watchlist = lies(SPEICHER.watch, []);
+    zustand.watchlist = lies(SPEICHER.watch, []) || [];
+    zustand.erledigt = lies(SPEICHER.erledigt, []) || [];
+
+    var gespeicherterBetrag = Number(lies(SPEICHER.betrag, BETRAG_STANDARD));
+    zustand.betrag = (isFinite(gespeicherterBetrag) && gespeicherterBetrag > 0)
+      ? gespeicherterBetrag : BETRAG_STANDARD;
+
     themeSetzen(lies(SPEICHER.theme, "auto"));
+    betragAnzeigen();
+    ereignisse();
+    ptrEinrichten();
 
     var zwischen = lies(SPEICHER.daten, null);
     if (zwischen && pruefeStruktur(zwischen.daten)) {
       uebernehmen(zwischen.daten, "cache", null, zwischen.geholt);
     }
 
-    ereignisse();
-    ptrEinrichten();
     laden(false);
 
     if ("serviceWorker" in navigator && location.protocol !== "file:") {

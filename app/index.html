@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0f172a">
-<meta name="description" content="Tagesgeldzinsen aus ganz Europa, nach Quellensteuer und Landesrisiko verglichen.">
+<meta name="theme-color" content="#faf7f2">
+<meta name="description" content="Tagesgeldzinsen aus ganz Europa – einfach erklärt, mit Rechenbeispiel und Steuern.">
 <title>Zinsradar</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
@@ -13,174 +13,245 @@
 </head>
 <body>
 
-<div id="ptr" class="ptr" aria-hidden="true"><span class="ptr-spinner"></span><span id="ptrText">Zum Aktualisieren ziehen</span></div>
+<!-- ------------------------------------------------------- Icon-Vorrat
+     Ein Satz kleiner Strich-Icons, überall per <use href="#i-…"> geholt.
+     Strichfarbe ist currentColor, damit sie im Dunkelmodus mitgehen. -->
+<svg class="icon-vorrat" aria-hidden="true" focusable="false">
+  <symbol id="i-neu" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/>
+  </symbol>
+  <symbol id="i-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="4"/>
+    <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+  </symbol>
+  <symbol id="i-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5z"/>
+  </symbol>
+  <symbol id="i-zahnrad" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="3"/>
+    <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2v.2a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 7 19.4a1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 2.6 14H2.4a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.6 7a1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 10 2.6V2.4a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.6 1h.2a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.6 1z"/>
+  </symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 6l12 12M18 6L6 18"/>
+  </symbol>
+  <symbol id="i-lupe" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/>
+  </symbol>
+  <symbol id="i-regler" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 7h10M18 7h2M4 17h4M12 17h8"/>
+    <circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/>
+  </symbol>
+  <symbol id="i-stern" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3.6l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.6 9.7l5.8-.8z"/>
+  </symbol>
+  <symbol id="i-stern-voll" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+    <path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>
+  </symbol>
+  <symbol id="i-schloss" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="4" y="10" width="16" height="10" rx="2.6"/>
+    <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+  </symbol>
+  <symbol id="i-muenze" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="8.5"/>
+    <path d="M15 9.2A4 4 0 0 0 9.3 11m0 2a4 4 0 0 0 5.7 1.8M7.6 11h5M7.6 13.2h4.4"/>
+  </symbol>
+  <symbol id="i-stift" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 20h4l10-10a2.4 2.4 0 0 0-3.4-3.4L4.6 16.6z"/><path d="M13.5 6.5l3.4 3.4"/>
+  </symbol>
+  <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="7.8" r=".9" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-pfeil-hoch" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 19V5M6 11l6-6 6 6"/>
+  </symbol>
+  <symbol id="i-pfeil-runter" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 5v14M6 13l6 6 6-6"/>
+  </symbol>
+  <symbol id="i-strich-quer" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/>
+  </symbol>
+  <symbol id="i-warnung" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 4.5L2.8 20h18.4z"/><path d="M12 10v4"/><circle cx="12" cy="17" r=".9" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-uhr" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 1.8"/>
+  </symbol>
+  <symbol id="i-haken" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/><path d="M8 12.3l2.6 2.6L16 9.5"/>
+  </symbol>
+  <symbol id="i-person" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="8" r="3.6"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/>
+  </symbol>
+  <symbol id="i-funke" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M13 3l-8 10h6l-2 8 8-10h-6z"/>
+  </symbol>
+</svg>
 
-<header class="kopf">
-  <div class="kopf-oben">
-    <h1>Zinsradar</h1>
+<!-- Ziehen zum Aktualisieren -->
+<div id="ptr" class="ptr" aria-hidden="true">
+  <span class="ptr-kreis"><svg class="ikon-svg"><use href="#i-neu"></use></svg></span>
+  <span id="ptrText">Zum Aktualisieren ziehen</span>
+</div>
+
+<header class="kopf" id="kopfMarker">
+  <div class="kopf-zeile">
+    <div class="marke">
+      <span class="marke-punkt" aria-hidden="true"></span>
+      <span class="marke-name">Zinsradar</span>
+    </div>
     <div class="kopf-knoepfe">
-      <button id="btnAktualisieren" class="ikon" title="Aktualisieren" aria-label="Daten aktualisieren">&#8635;</button>
-      <button id="btnTheme" class="ikon" title="Hell/Dunkel" aria-label="Farbschema wechseln">&#9681;</button>
-      <button id="btnEinstellungen" class="ikon" title="Einstellungen" aria-label="Einstellungen">&#9881;</button>
+      <button id="btnAktualisieren" class="ikon" type="button" title="Neu laden" aria-label="Daten neu laden">
+        <svg class="ikon-svg"><use href="#i-neu"></use></svg>
+      </button>
+      <button id="btnTheme" class="ikon" type="button" title="Hell oder dunkel" aria-label="Hell oder dunkel">
+        <svg class="ikon-svg"><use href="#i-sonne"></use></svg>
+      </button>
+      <button id="btnEinstellungen" class="ikon" type="button" title="Einstellungen" aria-label="Einstellungen">
+        <svg class="ikon-svg"><use href="#i-zahnrad"></use></svg>
+      </button>
     </div>
-  </div>
-
-  <!-- Feature 4: Referenzleiste -->
-  <div id="referenzleiste" class="referenz" hidden>
-    <div class="referenz-zelle">
-      <span class="referenz-label" id="mirLabel">EZB-Schnitt</span>
-      <span class="referenz-wert" id="mirWert">–</span>
-      <span class="referenz-sub" id="mirSub"></span>
-    </div>
-    <div class="referenz-trenner"></div>
-    <div class="referenz-zelle">
-      <span class="referenz-label">&euro;STR</span>
-      <span class="referenz-wert" id="estrWert">–</span>
-      <span class="referenz-sub" id="estrSub"></span>
-    </div>
-    <div class="referenz-trenner"></div>
-    <div class="referenz-zelle">
-      <span class="referenz-label">Stand</span>
-      <span class="referenz-wert klein" id="standWert">–</span>
-      <span class="referenz-sub" id="standSub"></span>
-    </div>
-  </div>
-
-  <div class="suchzeile">
-    <input type="search" id="suche" placeholder="Bank suchen …" autocomplete="off" aria-label="Bank suchen">
-    <button id="btnFilter" class="filter-knopf">Filter <span id="filterAnzahl" class="pill" hidden>0</span></button>
-  </div>
-
-  <!-- Feature 1: Sortierung -->
-  <div class="sortzeile" role="tablist" aria-label="Sortierung">
-    <button class="sort aktiv" data-sort="score" role="tab">Score</button>
-    <button class="sort" data-sort="netto" role="tab">Netto</button>
-    <button class="sort" data-sort="brutto" role="tab">Brutto</button>
-    <button class="sort" data-sort="bank" role="tab">Name</button>
-    <button class="sort" data-sort="land" role="tab">Land</button>
   </div>
 </header>
 
-<!-- Feature 5: Filter -->
-<section id="filterBereich" class="filterbereich" hidden>
-  <div class="filter-gitter">
-    <label class="feld">
-      <span>Land</span>
-      <select id="fLand"><option value="">alle Länder</option></select>
-    </label>
-    <label class="feld">
-      <span>Zinstyp</span>
-      <select id="fTyp">
-        <option value="">alle</option>
-        <option value="variabel">variabel</option>
-        <option value="aktion">Aktionszins</option>
-        <option value="fest">fest</option>
-      </select>
-    </label>
-    <label class="feld">
-      <span>Anlagebetrag</span>
-      <input type="number" id="fBetrag" min="0" step="500" placeholder="z.B. 10000" inputmode="numeric">
-    </label>
-    <label class="feld">
-      <span>Anbietertyp</span>
-      <select id="fQuelltyp">
-        <option value="">alle</option>
-        <option value="bank">nur Banken</option>
-        <option value="plattform">nur Plattformen</option>
-        <option value="portal">über Vergleichsportale</option>
-      </select>
-    </label>
-  </div>
-  <div class="filter-schalter">
-    <label class="schalter"><input type="checkbox" id="fNurEur"> <span>nur EUR</span></label>
-    <label class="schalter"><input type="checkbox" id="fNurWatchlist"> <span>nur Watchlist</span></label>
-    <label class="schalter"><input type="checkbox" id="fOhneStale"> <span>stale ausblenden</span></label>
-    <button id="btnFilterReset" class="text-knopf">zurücksetzen</button>
-  </div>
-</section>
-
 <main>
+  <!-- Betrag: die eine Zahl, die alles andere verständlich macht -->
+  <button id="betragKarte" class="betrag-karte" type="button">
+    <span class="betrag-text">
+      <span class="betrag-label">Ich möchte anlegen</span>
+      <span class="betrag-wert" id="betragAnzeige">10.000 €</span>
+    </span>
+    <span class="betrag-stift" aria-hidden="true">
+      <svg class="ikon-svg"><use href="#i-stift"></use></svg>
+    </span>
+  </button>
+
+  <!-- Bestes Angebot, als freundlicher Satz statt als Tabelle -->
+  <button id="heldKarte" class="held" type="button" hidden>
+    <span class="held-bild" aria-hidden="true">
+      <svg viewBox="0 0 96 72" class="held-svg">
+        <ellipse cx="48" cy="64" rx="34" ry="5" class="ill-schatten"/>
+        <path d="M20 46c0-13 12-22 28-22s28 9 28 22-12 20-28 20S20 59 20 46z" class="ill-fuellung"/>
+        <path d="M62 30c2-6 7-8 7-8s0 6-2 9" class="ill-linie"/>
+        <circle cx="38" cy="43" r="2.6" class="ill-auge"/>
+        <path d="M56 40c4 0 7 2 7 5s-3 5-7 5" class="ill-linie"/>
+        <circle cx="70" cy="22" r="9" class="ill-muenze"/>
+        <text x="70" y="26" class="ill-muenz-text">€</text>
+        <path d="M28 62v5M40 63v5M56 63v5M68 62v5" class="ill-linie"/>
+      </svg>
+    </span>
+    <span class="held-text">
+      <span class="held-label">Unsere Empfehlung</span>
+      <strong class="held-satz" id="heldSatz">–</strong>
+      <span class="held-sub" id="heldSub"></span>
+    </span>
+  </button>
+
+  <!-- Einordnung: was zahlen Banken sonst so? -->
+  <button id="referenzZeile" class="referenz" type="button" hidden>
+    <span class="referenz-punkt" id="referenzPunkt" aria-hidden="true"></span>
+    <span class="referenz-satz" id="referenzSatz">–</span>
+    <svg class="ikon-svg referenz-info" aria-hidden="true"><use href="#i-info"></use></svg>
+  </button>
+
   <div id="hinweis" class="hinweis" hidden></div>
-  <div id="ladeanzeige" class="lade">Daten werden geladen …</div>
+
+  <!-- Suchen und Filtern -->
+  <div class="werkzeuge">
+    <div class="suchfeld">
+      <svg class="ikon-svg such-ikon" aria-hidden="true"><use href="#i-lupe"></use></svg>
+      <input type="search" id="suche" placeholder="Bank suchen" autocomplete="off"
+             enterkeyhint="search" aria-label="Bank suchen">
+      <button id="btnSucheLeeren" class="such-x" type="button" aria-label="Suche löschen" hidden>
+        <svg class="ikon-svg"><use href="#i-x"></use></svg>
+      </button>
+    </div>
+    <button id="btnFilter" class="filter-knopf" type="button" aria-label="Filter">
+      <svg class="ikon-svg"><use href="#i-regler"></use></svg>
+      <span id="filterAnzahl" class="filter-zahl" hidden>0</span>
+    </button>
+  </div>
+
+  <!-- Reihenfolge -->
+  <div class="sortzeile" role="tablist" aria-label="Reihenfolge">
+    <button class="sort aktiv" data-sort="score" role="tab" aria-selected="true" type="button">Empfehlung</button>
+    <button class="sort" data-sort="werbezins" role="tab" aria-selected="false" type="button">Höchster Zins</button>
+    <button class="sort" data-sort="brutto" role="tab" aria-selected="false" type="button">Erstes Jahr</button>
+    <button class="sort" data-sort="netto" role="tab" aria-selected="false" type="button">Nach Steuern</button>
+    <button class="sort" data-sort="bank" role="tab" aria-selected="false" type="button">Name</button>
+    <button class="sort" data-sort="land" role="tab" aria-selected="false" type="button">Land</button>
+  </div>
+
+  <div id="aktiveFilter" class="aktive-filter" hidden></div>
+
+  <div id="ladeanzeige" class="lade">
+    <div class="skelett"></div><div class="skelett"></div><div class="skelett"></div>
+  </div>
+
   <ol id="liste" class="liste" aria-live="polite"></ol>
-  <p id="leer" class="leer" hidden>Kein Eintrag passt zu den Filtern.</p>
+
+  <button id="btnMehr" class="mehr" type="button" hidden></button>
+
+  <div id="leer" class="leer" hidden>
+    <svg viewBox="0 0 120 90" class="leer-bild" aria-hidden="true">
+      <ellipse cx="60" cy="78" rx="30" ry="4" class="ill-schatten"/>
+      <circle cx="52" cy="40" r="22" class="ill-lupe-glas"/>
+      <circle cx="52" cy="40" r="22" class="ill-linie" fill="none"/>
+      <path d="M69 57l14 14" class="ill-linie" stroke-width="5"/>
+      <path d="M44 40h16M52 32v16" class="ill-linie"/>
+    </svg>
+    <p class="leer-titel">Nichts gefunden</p>
+    <p class="leer-text">Keins der Angebote passt zu deinen Filtern.</p>
+    <button id="btnLeerReset" class="knopf-weich" type="button">Filter zurücksetzen</button>
+  </div>
+
+  <p id="fussStatistik" class="statistik"></p>
 </main>
 
 <footer class="fuss">
-  <p><strong>Keine Anlageberatung.</strong> Alle Angaben ohne Gewähr. Zinssätze ändern sich
-     laufend – vor Abschluss immer beim Anbieter prüfen.</p>
-  <p id="fussStatistik" class="klein"></p>
-  <p class="klein">Referenzdaten: Europäische Zentralbank (MIR, &euro;STR, eurofxref).
-     Angebotsdaten: die je Eintrag genannten Quellen.</p>
+  <p><strong>Keine Anlageberatung.</strong> Alle Angaben ohne Gewähr.
+     Zinsen ändern sich täglich – vor dem Abschluss immer beim Anbieter nachsehen.</p>
+  <p class="fuss-klein">Vergleichszahlen von der Europäischen Zentralbank.
+     Die Quelle jedes Angebots steht im Detail unter „Woher kommt die Zahl“.</p>
 </footer>
 
-<!-- Detail-Sheet (Feature 2) -->
+<!-- ------------------------------------------------------------------
+     EIN Sheet für alles: Detail, Einstellungen, Betrag, Erklärungen.
+     Ein einziger Öffnen-/Schließen-Weg heißt: ein einziger Ort, an dem
+     etwas klemmen kann.
+     ------------------------------------------------------------------ -->
 <div id="sheet" class="sheet" hidden>
   <div class="sheet-hintergrund" data-schliessen></div>
   <div class="sheet-inhalt" role="dialog" aria-modal="true" aria-labelledby="sheetTitel">
     <div class="sheet-kopf">
-      <span></span>
-      <div class="sheet-griff" data-schliessen></div>
-      <button class="sheet-x" data-schliessen type="button" aria-label="Schließen" title="Schließen">&times;</button>
+      <div class="sheet-griff" data-schliessen aria-hidden="true"></div>
+      <h2 id="sheetTitel" class="sheet-titel">–</h2>
+      <button id="btnSheetX" class="sheet-x" type="button" data-schliessen
+              aria-label="Schließen" title="Schließen">
+        <svg class="ikon-svg"><use href="#i-x"></use></svg>
+      </button>
     </div>
-    <div id="sheetBody"></div>
-  </div>
-</div>
-
-<!-- Einstellungen -->
-<div id="einstellungen" class="sheet" hidden>
-  <div class="sheet-hintergrund" data-schliessen></div>
-  <div class="sheet-inhalt" role="dialog" aria-modal="true" aria-labelledby="einstTitel">
-    <div class="sheet-kopf">
-      <span></span>
-      <div class="sheet-griff" data-schliessen></div>
-      <button class="sheet-x" data-schliessen type="button" aria-label="Schließen" title="Schließen">&times;</button>
-    </div>
-    <h2 id="einstTitel">Einstellungen</h2>
-
-    <label class="schalter gross">
-      <input type="checkbox" id="sErstattung" checked>
-      <span>
-        <strong>Rückerstattung selbst machen</strong>
-        <em>Bei Ländern mit geringem Aufwand wird die Quellensteuer als
-            erstattet gerechnet (0 % statt DBA-Satz).</em>
-      </span>
-    </label>
-
-    <label class="schalter gross">
-      <input type="checkbox" id="sAbgeltung">
-      <span>
-        <strong>Deutsche Abgeltungssteuer anzeigen</strong>
-        <em>Nur Anzeige. Sie trifft alle Anbieter gleich und geht deshalb
-            nicht in den Score ein.</em>
-      </span>
-    </label>
-
-    <h3>Benachrichtigung</h3>
-    <label class="feld">
-      <span>Melden, wenn ein Zins in der Watchlist über … % liegt</span>
-      <input type="number" id="sSchwelle" min="0" max="10" step="0.05" value="3.5">
-    </label>
-    <label class="schalter gross">
-      <input type="checkbox" id="sBenachrichtigung">
-      <span><strong>Lokale Benachrichtigung aktivieren</strong>
-        <em id="benachrichtigungStatus">Prüft beim Aktualisieren, ob ein Wert die Schwelle reißt.</em></span>
-    </label>
-
-    <h3>Datenquelle</h3>
-    <label class="feld">
-      <span>JSON-URL (raw.githubusercontent)</span>
-      <input type="url" id="sQuelle" placeholder="https://raw.githubusercontent.com/…/data/zinsen.json">
-    </label>
-    <p class="klein" id="quelleStatus"></p>
-
-    <div class="sheet-aktionen">
-      <button id="btnEinstellungenSpeichern" class="primaer">Speichern</button>
-      <button class="text-knopf" data-schliessen>Schließen</button>
-    </div>
-
-    <p class="klein">Version <span id="appVersion">1.0.0</span> · Daten werden offline
-       zwischengespeichert und funktionieren ohne Netz.</p>
+    <div id="sheetReiter" class="sheet-reiter" role="tablist" hidden></div>
+    <div id="sheetBody" class="sheet-body"></div>
+    <div id="sheetFuss" class="sheet-fuss" hidden></div>
   </div>
 </div>
 

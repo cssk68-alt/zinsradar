@@ -160,6 +160,16 @@ def lauf(args: argparse.Namespace) -> int:
     # ---------------------------------------------------- 6. Validierung
     alter_stand = lade_json(ZINSEN_PFAD, default={}) or {}
     angebote, bericht = validate.validiere(angebote, alter_stand, referenz)
+
+    # Nach der Validierung, weil erst dort die uebernommenen Vortagseintraege
+    # dazukommen: die haben die Qualitaetsfilter dieses Laufs noch nie gesehen.
+    angebote, saeuberung = normalize.altbestand_saeubern(angebote)
+    for zeile in saeuberung:
+        log().info("Altbestand: %s", zeile)
+    bericht["altbestand_saeuberung"] = saeuberung
+    # Der Report zaehlt sonst den Stand VOR der Saeuberung.
+    bericht["ergebnis_gesamt"] = len(angebote)
+    bericht["stale_gesamt"] = sum(1 for a in angebote if a.get("stale"))
     angebote.sort(key=lambda a: (-(a.get("score_mit_erstattung") or -99), a.get("bank", "")))
 
     # ---------------------------------------------------- 7. Schreiben

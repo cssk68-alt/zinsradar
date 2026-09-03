@@ -4,7 +4,7 @@
  * Daten  -> network-first mit Cache-Fallback (täglich neu, muss aber
  *           auch im Funkloch etwas anzeigen)
  */
-var VERSION = "zinsradar-v1";
+var VERSION = "zinsradar-v3";
 var SHELL_CACHE = VERSION + "-shell";
 var DATEN_CACHE = VERSION + "-daten";
 

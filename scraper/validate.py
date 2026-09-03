@@ -254,6 +254,17 @@ def report_schreiben(pfad, bericht: dict[str, Any], lauf_meta: dict[str, Any]) -
         a("")
         a("Es wurde kein einziges Angebot gefunden. Der komplette Vortagsstand ")
         a("wurde uebernommen und als `stale` markiert.")
+
+    saeuberung = bericht.get("altbestand_saeuberung") or []
+    if saeuberung:
+        a("")
+        a("## Nachbereinigung des Altbestands")
+        a("")
+        a("Uebernommene Vortagseintraege durchlaufen dieselben Qualitaetsfilter")
+        a("wie frische Treffer. Was dabei aufgefallen ist:")
+        a("")
+        for zeile in saeuberung:
+            a(f"* {zeile}")
         a("")
 
     def block(titel: str, schluessel: str, formatierer) -> None:

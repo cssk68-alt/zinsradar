@@ -179,6 +179,48 @@ Beschriftete Werte werden auseinandergehalten: aus
 „Basiszins: 1,95 % Aktionszins: 3,40 % – erste 6 Monate" wird
 Aktionszins 3,40 %, Folgezins 1,95 %, Dauer 6 Monate.
 
+**2c — Anreicherung über Gruppengrenzen.** Vergleichsportale zeigen dieselbe
+Bank oft zweimal: als Werbekachel („Chase 4,00 % – Sehr gut (4,9)") und als
+Datenblock („Basiszins 2 %, Aktionszins 4 %, Dauer Aktionszins 4, Kundenkreis
+Neukunden"). Die Kachel gewinnt die Gruppenwahl, weil sie mehr Banken abdeckt
+— und schluckt damit alles, was das Angebot einschränkt.
+
+Deshalb wird nach der Gruppenwahl jedem Gewinner der passende Detailtext der
+anderen Gruppen beigelegt (`_mit_details_anreichern`). Ausgewertet wird er
+erst in `normalize.py`; die Anreicherung sortiert nur zu.
+
+> **Wofür das nötig war.** Ohne diesen Schritt stand Chase mit **4,00 % als
+> Dauerzins** in der Liste, obwohl es die nur die ersten vier Monate gibt
+> (danach 2,00 %). Der Fehler war systematisch: von 74 Angeboten galt genau
+> **eines** als befristet. Nach der Korrektur sind es 24 von 192 — mit
+> realistischen Folgezinsen. Drei Ursachen wirkten zusammen:
+>
+> 1. `_AKTION_LABEL` erlaubte zwischen Beschriftung und Zahl nur `\D` —
+>    „Aktionszins **Ab 0€:** 4%" scheiterte an der Null in „Ab 0€".
+>    Jetzt steht dort `[^%]`.
+> 2. Die Aktionsdauer wurde mit `parse_monate()` aus dem ganzen Textblock
+>    gezogen und traf „Zinsgutschrift / **Jahr 12**". Jetzt sucht
+>    `aktionsdauer_aus_text()` beschriftete Muster in fester Reihenfolge und
+>    macht bekannte Fallen vorher unkenntlich.
+> 3. Der Merge übernahm die Aktion nicht aus dem zweiten Block. Jetzt gilt:
+>    Dass ein Zins befristet ist, steht immer nur an *einer* Stelle — dass er
+>    es nicht ist, steht nirgends. Eine erkannte Aktion schlägt deshalb ein
+>    „variabel", auch aus der schwächeren Quelle.
+
+Aus demselben Textblock kommt auch `nur_neukunden`. In der App kann man solche
+Angebote abhaken, sobald man sie einmal genutzt hat.
+
+**Wenn ein geratener Selektor trifft, ist das nicht automatisch gut.** Bei
+`finanztip.de` traf `td:nth-child(2)` die *Fußnotenspalte* — aus „Cosmos
+Direkt 8" wurde ein Zins von 8,00 %. Solche Werte fallen nicht auf, weil sie
+im plausiblen Fenster liegen. Zwei Konsequenzen:
+
+* `fussnote_ist_zins()` verwirft einen Treffer, dessen Zins genau der Zahl am
+  Ende des Banknamens entspricht.
+* Bei den neu aufgenommenen Portalen stehen **bewusst keine** Selektoren mehr
+  in `sources.yaml` (`container_selector: null`), weil dort nur die Heuristik
+  nachweislich das Richtige liest.
+
 ### Stufe 3 — LLM-Fallback
 
 Das HTML wird auf Fließtext reduziert (Skripte, Navigation, Cookie-Banner
@@ -264,23 +306,65 @@ Alles landet in `docs/report.md`. Schwellen stehen in `config.json`.
 Vanilla HTML/CSS/JS in `/app`, kein Build-Step, kein Framework, keine externen
 Ressourcen (damit sie offline vollständig funktioniert).
 
-1. **Vollständige Liste** aller gefundenen Anbieter, sortierbar nach Score
-   (Standard), Netto, Brutto, Name, Land. Es wird nichts weggefiltert.
-2. **Zweite Zeile je Eintrag** mit „netto X,XX % über 12 Monate nach
-   Quellensteuer"; Tippen öffnet die vollständige Rechnung mit allen
-   Zwischenschritten und den Formeln.
-3. **Badges**: Einlagensicherung und Länderrating, farbcodiert
-   (AAA/AA grün, A/BBB gelb, darunter rot).
-4. **Referenzleiste** oben: EZB-Marktdurchschnitt des gefilterten Landes
-   (sonst Euroraum) und €STR mit 30-Tage-Trend.
-5. **Filter**: Land, Zinstyp, Anlagebetrag (prüft Mindest- und Höchstanlage),
-   Anbietertyp, nur EUR, nur Watchlist, stale ausblenden.
-6. **Watchlist** mit lokaler Benachrichtigung, wenn ein beobachteter Zins über
+### Aufbau der Oberfläche
+
+Leitgedanke: **zuerst die Zahl, mit der die Bank selbst wirbt** — groß und
+unkommentiert. Erst darunter, kleiner, was davon in Euro übrig bleibt.
+Prozentwerte allein sagen niemandem etwas; „425 € im Jahr" schon.
+
+Alle Beträge rechnen mit einem frei einstellbaren Anlagebetrag (Voreinstellung
+10.000 €), oben in der App über die Betragskarte änderbar.
+
+Die Details eines Angebots liegen nicht als Datenwand auf einer Seite, sondern
+auf vier Folien, zwischen denen man wischt oder tippt:
+
+| Folie | Inhalt |
+| --- | --- |
+| Angebot | Werbezins groß, Aktionshinweis, Rechnung auf den eigenen Betrag, Konditionen |
+| Nach Steuern | Balken brutto/netto, Rechenschritte in Worten, Erklärung Quellensteuer |
+| Sicherheit | Einlagensicherung gegen den eigenen Betrag, Länderbonität, Herleitung der Empfehlung |
+| Herkunft | Welche Quelle, wie ausgelesen, Vergleich mit dem EZB-Durchschnitt |
+
+Fachbegriffe sind bewusst draußen: kein „pp", kein „DBA", kein „qst_effektiv",
+kein „Score". Aus dem Score wurde die **Empfehlung** (Zins nach Steuern minus
+Länder-Risikoabzug), aus „pp" wurden Prozentpunkte, aus Ländercodes
+ausgeschriebene Namen.
+
+### Funktionen
+
+1. **Vollständige Liste** aller gefundenen Anbieter, sortierbar nach Empfehlung
+   (Standard), höchstem Zins, Zins nach Steuern, Name, Land. Es wird nichts
+   weggefiltert. Geladen wird in Schüben von 40 Einträgen, damit die Liste auch
+   bei 200 Angeboten flüssig bleibt.
+2. **Rechenkasten je Eintrag**: „425 € Zinsen im ersten Jahr — bei 10.000 €",
+   darunter, was nach Steuern bleibt. Tippen öffnet die vier Folien.
+3. **Merkzeichen**: Einlagensicherung im Verhältnis zum eigenen Betrag,
+   Länderbonität in Worten („sehr sicher", „solide"), Aktionsdauer,
+   Neukunden-Vorbehalt, Währungsrisiko, veralteter Stand.
+4. **Einordnungszeile** oben: EZB-Marktdurchschnitt des gefilterten Landes
+   (sonst Euroraum) neben dem besten Angebot der Liste; Tippen öffnet die
+   Ländertabelle und den €STR-Trend.
+5. **Filter**: Land, befristete Aktionen (nur/ohne), Neukunden (nur/ohne),
+   Zinsart, Mindestbonität des Landes, Herkunft des Angebots, Mindestzins,
+   „passt zu meinem Betrag", „Betrag voll geschützt", nur Euro, nur Merkliste,
+   alte Werte ausblenden. Der Knopf zeigt live, wie viele Angebote übrig
+   bleiben; aktive Filter stehen als wegklickbare Chips über der Liste.
+6. **Suche** über Bankname, Produkt, Land, Währung, Sicherungssystem, Rating,
+   Quelle und Schlagwörter wie „aktion" oder „neukunden". Mehrere Wörter
+   bedeuten UND („chase neukunden"), Umlaute sind egal („oster" findet
+   Österreich).
+7. **Merkliste** mit lokaler Benachrichtigung, wenn ein beobachteter Zins über
    dem eingestellten Schwellwert liegt (Capacitor LocalNotifications in der
    APK, Web-Notification im Browser, sonst In-App-Hinweis).
-7. **Offline**: Service Worker, „Stand:"-Datum, veraltete Einträge ausgegraut,
+8. **Schon genutzte Neukunden-Angebote abhaken**: Ein Neukundenzins lässt sich
+   nur einmal mitnehmen. Der Haken auf der Karte blendet das Angebot aus der
+   Hauptliste aus; es sammelt sich in den Einstellungen unter „Schon genutzt"
+   und kann dort jederzeit zurückgeholt werden. Gespeichert wird das lokal
+   unter `zr_erledigt`.
+9. **Offline**: Service Worker, „Stand:"-Datum, veraltete Einträge ausgegraut,
    Tier-3-Werte als „automatisch erkannt" markiert.
-8. **Pull-to-Refresh**, Dark Mode (System/hell/dunkel), deutsche Oberfläche.
+10. **Pull-to-Refresh**, Dark Mode (System/hell/dunkel), deutsche Oberfläche,
+    Android-Zurück-Taste schließt das Detailfenster statt der App.
 
 ### Datenquelle
 
@@ -470,14 +554,46 @@ Danach wurden vier URLs korrigiert (getestet am 01.09.2026):
 | raisin.nl | `/sparen/vrij-opneembaar-sparen/` | `/spaarrekening/` |
 | raisin.fr | `/comptes-a-terme/` | `/livret-epargne/` |
 
-Damit liefern **13 von 22 Quellen rund 72 Angebote aus 7 Ländern**. Der Rest
+Damit lieferten 13 von 22 Quellen rund 72 Angebote aus 7 Ländern.
+
+**Zweiter Ausbau am 03.09.2026.** Drei Quellen scheiterten seit Beginn mit
+„robots.txt nicht erreichbar: ConnectError" — die Domains existierten
+schlicht nicht. Auch das kam aus der LLM-Recherche:
+
+| in `sources.yaml` stand | existiert nicht | richtig ist |
+| --- | --- | --- |
+| `sparente.nl` | ✗ | `spaarrente.nl` |
+| `compracer.se` | ✗ | `compricer.se` |
+| `trade-republic.com` | ✗ | `traderepublic.com` |
+
+Danach wurden 35 weitere Kandidaten live durchprobiert und die sechs
+aufgenommen, die **echte Institutsnamen** liefern:
+
+| Quelle | Land | Treffer |
+| --- | --- | --- |
+| `spaarrente.nl` | NL | 48 |
+| `compricer.se` | SE | 45 |
+| `tagesgeld.info` | DE | 24 |
+| `tagesgeldvergleich.com` | DE | 10 |
+| `finanztip.de` | DE | 9 |
+| `verivox.de` | DE | 8 |
+
+Bewusst **nicht** aufgenommen wurden Seiten, die zwar viele Treffer liefern,
+aber keine Banken: `kritische-anleger.de` (42 Treffer, davon der Großteil der
+Knopftext „Tagesgeld freischalten"), `modern-banking.de` (Newszeilen wie „NIBC
+erhöhte am 17.7.26 von …"), `money.it` und `rankia.com` (Artikelüberschriften).
+Menge ist hier nicht dasselbe wie Nutzen.
+
+Stand danach: **21 von 28 Quellen, rund 192 Angebote aus 14 Ländern.** Der Rest
 scheitert an Bot-Schutz (403/401), toten Domains oder robots.txt.
 `docs/quellen_status.md` listet jede Quelle einzeln mit Begründung auf.
 
-Die YAML-Selektoren bleiben trotzdem drin: sie kosten nichts, und wo sie
-stimmen, liefern sie bessere Daten als die Heuristik. Die `literal:`-Werte
-darin sind handrecherchierte Fakten (Consorsbank → Einlagensicherung FR) und
-werden auch dann angewandt, wenn nur die Heuristik greift.
+Die YAML-Selektoren bleiben bei den alten Quellen drin: sie kosten nichts, und
+wo sie stimmen, liefern sie bessere Daten als die Heuristik. Die
+`literal:`-Werte darin sind handrecherchierte Fakten (Consorsbank →
+Einlagensicherung FR) und werden auch dann angewandt, wenn nur die Heuristik
+greift. Bei den neuen Portalen steht dagegen `container_selector: null` —
+siehe die Fußnotenfalle oben.
 
 ### 2. Auch `withholding.json` und `laender.json` sind ungeprüft
 
