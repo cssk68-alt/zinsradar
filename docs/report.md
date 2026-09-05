@@ -1,6 +1,6 @@
-# Lauf-Report 2026-09-04
+# Lauf-Report 2026-09-05
 
-Erstellt: 2026-09-04T10:44:24+00:00
+Erstellt: 2026-09-05T10:04:00+00:00
 
 ## Zusammenfassung
 
@@ -14,7 +14,7 @@ Erstellt: 2026-09-04T10:44:24+00:00
 | Angebote nach Dedupe | 171 |
 | Angebote im Ergebnis | 171 |
 | davon stale | 5 |
-| Laufzeit (s) | 113.7 |
+| Laufzeit (s) | 124.0 |
 
 ### Extraktionsstufen
 
@@ -38,7 +38,7 @@ Erstellt: 2026-09-04T10:44:24+00:00
 | raisin.fr | 2 | css_heuristik | 7 |  |
 | confrontaconti.it | - | - | 0 | HTTP 403 |
 | tucapital.es | - | - | 0 | S1/json_endpoint: kein json_endpoint in sources.yaml; S1/jsonld: ld+json vorhanden, aber ohne verwertbares Zin |
-| bankier.pl | 2 | css_heuristik | 10 |  |
+| bankier.pl | 2 | css_heuristik | 7 |  |
 | compricer.se | 2 | css_heuristik | 45 |  |
 | bankinter.pt | - | - | 0 | HTTP 403 |
 | ing.de | 2 | css_heuristik | 2 |  |
@@ -59,9 +59,10 @@ Erstellt: 2026-09-04T10:44:24+00:00
 
 - **xtb** (DE): 0.9 % -> 3.0 % (+2.1 pp) [Quelle: finanzfluss.de]
 
-## Weit ueber EZB-Landesdurchschnitt - Flag 'pruefen' (7)
+## Weit ueber EZB-Landesdurchschnitt - Flag 'pruefen' (8)
 
 - **Consorsbank** (FR): 3.6 % vs. EZB 0.04 % (+3.56 pp)
+- **Bigbank** (DE): 3.55 % vs. EZB 0.5 % (+3.05 pp)
 - **Chase** (DE): 4.0 % vs. EZB 0.5 % (+3.5 pp)
 - **Revolut** (DE): 4.25 % vs. EZB 0.5 % (+3.75 pp)
 - **Stellantis Direktbank** (DE): 3.62 % vs. EZB 0.5 % (+3.12 pp)
@@ -71,10 +72,10 @@ Erstellt: 2026-09-04T10:44:24+00:00
 
 ## Heute nicht gefunden - als stale behalten (4)
 
-- **Oyak Anker Bank** (DE), stale seit 2026-09-02 (2 Tage)
-- **LEP (Livret d’Épargne Populaire)** (FR), stale seit 2026-09-03 (1 Tage)
-- **LEP (sous conditions de revenus)** (FR), stale seit 2026-09-03 (1 Tage)
-- **Livret Jeune ≥** (FR), stale seit 2026-09-03 (1 Tage)
+- **Oyak Anker Bank** (DE), stale seit 2026-09-02 (3 Tage)
+- **LEP (Livret d’Épargne Populaire)** (FR), stale seit 2026-09-03 (2 Tage)
+- **LEP (sous conditions de revenus)** (FR), stale seit 2026-09-03 (2 Tage)
+- **Livret Jeune ≥** (FR), stale seit 2026-09-03 (2 Tage)
 
 ---
 
