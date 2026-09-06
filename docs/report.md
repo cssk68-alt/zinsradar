@@ -1,6 +1,6 @@
-# Lauf-Report 2026-09-05
+# Lauf-Report 2026-09-06
 
-Erstellt: 2026-09-05T10:04:00+00:00
+Erstellt: 2026-09-06T10:23:18+00:00
 
 ## Zusammenfassung
 
@@ -11,16 +11,16 @@ Erstellt: 2026-09-05T10:04:00+00:00
 | Quellen durch robots.txt uebersprungen | 0 |
 | Quellen ohne Treffer | 8 |
 | Rohtreffer | 320 |
-| Angebote nach Dedupe | 171 |
-| Angebote im Ergebnis | 171 |
+| Angebote nach Dedupe | 172 |
+| Angebote im Ergebnis | 172 |
 | davon stale | 5 |
-| Laufzeit (s) | 124.0 |
+| Laufzeit (s) | 112.2 |
 
 ### Extraktionsstufen
 
 | Stufe | Angebote |
 | --- | ---: |
-| Stufe 2 | 171 |
+| Stufe 2 | 172 |
 
 ### Welche Quelle lief auf welcher Stufe
 
@@ -28,7 +28,7 @@ Erstellt: 2026-09-05T10:04:00+00:00
 | --- | :-: | --- | ---: | --- |
 | weltsparen.de | 2 | css_heuristik | 11 |  |
 | check24.de | 2 | css_heuristik | 3 |  |
-| biallo.de | 2 | css_heuristik | 9 |  |
+| biallo.de | 2 | css_heuristik | 8 |  |
 | finanzfluss.de | 2 | css_heuristik | 32 |  |
 | durchblicker.at | 2 | css_heuristik | 2 |  |
 | bankenrechner.at | - | - | 0 | S1/json_endpoint: kein json_endpoint in sources.yaml; S1/jsonld: kein <script type=application/ld+json> gefund |
@@ -72,10 +72,14 @@ Erstellt: 2026-09-05T10:04:00+00:00
 
 ## Heute nicht gefunden - als stale behalten (4)
 
-- **Oyak Anker Bank** (DE), stale seit 2026-09-02 (3 Tage)
-- **LEP (Livret d’Épargne Populaire)** (FR), stale seit 2026-09-03 (2 Tage)
-- **LEP (sous conditions de revenus)** (FR), stale seit 2026-09-03 (2 Tage)
-- **Livret Jeune ≥** (FR), stale seit 2026-09-03 (2 Tage)
+- **Oyak Anker Bank** (DE), stale seit 2026-09-02 (4 Tage)
+- **LEP (Livret d’Épargne Populaire)** (FR), stale seit 2026-09-03 (3 Tage)
+- **LEP (sous conditions de revenus)** (FR), stale seit 2026-09-03 (3 Tage)
+- **Livret Jeune ≥** (FR), stale seit 2026-09-03 (3 Tage)
+
+## Neu hinzugekommen (1)
+
+- **ICA Banken Sparränta** (SE): 0.4 %
 
 ---
 
