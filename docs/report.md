@@ -1,6 +1,6 @@
-# Lauf-Report 2026-09-06
+# Lauf-Report 2026-09-07
 
-Erstellt: 2026-09-06T10:23:18+00:00
+Erstellt: 2026-09-07T11:45:27+00:00
 
 ## Zusammenfassung
 
@@ -10,17 +10,17 @@ Erstellt: 2026-09-06T10:23:18+00:00
 | Quellen mit Treffer | 20 |
 | Quellen durch robots.txt uebersprungen | 0 |
 | Quellen ohne Treffer | 8 |
-| Rohtreffer | 320 |
-| Angebote nach Dedupe | 172 |
-| Angebote im Ergebnis | 172 |
-| davon stale | 5 |
-| Laufzeit (s) | 112.2 |
+| Rohtreffer | 321 |
+| Angebote nach Dedupe | 173 |
+| Angebote im Ergebnis | 173 |
+| davon stale | 16 |
+| Laufzeit (s) | 171.8 |
 
 ### Extraktionsstufen
 
 | Stufe | Angebote |
 | --- | ---: |
-| Stufe 2 | 172 |
+| Stufe 2 | 173 |
 
 ### Welche Quelle lief auf welcher Stufe
 
@@ -28,7 +28,7 @@ Erstellt: 2026-09-06T10:23:18+00:00
 | --- | :-: | --- | ---: | --- |
 | weltsparen.de | 2 | css_heuristik | 11 |  |
 | check24.de | 2 | css_heuristik | 3 |  |
-| biallo.de | 2 | css_heuristik | 8 |  |
+| biallo.de | 2 | css_heuristik | 9 |  |
 | finanzfluss.de | 2 | css_heuristik | 32 |  |
 | durchblicker.at | 2 | css_heuristik | 2 |  |
 | bankenrechner.at | - | - | 0 | S1/json_endpoint: kein json_endpoint in sources.yaml; S1/jsonld: kein <script type=application/ld+json> gefund |
@@ -38,8 +38,8 @@ Erstellt: 2026-09-06T10:23:18+00:00
 | raisin.fr | 2 | css_heuristik | 7 |  |
 | confrontaconti.it | - | - | 0 | HTTP 403 |
 | tucapital.es | - | - | 0 | S1/json_endpoint: kein json_endpoint in sources.yaml; S1/jsonld: ld+json vorhanden, aber ohne verwertbares Zin |
-| bankier.pl | 2 | css_heuristik | 7 |  |
-| compricer.se | 2 | css_heuristik | 45 |  |
+| bankier.pl | 2 | css_heuristik | 8 |  |
+| compricer.se | 2 | css_heuristik | 46 |  |
 | bankinter.pt | - | - | 0 | HTTP 403 |
 | ing.de | 2 | css_heuristik | 2 |  |
 | consorsbank.de | 2 | css_heuristik | 1 |  |
@@ -70,16 +70,27 @@ Erstellt: 2026-09-06T10:23:18+00:00
 - **Opel Bank** (DE): 3.52 % vs. EZB 0.5 % (+3.02 pp)
 - **ING** (DE): 3.75 % vs. EZB 0.5 % (+3.25 pp)
 
-## Heute nicht gefunden - als stale behalten (4)
+## Heute nicht gefunden - als stale behalten (15)
 
-- **Oyak Anker Bank** (DE), stale seit 2026-09-02 (4 Tage)
-- **LEP (Livret d’Épargne Populaire)** (FR), stale seit 2026-09-03 (3 Tage)
-- **LEP (sous conditions de revenus)** (FR), stale seit 2026-09-03 (3 Tage)
-- **Livret Jeune ≥** (FR), stale seit 2026-09-03 (3 Tage)
+- **Oyak Anker Bank** (DE), stale seit 2026-09-02 (5 Tage)
+- **Multitude Bank** (MT), stale seit 2026-09-06 (1 Tage)
+- **Handelsbanken Sparränta 0,05** (SE), stale seit 2026-09-06 (1 Tage)
+- **LEP (Livret d’Épargne Populaire)** (FR), stale seit 2026-09-03 (4 Tage)
+- **LEP (sous conditions de revenus)** (FR), stale seit 2026-09-03 (4 Tage)
+- **SEB Sparränta 1,70** (SE), stale seit 2026-09-06 (1 Tage)
+- **Swedbank Sparränta 1,75** (SE), stale seit 2026-09-06 (1 Tage)
+- **Nordea Sparränta 1,75** (SE), stale seit 2026-09-06 (1 Tage)
+- **Lunar Sparränta** (SE), stale seit 2026-09-06 (1 Tage)
+- **Lantmännen Finans Sparränta** (SE), stale seit 2026-09-06 (1 Tage)
+- **Livret Jeune ≥** (FR), stale seit 2026-09-03 (4 Tage)
+- **Ekobanken Sparränta 1,15** (SE), stale seit 2026-09-06 (1 Tage)
+- **Nordnet Sparränta** (SE), stale seit 2026-09-06 (1 Tage)
+- **Avanza Bank Sparränta** (SE), stale seit 2026-09-06 (1 Tage)
+- **ICA Banken Sparränta** (SE), stale seit 2026-09-06 (1 Tage)
 
 ## Neu hinzugekommen (1)
 
-- **ICA Banken Sparränta** (SE): 0.4 %
+- **0TO9** (SE): 2.17 %
 
 ---
 
