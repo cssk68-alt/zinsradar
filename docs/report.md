@@ -1,6 +1,6 @@
-# Lauf-Report 2026-09-09
+# Lauf-Report 2026-09-10
 
-Erstellt: 2026-09-09T10:52:33+00:00
+Erstellt: 2026-09-10T10:46:11+00:00
 
 ## Zusammenfassung
 
@@ -11,16 +11,16 @@ Erstellt: 2026-09-09T10:52:33+00:00
 | Quellen durch robots.txt uebersprungen | 0 |
 | Quellen ohne Treffer | 8 |
 | Rohtreffer | 320 |
-| Angebote nach Dedupe | 177 |
-| Angebote im Ergebnis | 177 |
-| davon stale | 8 |
-| Laufzeit (s) | 125.8 |
+| Angebote nach Dedupe | 179 |
+| Angebote im Ergebnis | 179 |
+| davon stale | 9 |
+| Laufzeit (s) | 124.4 |
 
 ### Extraktionsstufen
 
 | Stufe | Angebote |
 | --- | ---: |
-| Stufe 2 | 177 |
+| Stufe 2 | 179 |
 
 ### Welche Quelle lief auf welcher Stufe
 
@@ -29,7 +29,7 @@ Erstellt: 2026-09-09T10:52:33+00:00
 | weltsparen.de | 2 | css_heuristik | 11 |  |
 | check24.de | 2 | css_heuristik | 3 |  |
 | biallo.de | 2 | css_heuristik | 8 |  |
-| finanzfluss.de | 2 | css_heuristik | 33 |  |
+| finanzfluss.de | 2 | css_heuristik | 31 |  |
 | durchblicker.at | 2 | css_heuristik | 2 |  |
 | bankenrechner.at | - | - | 0 | S1/json_endpoint: kein json_endpoint in sources.yaml; S1/jsonld: kein <script type=application/ld+json> gefund |
 | spaarrente.nl | 2 | css_heuristik | 48 |  |
@@ -38,7 +38,7 @@ Erstellt: 2026-09-09T10:52:33+00:00
 | raisin.fr | 2 | css_heuristik | 7 |  |
 | confrontaconti.it | - | - | 0 | HTTP 403 |
 | tucapital.es | - | - | 0 | S1/json_endpoint: kein json_endpoint in sources.yaml; S1/jsonld: ld+json vorhanden, aber ohne verwertbares Zin |
-| bankier.pl | 2 | css_heuristik | 9 |  |
+| bankier.pl | 2 | css_heuristik | 8 |  |
 | compricer.se | 2 | css_heuristik | 44 |  |
 | bankinter.pt | - | - | 0 | HTTP 403 |
 | ing.de | 2 | css_heuristik | 2 |  |
@@ -61,7 +61,7 @@ Erstellt: 2026-09-09T10:52:33+00:00
 Uebernommene Vortagseintraege durchlaufen dieselben Qualitaetsfilter
 wie frische Treffer. Was dabei aufgefallen ist:
 
-* Land-Dopplungen im Altbestand aufgeloest: 1 Eintraege verschmolzen
+* Land-Dopplungen im Altbestand aufgeloest: 2 Eintraege verschmolzen
 
 ## Sprung zum Vortag groesser als erlaubt - Vortagswert behalten (1)
 
@@ -70,8 +70,8 @@ wie frische Treffer. Was dabei aufgefallen ist:
 ## Weit ueber EZB-Landesdurchschnitt - Flag 'pruefen' (10)
 
 - **Trading** (DE): 4.2 % vs. EZB 0.5 % (+3.7 pp)
-- **Leaseplan Bank** (DE): 4.0 % vs. EZB 0.5 % (+3.5 pp)
 - **Consorsbank** (FR): 3.6 % vs. EZB 0.04 % (+3.56 pp)
+- **Leaseplan Bank** (DE): 4.0 % vs. EZB 0.5 % (+3.5 pp)
 - **Bigbank** (DE): 3.55 % vs. EZB 0.5 % (+3.05 pp)
 - **Chase** (DE): 4.0 % vs. EZB 0.5 % (+3.5 pp)
 - **Revolut** (DE): 4.25 % vs. EZB 0.5 % (+3.75 pp)
@@ -80,20 +80,23 @@ wie frische Treffer. Was dabei aufgefallen ist:
 - **Opel Bank** (DE): 3.52 % vs. EZB 0.5 % (+3.02 pp)
 - **ING** (DE): 3.75 % vs. EZB 0.5 % (+3.25 pp)
 
-## Heute nicht gefunden - als stale behalten (7)
+## Heute nicht gefunden - als stale behalten (9)
 
-- **Oyak Anker Bank** (DE), stale seit 2026-09-02 (7 Tage)
-- **Volkswagen Bank Sparbrief** (DE), stale seit 2026-09-08 (1 Tage)
-- **LEP (Livret d’Épargne Populaire)** (FR), stale seit 2026-09-03 (6 Tage)
-- **LEP (sous conditions de revenus)** (FR), stale seit 2026-09-03 (6 Tage)
-- **Instabank ASA** (NO), stale seit 2026-09-08 (1 Tage)
-- **0TO9** (SE), stale seit 2026-09-07 (2 Tage)
-- **Livret Jeune ≥** (FR), stale seit 2026-09-03 (6 Tage)
+- **Oyak Anker Bank** (DE), stale seit 2026-09-02 (8 Tage)
+- **Volkswagen Bank Sparbrief** (DE), stale seit 2026-09-08 (2 Tage)
+- **LEP (Livret d’Épargne Populaire)** (FR), stale seit 2026-09-03 (7 Tage)
+- **LEP (sous conditions de revenus)** (FR), stale seit 2026-09-03 (7 Tage)
+- **Klarna** (DE), stale seit 2026-09-09 (1 Tage)
+- **Avida Bank AB** (SE), stale seit 2026-09-09 (1 Tage)
+- **Instabank ASA** (NO), stale seit 2026-09-08 (2 Tage)
+- **0TO9** (SE), stale seit 2026-09-07 (3 Tage)
+- **Livret Jeune ≥** (FR), stale seit 2026-09-03 (7 Tage)
 
-## Neu hinzugekommen (3)
+## Neu hinzugekommen (4)
 
-- **Lokata na** (PL): 6.0 %
-- **SimpleSave** (IE): 2.25 %
+- **Moank Sparränta 2,40** (SE): 2.6 %
+- **Klarna** (SE): 2.28 %
+- **Collector Bank** (SE): 2.2 %
 - **Instabank** (DE): 2.16 %
 
 ---
