@@ -1,5 +1,5 @@
 {
-  "stand": "2026-09-10T10:44:17+00:00",
+  "stand": "2026-09-11T10:42:29+00:00",
   "quelle": "European Central Bank Data Portal (data-api.ecb.europa.eu) und eurofxref",
   "lizenz_hinweis": "EZB-Daten sind frei nutzbar mit Quellenangabe.",
   "ezb_mir": {
@@ -68,16 +68,12 @@
     }
   },
   "estr": {
-    "aktuell_pct": 2.189,
-    "datum": "2026-09-09",
-    "veraenderung_30t_pp": 0.004,
+    "aktuell_pct": 2.19,
+    "datum": "2026-09-10",
+    "veraenderung_30t_pp": 0.005,
     "trend": "stabil",
     "serie": "EST.B.EU000A2X2A25.WT",
     "reihe": [
-      {
-        "datum": "2026-06-18",
-        "wert_pct": 2.18
-      },
       {
         "datum": "2026-06-19",
         "wert_pct": 2.181
@@ -313,22 +309,26 @@
       {
         "datum": "2026-09-09",
         "wert_pct": 2.189
+      },
+      {
+        "datum": "2026-09-10",
+        "wert_pct": 2.19
       }
     ]
   },
   "fx": {
-    "datum": "2026-09-09",
+    "datum": "2026-09-10",
     "kurse": {
-      "CZK": 24.247,
-      "DKK": 7.4748,
-      "GBP": 0.85898,
-      "HUF": 363.95,
-      "PLN": 4.3153,
-      "RON": 5.2546,
-      "SEK": 11.1495,
-      "CHF": 0.9404,
-      "ISK": 140.4,
-      "NOK": 10.6975,
+      "CZK": 24.251,
+      "DKK": 7.4751,
+      "GBP": 0.85915,
+      "HUF": 364.75,
+      "PLN": 4.322,
+      "RON": 5.2525,
+      "SEK": 11.1995,
+      "CHF": 0.9432,
+      "ISK": 140.0,
+      "NOK": 10.7635,
       "EUR": 1.0
     },
     "quelle": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
