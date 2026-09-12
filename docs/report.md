@@ -1,6 +1,6 @@
-# Lauf-Report 2026-09-11
+# Lauf-Report 2026-09-12
 
-Erstellt: 2026-09-11T10:44:24+00:00
+Erstellt: 2026-09-12T10:12:57+00:00
 
 ## Zusammenfassung
 
@@ -11,16 +11,16 @@ Erstellt: 2026-09-11T10:44:24+00:00
 | Quellen durch robots.txt uebersprungen | 0 |
 | Quellen ohne Treffer | 8 |
 | Rohtreffer | 314 |
-| Angebote nach Dedupe | 182 |
-| Angebote im Ergebnis | 182 |
-| davon stale | 20 |
-| Laufzeit (s) | 124.8 |
+| Angebote nach Dedupe | 183 |
+| Angebote im Ergebnis | 183 |
+| davon stale | 21 |
+| Laufzeit (s) | 115.2 |
 
 ### Extraktionsstufen
 
 | Stufe | Angebote |
 | --- | ---: |
-| Stufe 2 | 182 |
+| Stufe 2 | 183 |
 
 ### Welche Quelle lief auf welcher Stufe
 
@@ -37,7 +37,7 @@ Erstellt: 2026-09-11T10:44:24+00:00
 | moneyvox.fr | 2 | css_heuristik | 20 |  |
 | raisin.fr | 2 | css_heuristik | 7 |  |
 | confrontaconti.it | - | - | 0 | HTTP 403 |
-| tucapital.es | - | - | 0 | HTTP 403 |
+| tucapital.es | - | - | 0 | S1/json_endpoint: kein json_endpoint in sources.yaml; S1/jsonld: ld+json vorhanden, aber ohne verwertbares Zin |
 | bankier.pl | 2 | css_heuristik | 9 |  |
 | compricer.se | 2 | css_heuristik | 44 |  |
 | bankinter.pt | - | - | 0 | HTTP 403 |
@@ -54,6 +54,14 @@ Erstellt: 2026-09-11T10:44:24+00:00
 | finanztip.de | 2 | css_heuristik | 10 |  |
 | spaarrente.nl | 2 | css_heuristik | 48 |  |
 | compricer.se | 2 | css_heuristik | 45 |  |
+
+
+## Nachbereinigung des Altbestands
+
+Uebernommene Vortagseintraege durchlaufen dieselben Qualitaetsfilter
+wie frische Treffer. Was dabei aufgefallen ist:
+
+* Land-Dopplungen im Altbestand aufgeloest: 1 Eintraege verschmolzen
 
 ## Sprung zum Vortag groesser als erlaubt - Vortagswert behalten (1)
 
@@ -72,33 +80,33 @@ Erstellt: 2026-09-11T10:44:24+00:00
 - **Opel Bank** (DE): 3.52 % vs. EZB 0.5 % (+3.02 pp)
 - **ING** (DE): 3.75 % vs. EZB 0.5 % (+3.25 pp)
 
-## Heute nicht gefunden - als stale behalten (19)
+## Heute nicht gefunden - als stale behalten (20)
 
-- **Oyak Anker Bank** (DE), stale seit 2026-09-02 (9 Tage)
-- **Volkswagen Bank Sparbrief** (DE), stale seit 2026-09-08 (3 Tage)
-- **JAK Medlemsbank Sparränta 1,50** (SE), stale seit 2026-09-10 (1 Tage)
-- **Handelsbanken Sparränta 0,05** (SE), stale seit 2026-09-10 (1 Tage)
-- **Moank Sparränta 2,40** (SE), stale seit 2026-09-10 (1 Tage)
-- **LEP (Livret d’Épargne Populaire)** (FR), stale seit 2026-09-03 (8 Tage)
-- **LEP (sous conditions de revenus)** (FR), stale seit 2026-09-03 (8 Tage)
-- **SEB Sparränta 1,70** (SE), stale seit 2026-09-10 (1 Tage)
-- **Swedbank Sparränta 1,75** (SE), stale seit 2026-09-10 (1 Tage)
-- **Nordea Sparränta 1,75** (SE), stale seit 2026-09-10 (1 Tage)
-- **Avida Bank AB** (SE), stale seit 2026-09-09 (2 Tage)
-- **0TO9** (SE), stale seit 2026-09-07 (4 Tage)
-- **Lunar Sparränta** (SE), stale seit 2026-09-10 (1 Tage)
-- **Lantmännen Finans Sparränta** (SE), stale seit 2026-09-10 (1 Tage)
-- **Livret Jeune ≥** (FR), stale seit 2026-09-03 (8 Tage)
-- **Ekobanken Sparränta 1,15** (SE), stale seit 2026-09-10 (1 Tage)
-- **Nordnet Sparränta** (SE), stale seit 2026-09-10 (1 Tage)
-- **Avanza Bank Sparränta** (SE), stale seit 2026-09-10 (1 Tage)
-- **ICA Banken Sparränta** (SE), stale seit 2026-09-10 (1 Tage)
+- **Oyak Anker Bank** (DE), stale seit 2026-09-02 (10 Tage)
+- **Volkswagen Bank Sparbrief** (DE), stale seit 2026-09-08 (4 Tage)
+- **JAK Medlemsbank Sparränta 1,50** (SE), stale seit 2026-09-10 (2 Tage)
+- **Handelsbanken Sparränta 0,05** (SE), stale seit 2026-09-10 (2 Tage)
+- **Moank Sparränta 2,40** (SE), stale seit 2026-09-10 (2 Tage)
+- **LEP (Livret d’Épargne Populaire)** (FR), stale seit 2026-09-03 (9 Tage)
+- **LEP (sous conditions de revenus)** (FR), stale seit 2026-09-03 (9 Tage)
+- **SEB Sparränta 1,70** (SE), stale seit 2026-09-10 (2 Tage)
+- **Swedbank Sparränta 1,75** (SE), stale seit 2026-09-10 (2 Tage)
+- **Nordea Sparränta 1,75** (SE), stale seit 2026-09-10 (2 Tage)
+- **Klarna** (SE), stale seit 2026-09-11 (1 Tage)
+- **Avida Bank AB** (SE), stale seit 2026-09-09 (3 Tage)
+- **0TO9** (SE), stale seit 2026-09-07 (5 Tage)
+- **Lunar Sparränta** (SE), stale seit 2026-09-10 (2 Tage)
+- **Lantmännen Finans Sparränta** (SE), stale seit 2026-09-10 (2 Tage)
+- **Livret Jeune ≥** (FR), stale seit 2026-09-03 (9 Tage)
+- **Ekobanken Sparränta 1,15** (SE), stale seit 2026-09-10 (2 Tage)
+- **Nordnet Sparränta** (SE), stale seit 2026-09-10 (2 Tage)
+- **Avanza Bank Sparränta** (SE), stale seit 2026-09-10 (2 Tage)
+- **ICA Banken Sparränta** (SE), stale seit 2026-09-10 (2 Tage)
 
-## Neu hinzugekommen (3)
+## Neu hinzugekommen (2)
 
-- **JAK Medlemsbank 1,50** (SE): 2.95 %
-- **Bluestep Bank 0,45** (SE): 2.9 %
-- **SBAB Bank 1,25** (SE): 2.9 %
+- **Brocc Finance 0,05** (SE): 3.25 %
+- **Klarna** (DE): 3.0 %
 
 ---
 
