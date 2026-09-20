@@ -1,6 +1,6 @@
-# Lauf-Report 2026-09-19
+# Lauf-Report 2026-09-20
 
-Erstellt: 2026-09-19T10:26:03+00:00
+Erstellt: 2026-09-20T10:45:50+00:00
 
 ## Zusammenfassung
 
@@ -10,11 +10,11 @@ Erstellt: 2026-09-19T10:26:03+00:00
 | Quellen mit Treffer | 20 |
 | Quellen durch robots.txt uebersprungen | 0 |
 | Quellen ohne Treffer | 8 |
-| Rohtreffer | 316 |
+| Rohtreffer | 329 |
 | Angebote nach Dedupe | 197 |
 | Angebote im Ergebnis | 197 |
-| davon stale | 25 |
-| Laufzeit (s) | 115.1 |
+| davon stale | 35 |
+| Laufzeit (s) | 123.9 |
 
 ### Extraktionsstufen
 
@@ -39,7 +39,7 @@ Erstellt: 2026-09-19T10:26:03+00:00
 | confrontaconti.it | - | - | 0 | HTTP 403 |
 | tucapital.es | - | - | 0 | S1/json_endpoint: kein json_endpoint in sources.yaml; S1/jsonld: ld+json vorhanden, aber ohne verwertbares Zin |
 | bankier.pl | 2 | css_heuristik | 11 |  |
-| compricer.se | 2 | css_heuristik | 44 |  |
+| compricer.se | 2 | css_heuristik | 45 |  |
 | bankinter.pt | - | - | 0 | HTTP 403 |
 | ing.de | 2 | css_heuristik | 2 |  |
 | consorsbank.de | 2 | css_heuristik | 1 |  |
@@ -81,37 +81,45 @@ wie frische Treffer. Was dabei aufgefallen ist:
 - **Opel Bank** (DE): 3.52 % vs. EZB 0.5 % (+3.02 pp)
 - **ING** (DE): 3.75 % vs. EZB 0.5 % (+3.25 pp)
 
-## Heute nicht gefunden - als stale behalten (24)
+## Heute nicht gefunden - als stale behalten (34)
 
-- **Lokata na** (PL), stale seit 2026-09-12 (7 Tage)
-- **Aareal Bank** (DE), stale seit 2026-09-16 (3 Tage)
-- **Saldo Bank 2,80** (SE), stale seit 2026-09-17 (2 Tage)
-- **Ferratum Bank** (DE), stale seit 2026-09-14 (5 Tage)
-- **Volkswagen Bank Sparbrief** (DE), stale seit 2026-09-08 (11 Tage)
-- **JAK Medlemsbank Sparränta 1,50** (SE), stale seit 2026-09-10 (9 Tage)
-- **Handelsbanken Sparränta 0,05** (SE), stale seit 2026-09-10 (9 Tage)
-- **Moank Sparränta 2,40** (SE), stale seit 2026-09-10 (9 Tage)
-- **SEB Sparränta 1,70** (SE), stale seit 2026-09-10 (9 Tage)
-- **Swedbank Sparränta 1,75** (SE), stale seit 2026-09-10 (9 Tage)
-- **Nordea Sparränta 1,75** (SE), stale seit 2026-09-10 (9 Tage)
-- **Klarna** (SE), stale seit 2026-09-11 (8 Tage)
-- **SimpleSave** (IE), stale seit 2026-09-17 (2 Tage)
-- **Avida Bank AB** (SE), stale seit 2026-09-09 (10 Tage)
-- **0TO9** (SE), stale seit 2026-09-07 (12 Tage)
-- **BluOr Bank AS** (LV), stale seit 2026-09-16 (3 Tage)
-- **Inbank** (EE), stale seit 2026-09-16 (3 Tage)
-- **Banca Progetto** (IT), stale seit 2026-09-16 (3 Tage)
-- **Lunar Sparränta** (SE), stale seit 2026-09-10 (9 Tage)
-- **Lantmännen Finans Sparränta** (SE), stale seit 2026-09-10 (9 Tage)
-- **Ekobanken Sparränta 1,15** (SE), stale seit 2026-09-10 (9 Tage)
-- **Nordnet Sparränta** (SE), stale seit 2026-09-10 (9 Tage)
-- **Avanza Bank Sparränta** (SE), stale seit 2026-09-10 (9 Tage)
-- **ICA Banken Sparränta** (SE), stale seit 2026-09-10 (9 Tage)
+- **Lokata na** (PL), stale seit 2026-09-12 (8 Tage)
+- **Brocc Finance 0,05** (SE), stale seit 2026-09-19 (1 Tage)
+- **Aareal Bank** (DE), stale seit 2026-09-16 (4 Tage)
+- **Saldo Bank 2,80** (SE), stale seit 2026-09-17 (3 Tage)
+- **Nordax Bank 1,80** (SE), stale seit 2026-09-19 (1 Tage)
+- **SBAB Bank 1,25** (SE), stale seit 2026-09-19 (1 Tage)
+- **Ferratum Bank** (DE), stale seit 2026-09-14 (6 Tage)
+- **Multitude Bank** (MT), stale seit 2026-09-19 (1 Tage)
+- **Volkswagen Bank Sparbrief** (DE), stale seit 2026-09-08 (12 Tage)
+- **JAK Medlemsbank 1,50** (SE), stale seit 2026-09-19 (1 Tage)
+- **JAK Medlemsbank Sparränta 1,50** (SE), stale seit 2026-09-10 (10 Tage)
+- **Bluestep Bank 0,45** (SE), stale seit 2026-09-19 (1 Tage)
+- **Northmill Bank 1,80** (SE), stale seit 2026-09-19 (1 Tage)
+- **Handelsbanken Sparränta 0,05** (SE), stale seit 2026-09-10 (10 Tage)
+- **Serafim Finans 2,35** (SE), stale seit 2026-09-19 (1 Tage)
+- **Svea Bank 1,80** (SE), stale seit 2026-09-19 (1 Tage)
+- **Moank Sparränta 2,40** (SE), stale seit 2026-09-10 (10 Tage)
+- **Bank Norwegian 1,75** (SE), stale seit 2026-09-19 (1 Tage)
+- **SEB Sparränta 1,70** (SE), stale seit 2026-09-10 (10 Tage)
+- **Swedbank Sparränta 1,75** (SE), stale seit 2026-09-10 (10 Tage)
+- **Nordea Sparränta 1,75** (SE), stale seit 2026-09-10 (10 Tage)
+- **Klarna** (SE), stale seit 2026-09-11 (9 Tage)
+- **SimpleSave** (IE), stale seit 2026-09-17 (3 Tage)
+- **Avida Bank AB** (SE), stale seit 2026-09-09 (11 Tage)
+- **0TO9** (SE), stale seit 2026-09-07 (13 Tage)
+- **BluOr Bank AS** (LV), stale seit 2026-09-16 (4 Tage)
+- **Inbank** (EE), stale seit 2026-09-16 (4 Tage)
+- **Banca Progetto** (IT), stale seit 2026-09-16 (4 Tage)
+- **Lunar Sparränta** (SE), stale seit 2026-09-10 (10 Tage)
+- **Lantmännen Finans Sparränta** (SE), stale seit 2026-09-10 (10 Tage)
+- **Ekobanken Sparränta 1,15** (SE), stale seit 2026-09-10 (10 Tage)
+- **Nordnet Sparränta** (SE), stale seit 2026-09-10 (10 Tage)
+- **Avanza Bank Sparränta** (SE), stale seit 2026-09-10 (10 Tage)
+- **ICA Banken Sparränta** (SE), stale seit 2026-09-10 (10 Tage)
 
-## Neu hinzugekommen (5)
+## Neu hinzugekommen (3)
 
-- **Postbank** (DE): 3.2 %
-- **Nordax Bank 1,80** (SE): 3.1 %
 - **Klarna** (NL): 3.0 %
 - **Banca Progetto** (NL): 2.25 %
 - **Inbank** (NL): 2.2 %
