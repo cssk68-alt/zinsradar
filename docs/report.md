@@ -1,6 +1,6 @@
-# Lauf-Report 2026-09-22
+# Lauf-Report 2026-09-23
 
-Erstellt: 2026-09-22T11:05:00+00:00
+Erstellt: 2026-09-23T10:54:19+00:00
 
 ## Zusammenfassung
 
@@ -10,17 +10,17 @@ Erstellt: 2026-09-22T11:05:00+00:00
 | Quellen mit Treffer | 20 |
 | Quellen durch robots.txt uebersprungen | 0 |
 | Quellen ohne Treffer | 8 |
-| Rohtreffer | 317 |
-| Angebote nach Dedupe | 200 |
-| Angebote im Ergebnis | 200 |
-| davon stale | 29 |
-| Laufzeit (s) | 126.7 |
+| Rohtreffer | 320 |
+| Angebote nach Dedupe | 210 |
+| Angebote im Ergebnis | 210 |
+| davon stale | 34 |
+| Laufzeit (s) | 116.0 |
 
 ### Extraktionsstufen
 
 | Stufe | Angebote |
 | --- | ---: |
-| Stufe 2 | 200 |
+| Stufe 2 | 210 |
 
 ### Welche Quelle lief auf welcher Stufe
 
@@ -38,7 +38,7 @@ Erstellt: 2026-09-22T11:05:00+00:00
 | raisin.fr | 2 | css_heuristik | 7 |  |
 | confrontaconti.it | - | - | 0 | HTTP 403 |
 | tucapital.es | - | - | 0 | S1/json_endpoint: kein json_endpoint in sources.yaml; S1/jsonld: ld+json vorhanden, aber ohne verwertbares Zin |
-| bankier.pl | 2 | css_heuristik | 9 |  |
+| bankier.pl | 2 | css_heuristik | 8 |  |
 | compricer.se | 2 | css_heuristik | 44 |  |
 | bankinter.pt | - | - | 0 | HTTP 403 |
 | ing.de | 2 | css_heuristik | 2 |  |
@@ -48,10 +48,10 @@ Erstellt: 2026-09-22T11:05:00+00:00
 | santander.de | 2 | css_heuristik | 2 |  |
 | openbank.de | - | - | 0 | S1/json_endpoint: kein json_endpoint in sources.yaml; S1/jsonld: kein <script type=application/ld+json> gefund |
 | klarna.com | - | - | 0 | S1/json_endpoint: HTTP 202; S1/jsonld: kein <script type=application/ld+json> gefunden; S2/css_konfiguriert: c |
-| tagesgeld.info | 2 | css_heuristik | 24 |  |
+| tagesgeld.info | 2 | css_heuristik | 23 |  |
 | tagesgeldvergleich.com | 2 | css_heuristik | 10 |  |
 | verivox.de | 2 | css_heuristik | 12 |  |
-| finanztip.de | 2 | css_heuristik | 10 |  |
+| finanztip.de | 2 | css_heuristik | 9 |  |
 | spaarrente.nl | 2 | css_heuristik | 49 |  |
 | compricer.se | 2 | css_heuristik | 45 |  |
 
@@ -81,46 +81,59 @@ wie frische Treffer. Was dabei aufgefallen ist:
 - **Opel Bank** (DE): 3.95 % vs. EZB 0.5 % (+3.45 pp)
 - **ING** (DE): 3.75 % vs. EZB 0.5 % (+3.25 pp)
 
-## Heute nicht gefunden - als stale behalten (30)
+## Heute nicht gefunden - als stale behalten (33)
 
-- **Lokata na** (PL), stale seit 2026-09-12 (10 Tage)
-- **Aareal Bank** (DE), stale seit 2026-09-16 (6 Tage)
-- **Saldo Bank 2,80** (SE), stale seit 2026-09-17 (5 Tage)
-- **Ferratum Bank** (DE), stale seit 2026-09-14 (8 Tage)
-- **Multitude Bank** (MT), stale seit 2026-09-19 (3 Tage)
-- **Volkswagen Bank Sparbrief** (DE), stale seit 2026-09-08 (14 Tage)
-- **JAK Medlemsbank Sparränta 1,50** (SE), stale seit 2026-09-10 (12 Tage)
-- **Handelsbanken Sparränta 0,05** (SE), stale seit 2026-09-10 (12 Tage)
-- **Serafim Finans 2,35** (SE), stale seit 2026-09-19 (3 Tage)
-- **Moank Sparränta 2,40** (SE), stale seit 2026-09-10 (12 Tage)
-- **SEB Sparränta 1,70** (SE), stale seit 2026-09-10 (12 Tage)
-- **wiLLBe** (LI), stale seit 2026-09-21 (1 Tage)
-- **Swedbank Sparränta 1,75** (SE), stale seit 2026-09-10 (12 Tage)
-- **Nordea Sparränta 1,75** (SE), stale seit 2026-09-10 (12 Tage)
-- **Klarna** (SE), stale seit 2026-09-11 (11 Tage)
-- **Qred Bank AB** (SE), stale seit 2026-09-21 (1 Tage)
-- **SimpleSave** (IE), stale seit 2026-09-17 (5 Tage)
-- **Avida Bank AB** (SE), stale seit 2026-09-09 (13 Tage)
-- **FCM Bank** (NL), stale seit 2026-09-21 (1 Tage)
-- **BluOr Bank AS** (LV), stale seit 2026-09-16 (6 Tage)
-- **Inbank** (EE), stale seit 2026-09-16 (6 Tage)
-- **Stellantis Direktbank** (DE), stale seit 2026-09-21 (1 Tage)
-- **Banca Progetto** (IT), stale seit 2026-09-16 (6 Tage)
-- **Lunar Sparränta** (SE), stale seit 2026-09-10 (12 Tage)
-- **Lantmännen Finans Sparränta** (SE), stale seit 2026-09-10 (12 Tage)
-- **FCM Bank** (DE), stale seit 2026-09-21 (1 Tage)
-- **Ekobanken Sparränta 1,15** (SE), stale seit 2026-09-10 (12 Tage)
-- **Nordnet Sparränta** (SE), stale seit 2026-09-10 (12 Tage)
-- **Avanza Bank Sparränta** (SE), stale seit 2026-09-10 (12 Tage)
-- **ICA Banken Sparränta** (SE), stale seit 2026-09-10 (12 Tage)
+- **Brad Pitt daje** (PL), stale seit 2026-09-22 (1 Tage)
+- **Lokata na** (PL), stale seit 2026-09-12 (11 Tage)
+- **Zamień 0 na** (PL), stale seit 2026-09-22 (1 Tage)
+- **Do 300 zł za konto** (PL), stale seit 2026-09-22 (1 Tage)
+- **IKB** (DE), stale seit 2026-09-22 (1 Tage)
+- **Aareal Bank** (DE), stale seit 2026-09-16 (7 Tage)
+- **Saldo Bank 2,80** (SE), stale seit 2026-09-17 (6 Tage)
+- **Kommunalkredit Invest** (AT), stale seit 2026-09-22 (1 Tage)
+- **Ferratum Bank** (DE), stale seit 2026-09-14 (9 Tage)
+- **Multitude Bank** (MT), stale seit 2026-09-19 (4 Tage)
+- **JAK Medlemsbank Sparränta 1,50** (SE), stale seit 2026-09-10 (13 Tage)
+- **Handelsbanken Sparränta 0,05** (SE), stale seit 2026-09-10 (13 Tage)
+- **Serafim Finans 2,35** (SE), stale seit 2026-09-19 (4 Tage)
+- **Moank Sparränta 2,40** (SE), stale seit 2026-09-10 (13 Tage)
+- **SEB Sparränta 1,70** (SE), stale seit 2026-09-10 (13 Tage)
+- **wiLLBe** (LI), stale seit 2026-09-21 (2 Tage)
+- **Swedbank Sparränta 1,75** (SE), stale seit 2026-09-10 (13 Tage)
+- **Nordea Sparränta 1,75** (SE), stale seit 2026-09-10 (13 Tage)
+- **Klarna** (SE), stale seit 2026-09-11 (12 Tage)
+- **0TO9** (SE), stale seit 2026-09-22 (1 Tage)
+- **Anyfin** (SE), stale seit 2026-09-22 (1 Tage)
+- **Collector Bank** (SE), stale seit 2026-09-22 (1 Tage)
+- **FCM Bank Ltd.** (MT), stale seit 2026-09-22 (1 Tage)
+- **FIMBank** (MT), stale seit 2026-09-22 (1 Tage)
+- **BluOr Bank AS** (LV), stale seit 2026-09-16 (7 Tage)
+- **Inbank** (EE), stale seit 2026-09-16 (7 Tage)
+- **Stellantis Direktbank** (DE), stale seit 2026-09-21 (2 Tage)
+- **Lunar Sparränta** (SE), stale seit 2026-09-10 (13 Tage)
+- **Lantmännen Finans Sparränta** (SE), stale seit 2026-09-10 (13 Tage)
+- **Ekobanken Sparränta 1,15** (SE), stale seit 2026-09-10 (13 Tage)
+- **Nordnet Sparränta** (SE), stale seit 2026-09-10 (13 Tage)
+- **Avanza Bank Sparränta** (SE), stale seit 2026-09-10 (13 Tage)
+- **ICA Banken Sparränta** (SE), stale seit 2026-09-10 (13 Tage)
 
-## Neu hinzugekommen (5)
+## Neu hinzugekommen (15)
 
 - **Klarna** (NL): 3.0 %
-- **Banca Progetto** (NL): 2.25 %
+- **Bankaktiebolaget Nordiska 2,10** (SE): 2.9 %
+- **finvesto** (DE): 2.35 %
+- **FCM Bank** (NL): 2.26 %
+- **Collector Bank** (DE): 2.2 %
 - **Inbank** (NL): 2.2 %
-- **Carrefour Banque** (FR): 2.22 %
-- **FCM Bank Ltd.** (MT): 2.26 %
+- **FCM Bank** (DE): 3.15 %
+- **USD/PLN** (PL): 0.83 %
+- **ZŁOTO** (PL): 0.57 %
+- **EUR/PLN** (PL): 0.49 %
+- **BITCOIN** (PL): 0.47 %
+- **CHF/PLN** (PL): 0.47 %
+- **EUR/USD** (PL): 0.34 %
+- **MIEDŹ** (PL): 0.3 %
+- **ROPA** (PL): 0.09 %
 
 ---
 
