@@ -1,6 +1,6 @@
-# Lauf-Report 2026-09-26
+# Lauf-Report 2026-09-27
 
-Erstellt: 2026-09-26T10:55:24+00:00
+Erstellt: 2026-09-27T11:32:01+00:00
 
 ## Zusammenfassung
 
@@ -10,17 +10,17 @@ Erstellt: 2026-09-26T10:55:24+00:00
 | Quellen mit Treffer | 20 |
 | Quellen durch robots.txt uebersprungen | 0 |
 | Quellen ohne Treffer | 8 |
-| Rohtreffer | 332 |
-| Angebote nach Dedupe | 203 |
-| Angebote im Ergebnis | 203 |
-| davon stale | 42 |
-| Laufzeit (s) | 110.2 |
+| Rohtreffer | 339 |
+| Angebote nach Dedupe | 202 |
+| Angebote im Ergebnis | 202 |
+| davon stale | 34 |
+| Laufzeit (s) | 123.1 |
 
 ### Extraktionsstufen
 
 | Stufe | Angebote |
 | --- | ---: |
-| Stufe 2 | 203 |
+| Stufe 2 | 202 |
 
 ### Welche Quelle lief auf welcher Stufe
 
@@ -38,7 +38,7 @@ Erstellt: 2026-09-26T10:55:24+00:00
 | raisin.fr | 2 | css_heuristik | 7 |  |
 | confrontaconti.it | - | - | 0 | HTTP 403 |
 | tucapital.es | - | - | 0 | S1/json_endpoint: kein json_endpoint in sources.yaml; S1/jsonld: ld+json vorhanden, aber ohne verwertbares Zin |
-| bankier.pl | 2 | css_heuristik | 9 |  |
+| bankier.pl | 2 | css_heuristik | 8 |  |
 | compricer.se | 2 | css_heuristik | 47 |  |
 | bankinter.pt | - | - | 0 | HTTP 403 |
 | ing.de | 2 | css_heuristik | 2 |  |
@@ -82,58 +82,48 @@ wie frische Treffer. Was dabei aufgefallen ist:
 - **ING** (DE): 3.75 % vs. EZB 0.5 % (+3.25 pp)
 - **Allgemeine Beamtenbank** (DE): 3.55 % vs. EZB 0.5 % (+3.05 pp)
 
-## Heute nicht gefunden - als stale behalten (41)
+## Heute nicht gefunden - als stale behalten (33)
 
-- **Brad Pitt daje** (PL), stale seit 2026-09-22 (4 Tage)
-- **Lokata na** (PL), stale seit 2026-09-12 (14 Tage)
-- **Nawet** (PL), stale seit 2026-09-24 (2 Tage)
-- **Zamień 0 na** (PL), stale seit 2026-09-24 (2 Tage)
-- **Do 300 zł za konto** (PL), stale seit 2026-09-22 (4 Tage)
-- **Brocc Finance 0,05** (SE), stale seit 2026-09-25 (1 Tage)
-- **IKB** (DE), stale seit 2026-09-22 (4 Tage)
-- **Aareal Bank** (DE), stale seit 2026-09-16 (10 Tage)
-- **Ikano Bank 1,15** (SE), stale seit 2026-09-25 (1 Tage)
-- **Saldo Bank 2,80** (SE), stale seit 2026-09-17 (9 Tage)
-- **Nordax Bank 1,80** (SE), stale seit 2026-09-25 (1 Tage)
-- **SBAB Bank 1,25** (SE), stale seit 2026-09-25 (1 Tage)
-- **Kommunalkredit Invest** (AT), stale seit 2026-09-22 (4 Tage)
-- **Ferratum Bank** (DE), stale seit 2026-09-14 (12 Tage)
-- **Multitude Bank** (MT), stale seit 2026-09-19 (7 Tage)
-- **Multitude Bank 2,55** (MT), stale seit 2026-09-25 (1 Tage)
-- **Aros Kapital 2,00** (SE), stale seit 2026-09-25 (1 Tage)
-- **JAK Medlemsbank 1,50** (SE), stale seit 2026-09-25 (1 Tage)
-- **Bankaktiebolaget Nordiska 2,10** (SE), stale seit 2026-09-25 (1 Tage)
-- **Bluestep Bank 0,45** (SE), stale seit 2026-09-25 (1 Tage)
-- **Northmill Bank 1,80** (SE), stale seit 2026-09-25 (1 Tage)
-- **Serafim Finans 2,35** (SE), stale seit 2026-09-19 (7 Tage)
-- **Svea Bank 1,80** (SE), stale seit 2026-09-25 (1 Tage)
-- **Bank Norwegian 1,75** (SE), stale seit 2026-09-25 (1 Tage)
-- **Instabank ASA** (NO), stale seit 2026-09-24 (2 Tage)
-- **0TO9** (SE), stale seit 2026-09-22 (4 Tage)
-- **Grenke Bank** (DE), stale seit 2026-09-23 (3 Tage)
-- **BW-Bank** (DE), stale seit 2026-09-24 (2 Tage)
-- **Collector Bank** (SE), stale seit 2026-09-22 (4 Tage)
-- **FCM Bank Ltd.** (MT), stale seit 2026-09-22 (4 Tage)
-- **FIMBank** (MT), stale seit 2026-09-22 (4 Tage)
-- **Inbank** (EE), stale seit 2026-09-16 (10 Tage)
-- **Stellantis Direktbank** (DE), stale seit 2026-09-21 (5 Tage)
-- **USD/PLN** (PL), stale seit 2026-09-23 (3 Tage)
-- **ZŁOTO** (PL), stale seit 2026-09-23 (3 Tage)
-- **EUR/PLN** (PL), stale seit 2026-09-23 (3 Tage)
-- **BITCOIN** (PL), stale seit 2026-09-23 (3 Tage)
-- **CHF/PLN** (PL), stale seit 2026-09-23 (3 Tage)
-- **EUR/USD** (PL), stale seit 2026-09-23 (3 Tage)
-- **MIEDŹ** (PL), stale seit 2026-09-23 (3 Tage)
-- **ROPA** (PL), stale seit 2026-09-23 (3 Tage)
+- **Brad Pitt daje** (PL), stale seit 2026-09-22 (5 Tage)
+- **Nawet** (PL), stale seit 2026-09-24 (3 Tage)
+- **Zamień 0 na** (PL), stale seit 2026-09-24 (3 Tage)
+- **Do 300 zł za konto** (PL), stale seit 2026-09-22 (5 Tage)
+- **Sprawdzamy kredyty konsolidacyjne** (PL), stale seit 2026-09-26 (1 Tage)
+- **Brocc Finance 0,05** (SE), stale seit 2026-09-25 (2 Tage)
+- **IKB** (DE), stale seit 2026-09-22 (5 Tage)
+- **Aareal Bank** (DE), stale seit 2026-09-16 (11 Tage)
+- **Ikano Bank 1,15** (SE), stale seit 2026-09-25 (2 Tage)
+- **Saldo Bank 2,80** (SE), stale seit 2026-09-17 (10 Tage)
+- **Nordax Bank 1,80** (SE), stale seit 2026-09-25 (2 Tage)
+- **SBAB Bank 1,25** (SE), stale seit 2026-09-25 (2 Tage)
+- **Kommunalkredit Invest** (AT), stale seit 2026-09-22 (5 Tage)
+- **Ferratum Bank** (DE), stale seit 2026-09-14 (13 Tage)
+- **Multitude Bank** (MT), stale seit 2026-09-19 (8 Tage)
+- **Multitude Bank 2,55** (MT), stale seit 2026-09-25 (2 Tage)
+- **Aros Kapital 2,00** (SE), stale seit 2026-09-25 (2 Tage)
+- **JAK Medlemsbank 1,50** (SE), stale seit 2026-09-25 (2 Tage)
+- **Bankaktiebolaget Nordiska 2,10** (SE), stale seit 2026-09-25 (2 Tage)
+- **Bluestep Bank 0,45** (SE), stale seit 2026-09-25 (2 Tage)
+- **Northmill Bank 1,80** (SE), stale seit 2026-09-25 (2 Tage)
+- **Serafim Finans 2,35** (SE), stale seit 2026-09-19 (8 Tage)
+- **Svea Bank 1,80** (SE), stale seit 2026-09-25 (2 Tage)
+- **Bank Norwegian 1,75** (SE), stale seit 2026-09-25 (2 Tage)
+- **Instabank ASA** (NO), stale seit 2026-09-24 (3 Tage)
+- **0TO9** (SE), stale seit 2026-09-22 (5 Tage)
+- **Grenke Bank** (DE), stale seit 2026-09-23 (4 Tage)
+- **BW-Bank** (DE), stale seit 2026-09-24 (3 Tage)
+- **Collector Bank** (SE), stale seit 2026-09-22 (5 Tage)
+- **FCM Bank Ltd.** (MT), stale seit 2026-09-22 (5 Tage)
+- **FIMBank** (MT), stale seit 2026-09-22 (5 Tage)
+- **Inbank** (EE), stale seit 2026-09-16 (11 Tage)
+- **Stellantis Direktbank** (DE), stale seit 2026-09-21 (6 Tage)
 
 ## Zu lange stale - entfernt (1)
 
-- **Klarna**
+- **Lokata na**
 
-## Neu hinzugekommen (8)
+## Neu hinzugekommen (6)
 
-- **Sprawdzamy kredyty konsolidacyjne** (PL): 5.7 %
-- **Klarna** (NL): 3.0 %
 - **Instabank** (DE): 2.27 %
 - **FCM Bank** (NL): 2.26 %
 - **BW-Bank** (NL): 2.2 %
