@@ -1,6 +1,6 @@
-# Lauf-Report 2026-10-04
+# Lauf-Report 2026-10-05
 
-Erstellt: 2026-10-04T11:54:14+00:00
+Erstellt: 2026-10-05T13:47:05+00:00
 
 ## Zusammenfassung
 
@@ -11,16 +11,16 @@ Erstellt: 2026-10-04T11:54:14+00:00
 | Quellen durch robots.txt uebersprungen | 0 |
 | Quellen ohne Treffer | 7 |
 | Rohtreffer | 306 |
-| Angebote nach Dedupe | 208 |
-| Angebote im Ergebnis | 208 |
-| davon stale | 56 |
-| Laufzeit (s) | 192.6 |
+| Angebote nach Dedupe | 209 |
+| Angebote im Ergebnis | 209 |
+| davon stale | 57 |
+| Laufzeit (s) | 126.4 |
 
 ### Extraktionsstufen
 
 | Stufe | Angebote |
 | --- | ---: |
-| Stufe 2 | 208 |
+| Stufe 2 | 209 |
 
 ### Welche Quelle lief auf welcher Stufe
 
@@ -28,7 +28,7 @@ Erstellt: 2026-10-04T11:54:14+00:00
 | --- | :-: | --- | ---: | --- |
 | weltsparen.de | 2 | css_heuristik | 11 |  |
 | check24.de | 2 | css_heuristik | 4 |  |
-| biallo.de | 2 | css_heuristik | 5 |  |
+| biallo.de | 2 | css_heuristik | 6 |  |
 | finanzfluss.de | 2 | css_heuristik | 15 |  |
 | durchblicker.at | 2 | css_heuristik | 2 |  |
 | bankenrechner.at | - | - | 0 | S1/json_endpoint: kein json_endpoint in sources.yaml; S1/jsonld: kein <script type=application/ld+json> gefund |
@@ -63,11 +63,12 @@ wie frische Treffer. Was dabei aufgefallen ist:
 
 * Land-Dopplungen im Altbestand aufgeloest: 3 Eintraege verschmolzen
 
-## Weit ueber EZB-Landesdurchschnitt - Flag 'pruefen' (14)
+## Weit ueber EZB-Landesdurchschnitt - Flag 'pruefen' (15)
 
 - **Consorsbank** (FR): 3.8 % vs. EZB 0.05 % (+3.75 pp)
 - **MyInvestor** (ES): 3.25 % vs. EZB 0.16 % (+3.09 pp)
 - **Trading** (DE): 4.2 % vs. EZB 0.51 % (+3.69 pp)
+- **Crédit Agricole** (DE): 4.1 % vs. EZB 0.51 % (+3.59 pp)
 - **Suresse Direkt Bank** (DE): 3.7 % vs. EZB 0.51 % (+3.19 pp)
 - **Bigbank** (DE): 4.15 % vs. EZB 0.51 % (+3.64 pp)
 - **Leaseplan Bank** (DE): 4.0 % vs. EZB 0.51 % (+3.49 pp)
@@ -80,67 +81,69 @@ wie frische Treffer. Was dabei aufgefallen ist:
 - **Advanzia** (DE): 3.85 % vs. EZB 0.51 % (+3.34 pp)
 - **Opel Bank** (DE): 3.95 % vs. EZB 0.51 % (+3.44 pp)
 
-## Heute nicht gefunden - als stale behalten (56)
+## Heute nicht gefunden - als stale behalten (57)
 
-- **Brad Pitt daje** (PL), stale seit 2026-09-22 (12 Tage)
-- **Nawet** (PL), stale seit 2026-09-24 (10 Tage)
-- **Zamień 0 na** (PL), stale seit 2026-09-24 (10 Tage)
-- **Do 300 zł za konto** (PL), stale seit 2026-09-22 (12 Tage)
-- **Sprawdzamy kredyty konsolidacyjne** (PL), stale seit 2026-09-26 (8 Tage)
-- **BBVA** (DE), stale seit 2026-10-01 (3 Tage)
-- **Brocc Finance 0,05** (SE), stale seit 2026-09-30 (4 Tage)
-- **SIGNAL IDUNA** (DE), stale seit 2026-09-30 (4 Tage)
-- **RiverBank** (LU), stale seit 2026-10-01 (3 Tage)
-- **SWK Bank** (DE), stale seit 2026-09-28 (6 Tage)
-- **IKB** (DE), stale seit 2026-09-22 (12 Tage)
-- **Postbank** (DE), stale seit 2026-09-27 (7 Tage)
-- **Ikano Bank 1,15** (SE), stale seit 2026-09-30 (4 Tage)
-- **Saldo Bank 2,80** (SE), stale seit 2026-09-30 (4 Tage)
-- **Nordax Bank 1,80** (SE), stale seit 2026-09-30 (4 Tage)
-- **Banco do Brasil** (DE), stale seit 2026-10-01 (3 Tage)
-- **Kommunalkredit Invest** (AT), stale seit 2026-09-22 (12 Tage)
-- **Multitude Bank 2,55** (MT), stale seit 2026-09-30 (4 Tage)
-- **Raisin** (DE), stale seit 2026-09-27 (7 Tage)
-- **Aros Kapital 2,00** (SE), stale seit 2026-09-30 (4 Tage)
-- **JAK Medlemsbank 1,50** (SE), stale seit 2026-09-30 (4 Tage)
-- **Bankaktiebolaget Nordiska 2,10** (SE), stale seit 2026-09-30 (4 Tage)
-- **Bluestep Bank 0,45** (SE), stale seit 2026-09-30 (4 Tage)
-- **Northmill Bank 1,80** (SE), stale seit 2026-09-30 (4 Tage)
-- **Serafim Finans 2,35** (SE), stale seit 2026-09-30 (4 Tage)
-- **Svea Bank 1,80** (SE), stale seit 2026-09-30 (4 Tage)
-- **Fedelta** (SE), stale seit 2026-09-30 (4 Tage)
-- **Bank Norwegian 1,75** (SE), stale seit 2026-09-30 (4 Tage)
-- **LEP (Livret d’Épargne Populaire)** (FR), stale seit 2026-09-29 (5 Tage)
-- **LEP (sous conditions de revenus)** (FR), stale seit 2026-09-29 (5 Tage)
-- **wiLLBe** (LI), stale seit 2026-09-29 (5 Tage)
-- **0TO9** (SE), stale seit 2026-10-01 (3 Tage)
-- **Avida Finans 2,00** (SE), stale seit 2026-09-30 (4 Tage)
-- **finvesto** (DE), stale seit 2026-09-28 (6 Tage)
-- **Distingo** (DE), stale seit 2026-09-27 (7 Tage)
-- **Grenke Bank** (DE), stale seit 2026-09-23 (11 Tage)
-- **SimpleSave** (IE), stale seit 2026-10-01 (3 Tage)
-- **Yapi Kredi** (DE), stale seit 2026-09-27 (7 Tage)
-- **Carrefour Banque** (FR), stale seit 2026-09-29 (5 Tage)
-- **FCM Bank Ltd.** (MT), stale seit 2026-09-22 (12 Tage)
-- **FIMBank** (MT), stale seit 2026-09-22 (12 Tage)
-- **Santander Consumer Bank** (DE), stale seit 2026-09-27 (7 Tage)
-- **Stellantis Direktbank** (DE), stale seit 2026-09-21 (13 Tage)
-- **Banca CF+** (IT), stale seit 2026-09-27 (7 Tage)
-- **Nexent-Bank** (DE), stale seit 2026-09-27 (7 Tage)
-- **Livret Jeune ≥** (FR), stale seit 2026-09-29 (5 Tage)
-- **Allgemeine Beamtenbank** (DE), stale seit 2026-09-27 (7 Tage)
-- **Targobank** (DE), stale seit 2026-09-27 (7 Tage)
-- **MIEDŹ** (PL), stale seit 2026-09-28 (6 Tage)
-- **ROPA** (PL), stale seit 2026-09-28 (6 Tage)
-- **BITCOIN** (PL), stale seit 2026-09-28 (6 Tage)
-- **ZŁOTO** (PL), stale seit 2026-09-27 (7 Tage)
-- **EUR/PLN** (PL), stale seit 2026-09-27 (7 Tage)
-- **CHF/PLN** (PL), stale seit 2026-09-28 (6 Tage)
-- **USD/PLN** (PL), stale seit 2026-09-28 (6 Tage)
-- **EUR/USD** (PL), stale seit 2026-09-28 (6 Tage)
+- **Brad Pitt daje** (PL), stale seit 2026-09-22 (13 Tage)
+- **Nawet** (PL), stale seit 2026-09-24 (11 Tage)
+- **Zamień 0 na** (PL), stale seit 2026-09-24 (11 Tage)
+- **Do 300 zł za konto** (PL), stale seit 2026-09-22 (13 Tage)
+- **Sprawdzamy kredyty konsolidacyjne** (PL), stale seit 2026-09-26 (9 Tage)
+- **BBVA** (DE), stale seit 2026-10-01 (4 Tage)
+- **Brocc Finance 0,05** (SE), stale seit 2026-09-30 (5 Tage)
+- **SIGNAL IDUNA** (DE), stale seit 2026-09-30 (5 Tage)
+- **RiverBank** (LU), stale seit 2026-10-01 (4 Tage)
+- **SWK Bank** (DE), stale seit 2026-09-28 (7 Tage)
+- **IKB** (DE), stale seit 2026-09-22 (13 Tage)
+- **Postbank** (DE), stale seit 2026-09-27 (8 Tage)
+- **Ikano Bank 1,15** (SE), stale seit 2026-09-30 (5 Tage)
+- **Saldo Bank 2,80** (SE), stale seit 2026-09-30 (5 Tage)
+- **Nordax Bank 1,80** (SE), stale seit 2026-09-30 (5 Tage)
+- **Banco do Brasil** (DE), stale seit 2026-10-01 (4 Tage)
+- **Kommunalkredit Invest** (AT), stale seit 2026-09-22 (13 Tage)
+- **Multitude Bank 2,55** (MT), stale seit 2026-09-30 (5 Tage)
+- **Raisin** (DE), stale seit 2026-09-27 (8 Tage)
+- **Aros Kapital 2,00** (SE), stale seit 2026-09-30 (5 Tage)
+- **JAK Medlemsbank 1,50** (SE), stale seit 2026-09-30 (5 Tage)
+- **Bankaktiebolaget Nordiska 2,10** (SE), stale seit 2026-09-30 (5 Tage)
+- **Bluestep Bank 0,45** (SE), stale seit 2026-09-30 (5 Tage)
+- **Northmill Bank 1,80** (SE), stale seit 2026-09-30 (5 Tage)
+- **Serafim Finans 2,35** (SE), stale seit 2026-09-30 (5 Tage)
+- **Svea Bank 1,80** (SE), stale seit 2026-09-30 (5 Tage)
+- **Fedelta** (SE), stale seit 2026-09-30 (5 Tage)
+- **Bank Norwegian 1,75** (SE), stale seit 2026-09-30 (5 Tage)
+- **LEP (Livret d’Épargne Populaire)** (FR), stale seit 2026-09-29 (6 Tage)
+- **LEP (sous conditions de revenus)** (FR), stale seit 2026-09-29 (6 Tage)
+- **wiLLBe** (LI), stale seit 2026-09-29 (6 Tage)
+- **0TO9** (SE), stale seit 2026-10-01 (4 Tage)
+- **Avida Finans 2,00** (SE), stale seit 2026-09-30 (5 Tage)
+- **finvesto** (DE), stale seit 2026-09-28 (7 Tage)
+- **Distingo** (DE), stale seit 2026-09-27 (8 Tage)
+- **Grenke Bank** (DE), stale seit 2026-09-23 (12 Tage)
+- **SimpleSave** (IE), stale seit 2026-10-01 (4 Tage)
+- **Yapi Kredi** (DE), stale seit 2026-09-27 (8 Tage)
+- **Carrefour Banque** (FR), stale seit 2026-09-29 (6 Tage)
+- **FCM Bank Ltd.** (MT), stale seit 2026-09-22 (13 Tage)
+- **FIMBank** (MT), stale seit 2026-09-22 (13 Tage)
+- **Santander Consumer Bank** (DE), stale seit 2026-09-27 (8 Tage)
+- **Stellantis Direktbank** (DE), stale seit 2026-09-21 (14 Tage)
+- **Banca CF+** (IT), stale seit 2026-09-27 (8 Tage)
+- **Nexent-Bank** (DE), stale seit 2026-09-27 (8 Tage)
+- **Livret Jeune ≥** (FR), stale seit 2026-09-29 (6 Tage)
+- **xtb** (DE), stale seit 2026-10-04 (1 Tage)
+- **Allgemeine Beamtenbank** (DE), stale seit 2026-09-27 (8 Tage)
+- **Targobank** (DE), stale seit 2026-09-27 (8 Tage)
+- **MIEDŹ** (PL), stale seit 2026-09-28 (7 Tage)
+- **ROPA** (PL), stale seit 2026-09-28 (7 Tage)
+- **BITCOIN** (PL), stale seit 2026-09-28 (7 Tage)
+- **ZŁOTO** (PL), stale seit 2026-09-27 (8 Tage)
+- **EUR/PLN** (PL), stale seit 2026-09-27 (8 Tage)
+- **CHF/PLN** (PL), stale seit 2026-09-28 (7 Tage)
+- **USD/PLN** (PL), stale seit 2026-09-28 (7 Tage)
+- **EUR/USD** (PL), stale seit 2026-09-28 (7 Tage)
 
-## Neu hinzugekommen (3)
+## Neu hinzugekommen (4)
 
+- **Crédit Agricole** (DE): 4.1 %
 - **Santander Consumer Bank** (NL): 3.01 %
 - **Banca CF+** (NL): 2.35 %
 - **FCM Bank** (NL): 2.26 %
