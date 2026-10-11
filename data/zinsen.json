@@ -1,18 +1,18 @@
 {
   "version": 1,
-  "stand": "2026-10-10T12:01:24+00:00",
-  "stand_datum": "2026-10-10",
+  "stand": "2026-10-11T12:13:45+00:00",
+  "stand_datum": "2026-10-11",
   "erzeugt_von": "scraper/run.py",
   "hinweis": "Keine Anlageberatung. Alle Angaben ohne Gewaehr. Zinssaetze koennen sich jederzeit aendern - vor Abschluss beim Anbieter pruefen.",
   "statistik": {
-    "angebote": 203,
-    "stale": 65,
+    "angebote": 202,
+    "stale": 62,
     "quellen_gesamt": 28,
-    "quellen_erfolg": 20,
+    "quellen_erfolg": 21,
     "tier_verteilung": {
-      "2": 203
+      "2": 202
     },
-    "dauer_s": 121.7
+    "dauer_s": 115.7
   },
   "berechnung": {
     "risiko_abschlag_pp": {
@@ -28,7 +28,7 @@
     "formel_score": "netto_12m - risiko_abschlag[staatsrating_sp]"
   },
   "referenz": {
-    "stand": "2026-10-10T11:59:32+00:00",
+    "stand": "2026-10-11T12:12:03+00:00",
     "ezb_mir": {
       "AT": {
         "wert_pct": 0.45,
@@ -330,10 +330,10 @@
     {
       "id": "tucapital.es",
       "url": "https://www.tucapital.es/cuentas/mejores-cuentas-remuneradas/",
-      "tier": null,
-      "methode": "",
-      "treffer": 0,
-      "fehler": "HTTP 403"
+      "tier": 2,
+      "methode": "css_heuristik",
+      "treffer": 2,
+      "fehler": ""
     },
     {
       "id": "bankier.pl",
@@ -529,79 +529,10 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 6.0,
       "veraenderung_pp": 0.0
-    },
-    {
-      "bank": "Sprawdzamy kredyty konsolidacyjne",
-      "produkt": "Tagesgeld",
-      "land": "PL",
-      "quell_land": "PL",
-      "zinssatz_pct": 5.7,
-      "zinstyp": "variabel",
-      "aktionsdauer_monate": 0,
-      "nur_neukunden": false,
-      "folgezins_pct": 5.7,
-      "mindestanlage": null,
-      "mindestanlage_eur": null,
-      "hoechstanlage": null,
-      "hoechstanlage_eur": null,
-      "waehrung": "PLN",
-      "waehrungsrisiko": true,
-      "einlagensicherung_land": "PL",
-      "land_quelle": "quellenland_angenommen",
-      "quellen": [
-        {
-          "id": "bankier.pl",
-          "url": "https://www.bankier.pl/gospodarka/wskazniki-finansowe/lokaty-i-konta-oszczednosciowe",
-          "typ": "portal",
-          "extraction_tier": 2,
-          "extraction_method": "css_heuristik",
-          "confidence": 0.5
-        }
-      ],
-      "extraction_tier": 2,
-      "extraction_method": "css_heuristik",
-      "confidence": 0.5,
-      "dedupe_key": "sprawdzamy kredyty konsolidacyjne|tagesgeld|PL",
-      "override_key": "sprawdzamy kredyty konsolidacyjne|tagesgeld|pl",
-      "quellen_anzahl": 1,
-      "brutto_12m_pct": 5.7,
-      "folgezins_geschaetzt": false,
-      "qst_effektiv_mit_erstattung_pct": 0.0,
-      "qst_effektiv_ohne_erstattung_pct": 0.0,
-      "qst_begruendung_mit_erstattung": "Polen zieht zunächst 19 % ab, gibt sie deutschen Anlegern wegen des Steuerabkommens aber zurück. Gerechnet wird deshalb ohne Abzug.",
-      "qst_begruendung_ohne_erstattung": "Polen zieht zunächst 19 % ab, gibt sie deutschen Anlegern wegen des Steuerabkommens aber zurück. Gerechnet wird deshalb ohne Abzug.",
-      "qst_standard_pct": 19.0,
-      "qst_mit_dba_pct": 0.0,
-      "rueckerstattung_aufwand": "mittel",
-      "rueckerstattung_moeglich": true,
-      "rueckerstattung_formular": "CFR-1 (Ansässigkeitsbescheinigung zur Befreiung)",
-      "rueckerstattung_quelle": "https://www.gov.pl/web/finanse/umowy-o-unikaniu-podwojnego-opodatkowania",
-      "qst_reibung": "Polen behält zuerst 19 % ein. Zurückholen kannst du sie dir, das macht aber etwas Aufwand und dauert. Bis dahin fehlt dir das Geld.",
-      "netto_12m_mit_erstattung_pct": 5.7,
-      "netto_12m_ohne_erstattung_pct": 5.7,
-      "staatsrating_sp": "A-",
-      "staatsrating_moodys": "A2",
-      "rating_gruppe": "A",
-      "risiko_abschlag_pp": 0.1,
-      "score_mit_erstattung": 5.6,
-      "score_ohne_erstattung": 5.6,
-      "einlagensicherung_betrag_eur": 100000,
-      "sicherungssystem_name": "Bankowy Fundusz Gwarancyjny (BFG - Gegenwert in PLN)",
-      "sicherung_quelle": "https://www.bfg.pl/en/",
-      "land_waehrung": "PLN",
-      "netto_nach_abgeltungssteuer_mit_erstattung_pct": 4.1966,
-      "netto_nach_abgeltungssteuer_ohne_erstattung_pct": 4.1966,
-      "ezb_landesdurchschnitt_pct": null,
-      "ezb_periode": null,
-      "differenz_zu_ezb_pp": null,
-      "stand": "2026-09-26",
-      "stale": true,
-      "stale_seit": "2026-09-26",
-      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
       "bank": "Openbank Girokonto +",
@@ -834,7 +765,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 3.75,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.80 % liegt 3.75 pp ueber dem EZB-Landesdurchschnitt (0.05 %, 2026-08)",
@@ -921,7 +852,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.67,
       "veraenderung_pp": 0.0
@@ -990,7 +921,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 3.11,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.62 % liegt 3.11 pp ueber dem EZB-Landesdurchschnitt (0.51 %, 2026-08)",
@@ -1061,14 +992,12 @@
       "ezb_landesdurchschnitt_pct": 0.16,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 3.09,
-      "stand": "2026-10-09",
-      "stale": true,
+      "stand": "2026-10-11",
+      "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.25 % liegt 3.09 pp ueber dem EZB-Landesdurchschnitt (0.16 %, 2026-08)",
       "vortag_zins_pct": 3.25,
-      "veraenderung_pp": 0.0,
-      "stale_seit": "2026-10-09",
-      "stale_grund": "In diesem Lauf nicht mehr gefunden"
+      "veraenderung_pp": 0.0
     },
     {
       "bank": "Brocc Finance",
@@ -1205,7 +1134,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.35,
       "veraenderung_pp": 0.0
@@ -1274,7 +1203,7 @@
       "ezb_landesdurchschnitt_pct": 0.45,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.95,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.4,
       "veraenderung_pp": 0.0
@@ -1343,7 +1272,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.35,
       "veraenderung_pp": 0.0
@@ -1419,7 +1348,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.84,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.35,
       "veraenderung_pp": 0.0
@@ -1488,7 +1417,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.84,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.35,
       "veraenderung_pp": 0.0
@@ -1590,7 +1519,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.79,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.3,
       "veraenderung_pp": 0.0
@@ -1659,7 +1588,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.3,
       "veraenderung_pp": 0.0
@@ -1799,7 +1728,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.3,
       "veraenderung_pp": 0.0
@@ -1868,7 +1797,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 3.69,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "4.20 % liegt 3.69 pp ueber dem EZB-Landesdurchschnitt (0.51 %, 2026-08)",
@@ -2025,7 +1954,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.25,
       "veraenderung_pp": 0.0
@@ -2101,7 +2030,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.3,
       "veraenderung_pp": 0.0
@@ -2319,7 +2248,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.69,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.2,
       "veraenderung_pp": 0.0
@@ -2388,7 +2317,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.2,
       "veraenderung_pp": 0.0
@@ -2535,7 +2464,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.69,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.2,
       "veraenderung_pp": 0.0
@@ -2755,9 +2684,11 @@
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
       "stand": "2026-10-10",
-      "stale": false,
+      "stale": true,
       "vortag_zins_pct": 3.15,
-      "veraenderung_pp": 0.0
+      "veraenderung_pp": 0.0,
+      "stale_seit": "2026-10-10",
+      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
       "bank": "Saldo Bank 2,80",
@@ -2776,7 +2707,7 @@
       "waehrung": "SEK",
       "waehrungsrisiko": true,
       "einlagensicherung_land": "SE",
-      "land_quelle": "quellenland_angenommen",
+      "land_quelle": "erkannt",
       "quellen": [
         {
           "id": "compricer.se",
@@ -2823,12 +2754,10 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-09-30",
-      "stale": true,
+      "stand": "2026-10-11",
+      "stale": false,
       "vortag_zins_pct": 3.15,
-      "veraenderung_pp": 0.0,
-      "stale_seit": "2026-09-30",
-      "stale_grund": "In diesem Lauf nicht mehr gefunden"
+      "veraenderung_pp": 0.0
     },
     {
       "bank": "Multitude Bank",
@@ -2894,7 +2823,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.2,
       "veraenderung_pp": 0.0
@@ -3247,7 +3176,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.05,
       "veraenderung_pp": 0.0
@@ -3387,7 +3316,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.91,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.05,
       "veraenderung_pp": 0.0
@@ -3456,7 +3385,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 3.59,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "4.10 % liegt 3.59 pp ueber dem EZB-Landesdurchschnitt (0.51 %, 2026-08)",
@@ -3527,7 +3456,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.87,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.01,
       "veraenderung_pp": 0.0
@@ -3596,7 +3525,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.86,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.0,
       "veraenderung_pp": 0.0
@@ -3672,7 +3601,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.49,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.0,
       "veraenderung_pp": 0.0
@@ -3741,7 +3670,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.86,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.0,
       "veraenderung_pp": 0.0
@@ -3833,7 +3762,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.86,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.0,
       "veraenderung_pp": 0.0
@@ -3902,7 +3831,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.86,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.0,
       "veraenderung_pp": 0.0
@@ -4184,7 +4113,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.49,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.0,
       "veraenderung_pp": 0.0
@@ -4324,7 +4253,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 3.19,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.70 % liegt 3.19 pp ueber dem EZB-Landesdurchschnitt (0.51 %, 2026-08)",
@@ -4395,7 +4324,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.95,
       "veraenderung_pp": 0.0
@@ -4535,7 +4464,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.95,
       "veraenderung_pp": 0.0
@@ -4604,7 +4533,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.95,
       "veraenderung_pp": 0.0
@@ -4673,7 +4602,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.95,
       "veraenderung_pp": 0.0
@@ -4813,7 +4742,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.4,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.91,
       "veraenderung_pp": 0.0
@@ -4882,7 +4811,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.9,
       "veraenderung_pp": 0.0
@@ -5022,7 +4951,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.9,
       "veraenderung_pp": 0.0
@@ -5162,7 +5091,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.0,
       "veraenderung_pp": 0.0
@@ -5231,7 +5160,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.9,
       "veraenderung_pp": 0.0
@@ -5300,7 +5229,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 3.64,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "4.15 % liegt 3.64 pp ueber dem EZB-Landesdurchschnitt (0.51 %, 2026-08)",
@@ -5371,12 +5300,10 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-08",
-      "stale": true,
+      "stand": "2026-10-11",
+      "stale": false,
       "vortag_zins_pct": 2.85,
-      "veraenderung_pp": 0.0,
-      "stale_seit": "2026-10-08",
-      "stale_grund": "In diesem Lauf nicht mehr gefunden"
+      "veraenderung_pp": 0.0
     },
     {
       "bank": "Serafim Finans 2,35",
@@ -5443,9 +5370,11 @@
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
       "stand": "2026-10-10",
-      "stale": false,
+      "stale": true,
       "vortag_zins_pct": 2.85,
-      "veraenderung_pp": 0.0
+      "veraenderung_pp": 0.0,
+      "stale_seit": "2026-10-10",
+      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
       "bank": "Collector",
@@ -5519,7 +5448,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.8,
       "veraenderung_pp": 0.0
@@ -5588,7 +5517,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.8,
       "veraenderung_pp": 0.0
@@ -5657,7 +5586,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.8,
       "veraenderung_pp": 0.0
@@ -5797,7 +5726,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.24,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.75,
       "veraenderung_pp": 0.0
@@ -5866,7 +5795,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.75,
       "veraenderung_pp": 0.0
@@ -5935,7 +5864,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.75,
       "veraenderung_pp": 0.0
@@ -6075,7 +6004,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.24,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.75,
       "veraenderung_pp": 0.0
@@ -6144,7 +6073,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 3.49,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "4.00 % liegt 3.49 pp ueber dem EZB-Landesdurchschnitt (0.51 %, 2026-08)",
@@ -6215,7 +6144,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.2,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.71,
       "veraenderung_pp": 0.0
@@ -6371,7 +6300,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 3.49,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "4.00 % liegt 3.49 pp ueber dem EZB-Landesdurchschnitt (0.51 %, 2026-08)",
@@ -6478,7 +6407,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 3.49,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "4.00 % liegt 3.49 pp ueber dem EZB-Landesdurchschnitt (0.51 %, 2026-08)",
@@ -6573,7 +6502,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 4.05,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "4.10 % liegt 4.05 pp ueber dem EZB-Landesdurchschnitt (0.05 %, 2026-08)",
@@ -6786,7 +6715,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.46,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.6,
       "veraenderung_pp": 0.0
@@ -6855,7 +6784,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.09,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.6,
       "veraenderung_pp": 0.0
@@ -6924,12 +6853,10 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-08",
-      "stale": true,
+      "stand": "2026-10-11",
+      "stale": false,
       "vortag_zins_pct": 2.6,
-      "veraenderung_pp": 0.0,
-      "stale_seit": "2026-10-08",
-      "stale_grund": "In diesem Lauf nicht mehr gefunden"
+      "veraenderung_pp": 0.0
     },
     {
       "bank": "Openbank",
@@ -6995,7 +6922,7 @@
       "ezb_landesdurchschnitt_pct": 0.16,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 3.84,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "4.00 % liegt 3.84 pp ueber dem EZB-Landesdurchschnitt (0.16 %, 2026-08)",
@@ -7066,7 +6993,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.0,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.51,
       "veraenderung_pp": 0.0
@@ -7135,7 +7062,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.99,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.5,
       "veraenderung_pp": 0.0
@@ -7212,7 +7139,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.5,
       "veraenderung_pp": 0.0
@@ -7281,7 +7208,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.5,
       "veraenderung_pp": 0.0
@@ -7421,7 +7348,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.99,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.5,
       "veraenderung_pp": 0.0
@@ -7490,7 +7417,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.5,
       "veraenderung_pp": 0.0
@@ -7559,7 +7486,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.45,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.5,
       "veraenderung_pp": 0.0
@@ -7628,7 +7555,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.45,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.5,
       "veraenderung_pp": 0.0
@@ -7839,7 +7766,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.42,
       "veraenderung_pp": 0.0
@@ -7979,7 +7906,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.41,
       "veraenderung_pp": 0.0
@@ -8068,7 +7995,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.41,
       "veraenderung_pp": 0.0
@@ -8145,7 +8072,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.41,
       "veraenderung_pp": 0.0
@@ -8250,7 +8177,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.41,
       "veraenderung_pp": 0.0
@@ -8319,7 +8246,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.4,
       "veraenderung_pp": 0.0
@@ -8432,7 +8359,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.4,
       "veraenderung_pp": 0.0
@@ -8501,7 +8428,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.4,
       "veraenderung_pp": 0.0
@@ -8570,7 +8497,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.89,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.4,
       "veraenderung_pp": 0.0
@@ -8655,7 +8582,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 3.24,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.75 % liegt 3.24 pp ueber dem EZB-Landesdurchschnitt (0.51 %, 2026-08)",
@@ -8805,7 +8732,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.37,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.42,
       "veraenderung_pp": 0.0
@@ -8890,7 +8817,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.37,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.42,
       "veraenderung_pp": 0.0
@@ -9028,7 +8955,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.21,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.35,
       "veraenderung_pp": 0.0
@@ -9097,7 +9024,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.35,
       "veraenderung_pp": 0.0
@@ -9308,7 +9235,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.3,
       "veraenderung_pp": 0.0
@@ -9476,7 +9403,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.28,
       "veraenderung_pp": 0.0
@@ -9573,7 +9500,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.28,
       "veraenderung_pp": 0.0
@@ -9721,7 +9648,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.12,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.26,
       "veraenderung_pp": 0.0
@@ -9869,7 +9796,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 3.74,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "4.25 % liegt 3.74 pp ueber dem EZB-Landesdurchschnitt (0.51 %, 2026-08)",
@@ -10106,7 +10033,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 3.74,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "4.25 % liegt 3.74 pp ueber dem EZB-Landesdurchschnitt (0.51 %, 2026-08)",
@@ -10201,7 +10128,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.71,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.22,
       "veraenderung_pp": 0.0
@@ -10270,7 +10197,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.69,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.2,
       "veraenderung_pp": 0.0
@@ -10351,7 +10278,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.06,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.2,
       "veraenderung_pp": 0.0
@@ -10641,7 +10568,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.01,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.15,
       "veraenderung_pp": 0.0
@@ -10710,7 +10637,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.01,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.15,
       "veraenderung_pp": 0.0
@@ -10944,7 +10871,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.96,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.1,
       "veraenderung_pp": 0.0
@@ -11013,7 +10940,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 3.34,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.85 % liegt 3.34 pp ueber dem EZB-Landesdurchschnitt (0.51 %, 2026-08)",
@@ -11084,7 +11011,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.03,
       "veraenderung_pp": 0.0
@@ -11153,7 +11080,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 3.44,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.95 % liegt 3.44 pp ueber dem EZB-Landesdurchschnitt (0.51 %, 2026-08)",
@@ -11224,7 +11151,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.02,
       "veraenderung_pp": 0.0
@@ -11316,7 +11243,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 3.35,
       "veraenderung_pp": 0.0
@@ -11385,7 +11312,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.76,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.9,
       "veraenderung_pp": 0.0
@@ -11500,7 +11427,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.71,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.85,
       "veraenderung_pp": 0.0
@@ -11569,7 +11496,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.66,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.8,
       "veraenderung_pp": 0.0
@@ -11638,7 +11565,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.61,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.75,
       "veraenderung_pp": 0.0
@@ -11707,7 +11634,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.75,
       "veraenderung_pp": 0.0
@@ -11847,7 +11774,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.56,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.7,
       "veraenderung_pp": 0.0
@@ -11916,7 +11843,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.7,
       "veraenderung_pp": 0.0
@@ -11985,7 +11912,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.45,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.5,
       "veraenderung_pp": 0.0
@@ -12054,7 +11981,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.65,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.7,
       "veraenderung_pp": 0.0
@@ -12123,7 +12050,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.65,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.7,
       "veraenderung_pp": 0.0
@@ -12192,7 +12119,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.65,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.7,
       "veraenderung_pp": 0.0
@@ -12415,7 +12342,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.46,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.6,
       "veraenderung_pp": 0.0
@@ -12557,7 +12484,7 @@
       "ezb_landesdurchschnitt_pct": 0.51,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.0,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.51,
       "veraenderung_pp": 0.0
@@ -12626,7 +12553,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.36,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.5,
       "veraenderung_pp": 0.0
@@ -12695,7 +12622,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.36,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.5,
       "veraenderung_pp": 0.0
@@ -12764,7 +12691,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.2,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.25,
       "veraenderung_pp": 0.0
@@ -12833,7 +12760,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.2,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.25,
       "veraenderung_pp": 0.0
@@ -12902,7 +12829,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.2,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.25,
       "veraenderung_pp": 0.0
@@ -13042,7 +12969,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.15,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.2,
       "veraenderung_pp": 0.0
@@ -13111,7 +13038,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.46,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.51,
       "veraenderung_pp": 0.0
@@ -13180,7 +13107,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.15,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.2,
       "veraenderung_pp": 0.0
@@ -13264,7 +13191,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.76,
       "veraenderung_pp": 0.0
@@ -13333,7 +13260,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 2.0,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.05,
       "veraenderung_pp": 0.0
@@ -13473,7 +13400,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.35,
       "veraenderung_pp": 0.0
@@ -13613,7 +13540,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.95,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.0,
       "veraenderung_pp": 0.0
@@ -13753,7 +13680,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.95,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 2.0,
       "veraenderung_pp": 0.0
@@ -13822,7 +13749,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.16,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.3,
       "veraenderung_pp": 0.0
@@ -13891,7 +13818,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.3,
       "veraenderung_pp": 0.0
@@ -13960,7 +13887,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.16,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.3,
       "veraenderung_pp": 0.0
@@ -14029,7 +13956,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.16,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.3,
       "veraenderung_pp": 0.0
@@ -14098,7 +14025,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.11,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.25,
       "veraenderung_pp": 0.0
@@ -14167,7 +14094,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.11,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.25,
       "veraenderung_pp": 0.0
@@ -14236,7 +14163,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.11,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.25,
       "veraenderung_pp": 0.0
@@ -14305,7 +14232,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.11,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.25,
       "veraenderung_pp": 0.0
@@ -14445,7 +14372,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.75,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.8,
       "veraenderung_pp": 0.0
@@ -14514,7 +14441,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.75,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.8,
       "veraenderung_pp": 0.0
@@ -14583,7 +14510,7 @@
       "ezb_landesdurchschnitt_pct": 0.14,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.01,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.15,
       "veraenderung_pp": 0.0
@@ -14652,7 +14579,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.65,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.7,
       "veraenderung_pp": 0.0
@@ -14721,7 +14648,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.45,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.5,
       "veraenderung_pp": 0.0
@@ -14790,7 +14717,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 1.15,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 1.2,
       "veraenderung_pp": 0.0
@@ -14931,7 +14858,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 0.4,
       "veraenderung_pp": 0.0
@@ -15000,7 +14927,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-08",
       "differenz_zu_ezb_pp": 0.5,
-      "stand": "2026-10-10",
+      "stand": "2026-10-11",
       "stale": false,
       "vortag_zins_pct": 0.55,
       "veraenderung_pp": 0.0
