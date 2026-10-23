@@ -1,26 +1,26 @@
-# Lauf-Report 2026-10-22
+# Lauf-Report 2026-10-23
 
-Erstellt: 2026-10-22T11:17:06+00:00
+Erstellt: 2026-10-23T11:08:37+00:00
 
 ## Zusammenfassung
 
 | Kennzahl | Wert |
 | --- | ---: |
 | Quellen gesamt | 28 |
-| Quellen mit Treffer | 18 |
+| Quellen mit Treffer | 19 |
 | Quellen durch robots.txt uebersprungen | 1 |
-| Quellen ohne Treffer | 9 |
-| Rohtreffer | 288 |
-| Angebote nach Dedupe | 192 |
-| Angebote im Ergebnis | 192 |
-| davon stale | 51 |
-| Laufzeit (s) | 135.7 |
+| Quellen ohne Treffer | 8 |
+| Rohtreffer | 308 |
+| Angebote nach Dedupe | 186 |
+| Angebote im Ergebnis | 186 |
+| davon stale | 32 |
+| Laufzeit (s) | 138.9 |
 
 ### Extraktionsstufen
 
 | Stufe | Angebote |
 | --- | ---: |
-| Stufe 2 | 192 |
+| Stufe 2 | 186 |
 
 ### Welche Quelle lief auf welcher Stufe
 
@@ -50,7 +50,7 @@ Erstellt: 2026-10-22T11:17:06+00:00
 | klarna.com | - | - | 0 | S1/json_endpoint: HTTP 202; S1/jsonld: kein <script type=application/ld+json> gefunden; S2/css_konfiguriert: c |
 | tagesgeld.info | 2 | css_heuristik | 23 |  |
 | tagesgeldvergleich.com | 2 | css_heuristik | 10 |  |
-| verivox.de | - | - | 0 | HTTP 403 |
+| verivox.de | 2 | css_heuristik | 22 |  |
 | finanztip.de | 2 | css_heuristik | 10 |  |
 | spaarrente.nl | 2 | css_heuristik | 48 |  |
 | compricer.se | 2 | css_heuristik | 46 |  |
@@ -61,13 +61,9 @@ Erstellt: 2026-10-22T11:17:06+00:00
 Uebernommene Vortagseintraege durchlaufen dieselben Qualitaetsfilter
 wie frische Treffer. Was dabei aufgefallen ist:
 
-* Land-Dopplungen im Altbestand aufgeloest: 10 Eintraege verschmolzen
+* Land-Dopplungen im Altbestand aufgeloest: 9 Eintraege verschmolzen
 
-## Sprung zum Vortag groesser als erlaubt - Vortagswert behalten (1)
-
-- **BITCOIN** (PL): 0.68 % -> 3.38 % (+2.7 pp) [Quelle: bankier.pl]
-
-## Weit ueber EZB-Landesdurchschnitt - Flag 'pruefen' (17)
+## Weit ueber EZB-Landesdurchschnitt - Flag 'pruefen' (21)
 
 - **Consorsbank** (FR): 3.8 % vs. EZB 0.05 % (+3.75 pp)
 - **Volkswagen Bank** (DE): 3.75 % vs. EZB 0.51 % (+3.24 pp)
@@ -80,85 +76,80 @@ wie frische Treffer. Was dabei aufgefallen ist:
 - **Distingo** (DE): 3.95 % vs. EZB 0.51 % (+3.44 pp)
 - **Chase** (DE): 4.0 % vs. EZB 0.51 % (+3.49 pp)
 - **Bigbank** (DE): 3.9 % vs. EZB 0.51 % (+3.39 pp)
+- **CA Savings (Crédit Agricole)** (FR): 4.1 % vs. EZB 0.05 % (+4.05 pp)
 - **Leaseplan Bank** (DE): 4.0 % vs. EZB 0.51 % (+3.49 pp)
 - **Openbank** (DE): 4.0 % vs. EZB 0.51 % (+3.49 pp)
 - **Openbank** (ES): 4.0 % vs. EZB 0.16 % (+3.84 pp)
+- **Revolut** (DE): 4.25 % vs. EZB 0.51 % (+3.74 pp)
 - **Advanzia** (DE): 4.1 % vs. EZB 0.51 % (+3.59 pp)
 - **Ikano Bank** (DE): 3.91 % vs. EZB 0.51 % (+3.4 pp)
+- **DKB** (DE): 4.0 % vs. EZB 0.51 % (+3.49 pp)
 - **Opel Bank** (DE): 3.95 % vs. EZB 0.51 % (+3.44 pp)
+- **XTB** (DE): 4.5 % vs. EZB 0.51 % (+3.99 pp)
 
-## Heute nicht gefunden - als stale behalten (51)
+## Heute nicht gefunden - als stale behalten (32)
 
-- **Lokata na** (PL), stale seit 2026-10-18 (4 Tage)
-- **MyInvestor** (ES), stale seit 2026-10-21 (1 Tage)
-- **Brocc Finance** (SE), stale seit 2026-10-09 (13 Tage)
-- **Ikano Bank** (SE), stale seit 2026-10-20 (2 Tage)
-- **pbb direkt** (DE), stale seit 2026-10-14 (8 Tage)
-- **SBAB Bank** (SE), stale seit 2026-10-08 (14 Tage)
-- **Danske Bank** (SE), stale seit 2026-10-08 (14 Tage)
-- **Multitude Bank 2,50** (SE), stale seit 2026-10-17 (5 Tage)
-- **Volkswagen Bank Sparbrief** (DE), stale seit 2026-10-14 (8 Tage)
-- **Bankaktiebolaget Nordiska** (SE), stale seit 2026-10-21 (1 Tage)
-- **Northmill Bank** (SE), stale seit 2026-10-09 (13 Tage)
-- **Saldo Bank 2,80** (SE), stale seit 2026-10-18 (4 Tage)
-- **Multitude Bank 2,50** (MT), stale seit 2026-10-17 (5 Tage)
-- **Handelsbanken** (SE), stale seit 2026-10-08 (14 Tage)
-- **Commerzbank** (DE), stale seit 2026-10-16 (6 Tage)
-- **Plus** (SE), stale seit 2026-10-08 (14 Tage)
-- **Raisin StartZins** (DE), stale seit 2026-10-19 (3 Tage)
-- **Trade Republic** (NL), stale seit 2026-10-08 (14 Tage)
-- **Aros Kapital** (SE), stale seit 2026-10-17 (5 Tage)
-- **Coeli** (SE), stale seit 2026-10-13 (9 Tage)
-- **JAK Medlemsbank** (SE), stale seit 2026-10-15 (7 Tage)
-- **Bluestep Bank** (SE), stale seit 2026-10-11 (11 Tage)
-- **Ferratum (Multitude Bank)** (MT), stale seit 2026-10-21 (1 Tage)
-- **Northmill Bank 1,80** (SE), stale seit 2026-10-11 (11 Tage)
-- **Serafim Finans** (SE), stale seit 2026-10-13 (9 Tage)
-- **Bigbank** (EE), stale seit 2026-10-15 (7 Tage)
-- **CA Savings (Crédit Agricole)** (FR), stale seit 2026-10-21 (1 Tage)
-- **Ascory Bank** (DE), stale seit 2026-10-21 (1 Tage)
-- **Swedbank** (SE), stale seit 2026-10-08 (14 Tage)
-- **Renault Bank** (FR), stale seit 2026-10-15 (7 Tage)
-- **Nordea** (SE), stale seit 2026-10-08 (14 Tage)
-- **SEB** (SE), stale seit 2026-10-08 (14 Tage)
-- **Scalable Capital Bank** (DE), stale seit 2026-10-11 (11 Tage)
-- **Avida Finans** (SE), stale seit 2026-10-20 (2 Tage)
-- **Qliro** (SE), stale seit 2026-10-13 (9 Tage)
-- **qred** (SE), stale seit 2026-10-21 (1 Tage)
-- **0TO9** (SE), stale seit 2026-10-21 (1 Tage)
-- **SimpleSave** (NL), stale seit 2026-10-21 (1 Tage)
-- **Yapi Kredi Bank Deutschland** (DE), stale seit 2026-10-14 (8 Tage)
-- **YapiKredi Deutschland** (DE), stale seit 2026-10-21 (1 Tage)
-- **Carrefour Banque** (FR), stale seit 2026-10-18 (4 Tage)
-- **FCM Bank Ltd.** (MT), stale seit 2026-10-21 (1 Tage)
-- **BluOr Bank AS** (LV), stale seit 2026-10-08 (14 Tage)
-- **Collector Bank** (NL), stale seit 2026-10-20 (2 Tage)
-- **Besonderheiten** (DE), stale seit 2026-10-14 (8 Tage)
-- **Revolut** (DE), stale seit 2026-10-21 (1 Tage)
-- **Cosmos Direkt** (DE), stale seit 2026-10-11 (11 Tage)
-- **Advanzia Bank** (LU), stale seit 2026-10-21 (1 Tage)
-- **DKB** (DE), stale seit 2026-10-21 (1 Tage)
-- **Ekobanken** (SE), stale seit 2026-10-08 (14 Tage)
-- **XTB** (DE), stale seit 2026-10-21 (1 Tage)
+- **Lokata na** (PL), stale seit 2026-10-18 (5 Tage)
+- **MyInvestor** (ES), stale seit 2026-10-21 (2 Tage)
+- **Brocc Finance** (SE), stale seit 2026-10-09 (14 Tage)
+- **Ikano Bank** (SE), stale seit 2026-10-20 (3 Tage)
+- **pbb direkt** (DE), stale seit 2026-10-14 (9 Tage)
+- **Multitude Bank** (SE), stale seit 2026-10-22 (1 Tage)
+- **Multitude Bank 2,50** (SE), stale seit 2026-10-17 (6 Tage)
+- **Volkswagen Bank Sparbrief** (DE), stale seit 2026-10-14 (9 Tage)
+- **Bankaktiebolaget Nordiska** (SE), stale seit 2026-10-21 (2 Tage)
+- **Northmill Bank** (SE), stale seit 2026-10-09 (14 Tage)
+- **Saldo Bank 2,80** (SE), stale seit 2026-10-18 (5 Tage)
+- **Multitude Bank** (MT), stale seit 2026-10-22 (1 Tage)
+- **Multitude Bank 2,50** (MT), stale seit 2026-10-17 (6 Tage)
+- **Commerzbank** (DE), stale seit 2026-10-16 (7 Tage)
+- **Raisin StartZins** (DE), stale seit 2026-10-19 (4 Tage)
+- **Aros Kapital** (SE), stale seit 2026-10-17 (6 Tage)
+- **Coeli** (SE), stale seit 2026-10-13 (10 Tage)
+- **JAK Medlemsbank** (SE), stale seit 2026-10-15 (8 Tage)
+- **Bluestep Bank** (SE), stale seit 2026-10-11 (12 Tage)
+- **Northmill Bank 1,80** (SE), stale seit 2026-10-11 (12 Tage)
+- **Serafim Finans** (SE), stale seit 2026-10-13 (10 Tage)
+- **Bigbank** (EE), stale seit 2026-10-15 (8 Tage)
+- **Renault Bank** (FR), stale seit 2026-10-15 (8 Tage)
+- **Scalable Capital Bank** (DE), stale seit 2026-10-11 (12 Tage)
+- **Avida Finans** (SE), stale seit 2026-10-20 (3 Tage)
+- **Qliro** (SE), stale seit 2026-10-13 (10 Tage)
+- **Yapi Kredi Deutschland** (DE), stale seit 2026-10-22 (1 Tage)
+- **Carrefour Banque** (FR), stale seit 2026-10-18 (5 Tage)
+- **FCM Bank Ltd.** (MT), stale seit 2026-10-21 (2 Tage)
+- **Collector Bank** (NL), stale seit 2026-10-20 (3 Tage)
+- **Besonderheiten** (DE), stale seit 2026-10-14 (9 Tage)
+- **Cosmos Direkt** (DE), stale seit 2026-10-11 (12 Tage)
 
-## Zu lange stale - entfernt (2)
+## Zu lange stale - entfernt (10)
 
-- **Openbank Girokonto +**
-- **CreditPlus**
+- **SBAB Bank**
+- **Danske Bank**
+- **Handelsbanken**
+- **Plus**
+- **Trade Republic**
+- **Swedbank**
+- **Nordea**
+- **SEB**
+- **BluOr Bank AS**
+- **Ekobanken**
 
-## Neu hinzugekommen (11)
+## Neu hinzugekommen (13)
 
-- **Bankaktiebolaget Nordiska 2,10** (SE): 3.15 %
+- **Multitude Bank 2,60** (SE): 3.4 %
+- **Multitude Bank 2,60** (MT): 3.4 %
 - **Bigbank** (NL): 3.0 %
 - **Bigbank** (DE): 3.9 %
-- **Advanzia Bank** (DE): 2.71 %
 - **Renault Bank direkt** (DE): 2.51 %
 - **FCM Bank** (NL): 2.43 %
-- **SimpleSave** (IE): 2.46 %
+- **Resursbank** (DE): 2.41 %
+- **Renault Bank** (NL): 2.4 %
+- **Avida Finans** (DE): 2.37 %
+- **Collector Bank** (DE): 2.37 %
 - **Carrefour Banque** (NL): 2.35 %
-- **Renault Bank** (NL): 2.3 %
+- **Northmill Bank** (DE): 2.3 %
 - **Ikano Bank** (DE): 3.91 %
-- **Revolut** (NL): 1.25 %
 
 ---
 

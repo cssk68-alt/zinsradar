@@ -1,5 +1,5 @@
 {
-  "stand": "2026-10-22T11:15:00+00:00",
+  "stand": "2026-10-23T11:06:32+00:00",
   "quelle": "European Central Bank Data Portal (data-api.ecb.europa.eu) und eurofxref",
   "lizenz_hinweis": "EZB-Daten sind frei nutzbar mit Quellenangabe.",
   "ezb_mir": {
@@ -7,77 +7,73 @@
       "wert_pct": 0.45,
       "periode": "2026-08",
       "serie": "MIR.M.AT.B.L21.A.R.A.2250.EUR.N",
-      "titel": "Bank interest rates - overnight deposits from households",
+      "titel": "Bank interest rates on overnight deposits from households",
       "status": "A"
     },
     "DE": {
       "wert_pct": 0.51,
       "periode": "2026-08",
       "serie": "MIR.M.DE.B.L21.A.R.A.2250.EUR.N",
-      "titel": "Bank interest rates - overnight deposits from households",
+      "titel": "Bank interest rates on overnight deposits from households",
       "status": "P"
     },
     "ES": {
       "wert_pct": 0.16,
       "periode": "2026-08",
       "serie": "MIR.M.ES.B.L21.A.R.A.2250.EUR.N",
-      "titel": "Bank interest rates - overnight deposits from households",
+      "titel": "Bank interest rates on overnight deposits from households",
       "status": "P"
     },
     "FR": {
       "wert_pct": 0.05,
       "periode": "2026-08",
       "serie": "MIR.M.FR.B.L21.A.R.A.2250.EUR.N",
-      "titel": "Bank interest rates - overnight deposits from households",
+      "titel": "Bank interest rates on overnight deposits from households",
       "status": "P"
     },
     "IE": {
       "wert_pct": 0.22,
       "periode": "2026-08",
       "serie": "MIR.M.IE.B.L21.A.R.A.2250.EUR.N",
-      "titel": "Bank interest rates - overnight deposits from households",
+      "titel": "Bank interest rates on overnight deposits from households",
       "status": "A"
     },
     "IT": {
       "wert_pct": 0.2,
       "periode": "2026-08",
       "serie": "MIR.M.IT.B.L21.A.R.A.2250.EUR.N",
-      "titel": "Bank interest rates - overnight deposits from households",
+      "titel": "Bank interest rates on overnight deposits from households",
       "status": "P"
     },
     "NL": {
       "wert_pct": 0.14,
       "periode": "2026-08",
       "serie": "MIR.M.NL.B.L21.A.R.A.2250.EUR.N",
-      "titel": "Bank interest rates - overnight deposits from households",
+      "titel": "Bank interest rates on overnight deposits from households",
       "status": "A"
     },
     "PT": {
       "wert_pct": 0.04,
       "periode": "2026-08",
       "serie": "MIR.M.PT.B.L21.A.R.A.2250.EUR.N",
-      "titel": "Bank interest rates - overnight deposits from households",
+      "titel": "Bank interest rates on overnight deposits from households",
       "status": "A"
     },
     "U2": {
       "wert_pct": 0.29,
       "periode": "2026-08",
       "serie": "MIR.M.U2.B.L21.A.R.A.2250.EUR.N",
-      "titel": "Bank interest rates - overnight deposits from households",
+      "titel": "Bank interest rates on overnight deposits from households",
       "status": "P"
     }
   },
   "estr": {
-    "aktuell_pct": 2.44,
-    "datum": "2026-10-21",
-    "veraenderung_30t_pp": 0.251,
+    "aktuell_pct": 2.442,
+    "datum": "2026-10-22",
+    "veraenderung_30t_pp": 0.252,
     "trend": "steigend",
     "serie": "EST.B.EU000A2X2A25.WT",
     "reihe": [
-      {
-        "datum": "2026-07-30",
-        "wert_pct": 2.185
-      },
       {
         "datum": "2026-07-31",
         "wert_pct": 2.184
@@ -313,22 +309,26 @@
       {
         "datum": "2026-10-21",
         "wert_pct": 2.44
+      },
+      {
+        "datum": "2026-10-22",
+        "wert_pct": 2.442
       }
     ]
   },
   "fx": {
-    "datum": "2026-10-21",
+    "datum": "2026-10-22",
     "kurse": {
-      "CZK": 24.262,
-      "DKK": 7.4746,
-      "GBP": 0.83825,
-      "HUF": 365.0,
-      "PLN": 4.3635,
-      "RON": 5.3365,
-      "SEK": 11.0975,
-      "CHF": 0.9256,
+      "CZK": 24.26,
+      "DKK": 7.4747,
+      "GBP": 0.8377,
+      "HUF": 366.43,
+      "PLN": 4.3695,
+      "RON": 5.345,
+      "SEK": 11.112,
+      "CHF": 0.9211,
       "ISK": 136.2,
-      "NOK": 10.512,
+      "NOK": 10.488,
       "EUR": 1.0
     },
     "quelle": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
