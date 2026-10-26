@@ -1,5 +1,5 @@
 {
-  "stand": "2026-10-25T10:50:11+00:00",
+  "stand": "2026-10-26T12:21:05+00:00",
   "quelle": "European Central Bank Data Portal (data-api.ecb.europa.eu) und eurofxref",
   "lizenz_hinweis": "EZB-Daten sind frei nutzbar mit Quellenangabe.",
   "ezb_mir": {
@@ -69,15 +69,11 @@
   },
   "estr": {
     "aktuell_pct": 2.442,
-    "datum": "2026-10-22",
-    "veraenderung_30t_pp": 0.252,
+    "datum": "2026-10-23",
+    "veraenderung_30t_pp": 0.253,
     "trend": "steigend",
     "serie": "EST.B.EU000A2X2A25.WT",
     "reihe": [
-      {
-        "datum": "2026-07-31",
-        "wert_pct": 2.184
-      },
       {
         "datum": "2026-08-03",
         "wert_pct": 2.185
@@ -312,6 +308,10 @@
       },
       {
         "datum": "2026-10-22",
+        "wert_pct": 2.442
+      },
+      {
+        "datum": "2026-10-23",
         "wert_pct": 2.442
       }
     ]
