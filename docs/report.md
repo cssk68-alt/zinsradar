@@ -1,6 +1,6 @@
-# Lauf-Report 2026-10-26
+# Lauf-Report 2026-10-27
 
-Erstellt: 2026-10-26T12:22:50+00:00
+Erstellt: 2026-10-27T11:42:36+00:00
 
 ## Zusammenfassung
 
@@ -10,11 +10,11 @@ Erstellt: 2026-10-26T12:22:50+00:00
 | Quellen mit Treffer | 20 |
 | Quellen durch robots.txt uebersprungen | 0 |
 | Quellen ohne Treffer | 8 |
-| Rohtreffer | 308 |
+| Rohtreffer | 300 |
 | Angebote nach Dedupe | 186 |
 | Angebote im Ergebnis | 186 |
-| davon stale | 30 |
-| Laufzeit (s) | 132.3 |
+| davon stale | 37 |
+| Laufzeit (s) | 117.7 |
 
 ### Extraktionsstufen
 
@@ -61,9 +61,9 @@ Erstellt: 2026-10-26T12:22:50+00:00
 Uebernommene Vortagseintraege durchlaufen dieselben Qualitaetsfilter
 wie frische Treffer. Was dabei aufgefallen ist:
 
-* Land-Dopplungen im Altbestand aufgeloest: 8 Eintraege verschmolzen
+* Land-Dopplungen im Altbestand aufgeloest: 7 Eintraege verschmolzen
 
-## Weit ueber EZB-Landesdurchschnitt - Flag 'pruefen' (23)
+## Weit ueber EZB-Landesdurchschnitt - Flag 'pruefen' (22)
 
 - **Hamburg Direct Bank** (DE): 3.82 % vs. EZB 0.51 % (+3.31 pp)
 - **Consorsbank** (FR): 3.8 % vs. EZB 0.05 % (+3.75 pp)
@@ -84,55 +84,52 @@ wie frische Treffer. Was dabei aufgefallen ist:
 - **Openbank** (ES): 4.0 % vs. EZB 0.16 % (+3.84 pp)
 - **Revolut** (DE): 4.25 % vs. EZB 0.51 % (+3.74 pp)
 - **Advanzia** (DE): 4.1 % vs. EZB 0.51 % (+3.59 pp)
-- **Ikano Bank** (DE): 3.91 % vs. EZB 0.51 % (+3.4 pp)
 - **DKB** (DE): 4.0 % vs. EZB 0.51 % (+3.49 pp)
 - **Opel Bank** (DE): 3.95 % vs. EZB 0.51 % (+3.44 pp)
 - **XTB** (DE): 4.5 % vs. EZB 0.51 % (+3.99 pp)
 
-## Heute nicht gefunden - als stale behalten (30)
+## Heute nicht gefunden - als stale behalten (37)
 
-- **Lokata na** (PL), stale seit 2026-10-18 (8 Tage)
-- **Multitude Bank 2,60** (SE), stale seit 2026-10-25 (1 Tage)
-- **RiverBank** (LU), stale seit 2026-10-23 (3 Tage)
-- **Ikano Bank** (SE), stale seit 2026-10-20 (6 Tage)
-- **Ikano Bank 1,15** (SE), stale seit 2026-10-25 (1 Tage)
-- **Kommunalkredit Invest** (AT), stale seit 2026-10-23 (3 Tage)
-- **pbb direkt** (DE), stale seit 2026-10-14 (12 Tage)
-- **Multitude Bank 2,60** (MT), stale seit 2026-10-25 (1 Tage)
-- **Multitude Bank 2,50** (SE), stale seit 2026-10-17 (9 Tage)
-- **Volkswagen Bank Sparbrief** (DE), stale seit 2026-10-14 (12 Tage)
-- **Bankaktiebolaget Nordiska** (SE), stale seit 2026-10-21 (5 Tage)
-- **Saldo Bank 2,80** (SE), stale seit 2026-10-18 (8 Tage)
-- **Multitude Bank 2,50** (MT), stale seit 2026-10-17 (9 Tage)
-- **Serafim Finans 2,35** (SE), stale seit 2026-10-25 (1 Tage)
-- **Commerzbank** (DE), stale seit 2026-10-16 (10 Tage)
-- **Raisin StartZins** (DE), stale seit 2026-10-19 (7 Tage)
-- **Aros Kapital** (SE), stale seit 2026-10-17 (9 Tage)
-- **Coeli** (SE), stale seit 2026-10-13 (13 Tage)
-- **JAK Medlemsbank** (SE), stale seit 2026-10-15 (11 Tage)
-- **Bigbank** (EE), stale seit 2026-10-15 (11 Tage)
-- **Svea Bank** (SE), stale seit 2026-10-24 (2 Tage)
-- **Renault Bank** (FR), stale seit 2026-10-15 (11 Tage)
-- **Avida** (SE), stale seit 2026-10-23 (3 Tage)
-- **Avida Finans** (SE), stale seit 2026-10-20 (6 Tage)
-- **Qliro** (SE), stale seit 2026-10-13 (13 Tage)
-- **Yapi Kredi Deutschland** (DE), stale seit 2026-10-22 (4 Tage)
-- **Carrefour Banque** (FR), stale seit 2026-10-18 (8 Tage)
-- **FCM Bank Ltd.** (MT), stale seit 2026-10-21 (5 Tage)
-- **Besonderheiten** (DE), stale seit 2026-10-14 (12 Tage)
-- **ViViBanca** (IT), stale seit 2026-10-25 (1 Tage)
+- **Lokata na** (PL), stale seit 2026-10-18 (9 Tage)
+- **Multitude Bank 2,60** (SE), stale seit 2026-10-25 (2 Tage)
+- **RiverBank** (LU), stale seit 2026-10-23 (4 Tage)
+- **Ikano Bank 1,15** (SE), stale seit 2026-10-25 (2 Tage)
+- **Ikano Bank 1,40** (SE), stale seit 2026-10-26 (1 Tage)
+- **Kommunalkredit Invest** (AT), stale seit 2026-10-23 (4 Tage)
+- **Multitude Bank 2,60** (MT), stale seit 2026-10-25 (2 Tage)
+- **Multitude Bank 2,50** (SE), stale seit 2026-10-17 (10 Tage)
+- **Volkswagen Bank Sparbrief** (DE), stale seit 2026-10-14 (13 Tage)
+- **Bankaktiebolaget Nordiska** (SE), stale seit 2026-10-21 (6 Tage)
+- **Saldo Bank 2,80** (SE), stale seit 2026-10-18 (9 Tage)
+- **Multitude Bank 2,50** (MT), stale seit 2026-10-17 (10 Tage)
+- **Serafim Finans** (SE), stale seit 2026-10-26 (1 Tage)
+- **Commerzbank** (DE), stale seit 2026-10-16 (11 Tage)
+- **Raisin StartZins** (DE), stale seit 2026-10-19 (8 Tage)
+- **Aros Kapital** (SE), stale seit 2026-10-17 (10 Tage)
+- **Coeli** (SE), stale seit 2026-10-13 (14 Tage)
+- **JAK Medlemsbank** (SE), stale seit 2026-10-15 (12 Tage)
+- **Bigbank** (EE), stale seit 2026-10-15 (12 Tage)
+- **Svea Bank** (SE), stale seit 2026-10-24 (3 Tage)
+- **Renault Bank** (FR), stale seit 2026-10-15 (12 Tage)
+- **Avida** (SE), stale seit 2026-10-23 (4 Tage)
+- **Avida Finans** (SE), stale seit 2026-10-20 (7 Tage)
+- **Qliro** (SE), stale seit 2026-10-13 (14 Tage)
+- **Yapi Kredi Deutschland** (DE), stale seit 2026-10-22 (5 Tage)
+- **Carrefour Banque** (FR), stale seit 2026-10-18 (9 Tage)
+- **FCM Bank Ltd.** (MT), stale seit 2026-10-21 (6 Tage)
+- **Besonderheiten** (DE), stale seit 2026-10-14 (13 Tage)
+- **ViViBanca** (IT), stale seit 2026-10-25 (2 Tage)
+- **ROPA** (PL), stale seit 2026-10-26 (1 Tage)
+- **ZŁOTO** (PL), stale seit 2026-10-26 (1 Tage)
+- **BITCOIN** (PL), stale seit 2026-10-26 (1 Tage)
+- **USD/PLN** (PL), stale seit 2026-10-26 (1 Tage)
+- **EUR/USD** (PL), stale seit 2026-10-26 (1 Tage)
+- **CHF/PLN** (PL), stale seit 2026-10-26 (1 Tage)
+- **MIEDŹ** (PL), stale seit 2026-10-26 (1 Tage)
+- **EUR/PLN** (PL), stale seit 2026-10-26 (1 Tage)
 
-## Zu lange stale - entfernt (4)
+## Neu hinzugekommen (7)
 
-- **Bluestep Bank**
-- **Northmill Bank 1,80**
-- **Scalable Capital Bank**
-- **Cosmos Direkt**
-
-## Neu hinzugekommen (10)
-
-- **Ikano Bank 1,40** (SE): 3.35 %
-- **Altersvorsorge StartVorteil** (DE): 3.0 %
 - **Bigbank** (NL): 3.0 %
 - **Bigbank** (DE): 3.9 %
 - **Renault Bank direkt** (DE): 2.51 %
@@ -140,7 +137,6 @@ wie frische Treffer. Was dabei aufgefallen ist:
 - **Renault Bank** (NL): 2.4 %
 - **Avida Finans** (DE): 2.37 %
 - **Carrefour Banque** (NL): 2.35 %
-- **Ikano Bank** (DE): 3.91 %
 
 ---
 
