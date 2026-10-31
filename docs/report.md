@@ -1,6 +1,6 @@
-# Lauf-Report 2026-10-30
+# Lauf-Report 2026-10-31
 
-Erstellt: 2026-10-30T12:15:56+00:00
+Erstellt: 2026-10-31T11:47:28+00:00
 
 ## Zusammenfassung
 
@@ -13,8 +13,8 @@ Erstellt: 2026-10-30T12:15:56+00:00
 | Rohtreffer | 302 |
 | Angebote nach Dedupe | 186 |
 | Angebote im Ergebnis | 186 |
-| davon stale | 33 |
-| Laufzeit (s) | 122.8 |
+| davon stale | 32 |
+| Laufzeit (s) | 113.2 |
 
 ### Extraktionsstufen
 
@@ -38,7 +38,7 @@ Erstellt: 2026-10-30T12:15:56+00:00
 | raisin.fr | 2 | css_heuristik | 8 |  |
 | confrontaconti.it | - | - | 0 | HTTP 403 |
 | tucapital.es | 2 | css_heuristik | 2 |  |
-| bankier.pl | 2 | css_heuristik | 8 |  |
+| bankier.pl | 2 | css_heuristik | 7 |  |
 | compricer.se | 2 | css_heuristik | 47 |  |
 | bankinter.pt | - | - | 0 | HTTP 403 |
 | ing.de | 2 | css_heuristik | 2 |  |
@@ -63,13 +63,14 @@ wie frische Treffer. Was dabei aufgefallen ist:
 
 * Land-Dopplungen im Altbestand aufgeloest: 4 Eintraege verschmolzen
 
-## Weit ueber EZB-Landesdurchschnitt - Flag 'pruefen' (24)
+## Weit ueber EZB-Landesdurchschnitt - Flag 'pruefen' (25)
 
 - **Hamburg Direct Bank** (DE): 3.82 % vs. EZB 0.51 % (+3.31 pp)
 - **Consorsbank** (FR): 3.8 % vs. EZB 0.05 % (+3.75 pp)
 - **Volkswagen Bank** (DE): 3.75 % vs. EZB 0.51 % (+3.24 pp)
 - **Cronbank** (DE): 3.55 % vs. EZB 0.51 % (+3.04 pp)
 - **SWK Bank** (DE): 3.55 % vs. EZB 0.51 % (+3.04 pp)
+- **pbb direkt** (DE): 3.55 % vs. EZB 0.51 % (+3.04 pp)
 - **MyInvestor** (ES): 3.25 % vs. EZB 0.16 % (+3.09 pp)
 - **Ferratum Bank** (DE): 3.8 % vs. EZB 0.51 % (+3.29 pp)
 - **Trading** (DE): 4.2 % vs. EZB 0.51 % (+3.69 pp)
@@ -90,57 +91,49 @@ wie frische Treffer. Was dabei aufgefallen ist:
 - **Opel Bank** (DE): 3.95 % vs. EZB 0.51 % (+3.44 pp)
 - **XTB** (DE): 4.5 % vs. EZB 0.51 % (+3.99 pp)
 
-## Heute nicht gefunden - als stale behalten (33)
+## Heute nicht gefunden - als stale behalten (32)
 
-- **Lokata na** (PL), stale seit 2026-10-18 (12 Tage)
-- **SIGNAL IDUNA** (DE), stale seit 2026-10-27 (3 Tage)
-- **Multitude Bank** (SE), stale seit 2026-10-27 (3 Tage)
-- **Ikano Bank** (SE), stale seit 2026-10-27 (3 Tage)
-- **Ikano Bank 1,15** (SE), stale seit 2026-10-25 (5 Tage)
-- **Kommunalkredit Invest** (AT), stale seit 2026-10-23 (7 Tage)
-- **Multitude Bank** (MT), stale seit 2026-10-27 (3 Tage)
-- **RiverBank** (LU), stale seit 2026-10-28 (2 Tage)
-- **Multitude Bank 2,50** (SE), stale seit 2026-10-17 (13 Tage)
-- **Bankaktiebolaget Nordiska** (SE), stale seit 2026-10-21 (9 Tage)
-- **Saldo Bank 2,80** (SE), stale seit 2026-10-18 (12 Tage)
-- **Multitude Bank 2,50** (MT), stale seit 2026-10-17 (13 Tage)
-- **Serafim Finans** (SE), stale seit 2026-10-28 (2 Tage)
-- **Commerzbank** (DE), stale seit 2026-10-16 (14 Tage)
-- **Froda** (SE), stale seit 2026-10-27 (3 Tage)
-- **Raisin StartZins** (DE), stale seit 2026-10-19 (11 Tage)
-- **Aros Kapital** (SE), stale seit 2026-10-17 (13 Tage)
-- **Svea Bank 1,80** (SE), stale seit 2026-10-29 (1 Tage)
-- **Avida** (SE), stale seit 2026-10-23 (7 Tage)
-- **Avida Finans** (SE), stale seit 2026-10-20 (10 Tage)
-- **Qred Bank AB** (SE), stale seit 2026-10-28 (2 Tage)
-- **Yapi Kredi Deutschland** (DE), stale seit 2026-10-22 (8 Tage)
-- **Carrefour Banque** (FR), stale seit 2026-10-18 (12 Tage)
-- **FCM Bank Ltd.** (MT), stale seit 2026-10-21 (9 Tage)
-- **ViViBanca** (IT), stale seit 2026-10-25 (5 Tage)
-- **BITCOIN** (PL), stale seit 2026-10-29 (1 Tage)
-- **MIEDŹ** (PL), stale seit 2026-10-29 (1 Tage)
-- **ROPA** (PL), stale seit 2026-10-29 (1 Tage)
-- **ZŁOTO** (PL), stale seit 2026-10-29 (1 Tage)
-- **EUR/PLN** (PL), stale seit 2026-10-29 (1 Tage)
-- **CHF/PLN** (PL), stale seit 2026-10-29 (1 Tage)
-- **USD/PLN** (PL), stale seit 2026-10-29 (1 Tage)
-- **EUR/USD** (PL), stale seit 2026-10-29 (1 Tage)
+- **Lokata na** (PL), stale seit 2026-10-18 (13 Tage)
+- **SIGNAL IDUNA** (DE), stale seit 2026-10-27 (4 Tage)
+- **Multitude Bank** (SE), stale seit 2026-10-27 (4 Tage)
+- **Ikano Bank** (SE), stale seit 2026-10-27 (4 Tage)
+- **Ikano Bank 1,15** (SE), stale seit 2026-10-25 (6 Tage)
+- **Kommunalkredit Invest** (AT), stale seit 2026-10-23 (8 Tage)
+- **Multitude Bank** (MT), stale seit 2026-10-27 (4 Tage)
+- **RiverBank** (LU), stale seit 2026-10-28 (3 Tage)
+- **Multitude Bank 2,50** (SE), stale seit 2026-10-17 (14 Tage)
+- **Bankaktiebolaget Nordiska** (SE), stale seit 2026-10-21 (10 Tage)
+- **Saldo Bank 2,80** (SE), stale seit 2026-10-18 (13 Tage)
+- **Multitude Bank 2,50** (MT), stale seit 2026-10-17 (14 Tage)
+- **Serafim Finans** (SE), stale seit 2026-10-28 (3 Tage)
+- **Froda** (SE), stale seit 2026-10-27 (4 Tage)
+- **Raisin StartZins** (DE), stale seit 2026-10-19 (12 Tage)
+- **Aros Kapital** (SE), stale seit 2026-10-17 (14 Tage)
+- **Svea Bank 1,80** (SE), stale seit 2026-10-29 (2 Tage)
+- **Avida** (SE), stale seit 2026-10-23 (8 Tage)
+- **Avida Finans** (SE), stale seit 2026-10-20 (11 Tage)
+- **Qred Bank AB** (SE), stale seit 2026-10-28 (3 Tage)
+- **Yapi Kredi Deutschland** (DE), stale seit 2026-10-22 (9 Tage)
+- **Carrefour Banque** (FR), stale seit 2026-10-18 (13 Tage)
+- **FCM Bank Ltd.** (MT), stale seit 2026-10-21 (10 Tage)
+- **ViViBanca** (IT), stale seit 2026-10-25 (6 Tage)
+- **BITCOIN** (PL), stale seit 2026-10-29 (2 Tage)
+- **MIEDŹ** (PL), stale seit 2026-10-29 (2 Tage)
+- **ROPA** (PL), stale seit 2026-10-29 (2 Tage)
+- **ZŁOTO** (PL), stale seit 2026-10-29 (2 Tage)
+- **EUR/PLN** (PL), stale seit 2026-10-29 (2 Tage)
+- **CHF/PLN** (PL), stale seit 2026-10-29 (2 Tage)
+- **USD/PLN** (PL), stale seit 2026-10-29 (2 Tage)
+- **EUR/USD** (PL), stale seit 2026-10-29 (2 Tage)
 
-## Zu lange stale - entfernt (3)
+## Zu lange stale - entfernt (1)
 
-- **JAK Medlemsbank**
-- **Bigbank**
-- **Renault Bank**
+- **Commerzbank**
 
-## Neu hinzugekommen (10)
+## Neu hinzugekommen (5)
 
-- **Bigbank** (NL): 3.0 %
-- **Resurs Bank 2,35** (SE): 2.82 %
-- **Bigbank** (DE): 3.9 %
-- **Raisin Bank** (DE): 2.57 %
-- **Renault Bank direkt** (DE): 2.51 %
+- **PSD Bank RheinNeckarSaar** (DE): 2.9 %
 - **FCM Bank** (NL): 2.43 %
-- **Renault Bank** (NL): 2.4 %
 - **Avida Finans** (DE): 2.37 %
 - **Carrefour Banque** (NL): 2.35 %
 - **Ikano Bank** (DE): 3.91 %
