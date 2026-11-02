@@ -1,83 +1,79 @@
 {
-  "stand": "2026-11-01T12:45:25+00:00",
+  "stand": "2026-11-02T14:53:14+00:00",
   "quelle": "European Central Bank Data Portal (data-api.ecb.europa.eu) und eurofxref",
   "lizenz_hinweis": "EZB-Daten sind frei nutzbar mit Quellenangabe.",
   "ezb_mir": {
     "AT": {
-      "wert_pct": 0.45,
-      "periode": "2026-08",
+      "wert_pct": 0.46,
+      "periode": "2026-09",
       "serie": "MIR.M.AT.B.L21.A.R.A.2250.EUR.N",
       "titel": "Bank interest rates on overnight deposits from households",
       "status": "A"
     },
     "DE": {
-      "wert_pct": 0.51,
-      "periode": "2026-08",
+      "wert_pct": 0.52,
+      "periode": "2026-09",
       "serie": "MIR.M.DE.B.L21.A.R.A.2250.EUR.N",
       "titel": "Bank interest rates on overnight deposits from households",
       "status": "P"
     },
     "ES": {
       "wert_pct": 0.16,
-      "periode": "2026-08",
+      "periode": "2026-09",
       "serie": "MIR.M.ES.B.L21.A.R.A.2250.EUR.N",
       "titel": "Bank interest rates on overnight deposits from households",
       "status": "P"
     },
     "FR": {
       "wert_pct": 0.05,
-      "periode": "2026-08",
+      "periode": "2026-09",
       "serie": "MIR.M.FR.B.L21.A.R.A.2250.EUR.N",
       "titel": "Bank interest rates on overnight deposits from households",
       "status": "P"
     },
     "IE": {
-      "wert_pct": 0.22,
-      "periode": "2026-08",
+      "wert_pct": 0.23,
+      "periode": "2026-09",
       "serie": "MIR.M.IE.B.L21.A.R.A.2250.EUR.N",
       "titel": "Bank interest rates on overnight deposits from households",
       "status": "A"
     },
     "IT": {
-      "wert_pct": 0.2,
-      "periode": "2026-08",
+      "wert_pct": 0.25,
+      "periode": "2026-09",
       "serie": "MIR.M.IT.B.L21.A.R.A.2250.EUR.N",
       "titel": "Bank interest rates on overnight deposits from households",
       "status": "P"
     },
     "NL": {
-      "wert_pct": 0.14,
-      "periode": "2026-08",
+      "wert_pct": 0.15,
+      "periode": "2026-09",
       "serie": "MIR.M.NL.B.L21.A.R.A.2250.EUR.N",
       "titel": "Bank interest rates on overnight deposits from households",
       "status": "A"
     },
     "PT": {
-      "wert_pct": 0.04,
-      "periode": "2026-08",
+      "wert_pct": 0.03,
+      "periode": "2026-09",
       "serie": "MIR.M.PT.B.L21.A.R.A.2250.EUR.N",
       "titel": "Bank interest rates on overnight deposits from households",
       "status": "A"
     },
     "U2": {
-      "wert_pct": 0.29,
-      "periode": "2026-08",
+      "wert_pct": 0.3,
+      "periode": "2026-09",
       "serie": "MIR.M.U2.B.L21.A.R.A.2250.EUR.N",
       "titel": "Bank interest rates on overnight deposits from households",
       "status": "P"
     }
   },
   "estr": {
-    "aktuell_pct": 2.439,
-    "datum": "2026-10-29",
+    "aktuell_pct": 2.44,
+    "datum": "2026-10-30",
     "veraenderung_30t_pp": -0.001,
     "trend": "stabil",
     "serie": "EST.B.EU000A2X2A25.WT",
     "reihe": [
-      {
-        "datum": "2026-08-07",
-        "wert_pct": 2.185
-      },
       {
         "datum": "2026-08-10",
         "wert_pct": 2.184
@@ -313,6 +309,10 @@
       {
         "datum": "2026-10-29",
         "wert_pct": 2.439
+      },
+      {
+        "datum": "2026-10-30",
+        "wert_pct": 2.44
       }
     ]
   },
