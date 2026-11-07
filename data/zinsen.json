@@ -1,18 +1,18 @@
 {
   "version": 1,
-  "stand": "2026-11-06T13:50:53+00:00",
-  "stand_datum": "2026-11-06",
+  "stand": "2026-11-07T12:34:22+00:00",
+  "stand_datum": "2026-11-07",
   "erzeugt_von": "scraper/run.py",
   "hinweis": "Keine Anlageberatung. Alle Angaben ohne Gewaehr. Zinssaetze koennen sich jederzeit aendern - vor Abschluss beim Anbieter pruefen.",
   "statistik": {
-    "angebote": 189,
-    "stale": 24,
+    "angebote": 190,
+    "stale": 39,
     "quellen_gesamt": 28,
-    "quellen_erfolg": 20,
+    "quellen_erfolg": 19,
     "tier_verteilung": {
-      "2": 189
+      "2": 190
     },
-    "dauer_s": 119.2
+    "dauer_s": 138.0
   },
   "berechnung": {
     "risiko_abschlag_pp": {
@@ -28,7 +28,7 @@
     "formel_score": "netto_12m - risiko_abschlag[staatsrating_sp]"
   },
   "referenz": {
-    "stand": "2026-11-06T13:49:04+00:00",
+    "stand": "2026-11-07T12:32:17+00:00",
     "ezb_mir": {
       "AT": {
         "wert_pct": 0.46,
@@ -223,18 +223,18 @@
         "wert_pct": 2.442
       }
     ],
-    "fx_datum": "2026-11-05",
+    "fx_datum": "2026-11-06",
     "fx_kurse": {
-      "CZK": 24.289,
-      "DKK": 7.4747,
-      "GBP": 0.83393,
-      "HUF": 363.18,
-      "PLN": 4.389,
-      "RON": 5.3385,
-      "SEK": 10.9845,
-      "CHF": 0.918,
+      "CZK": 24.35,
+      "DKK": 7.4752,
+      "GBP": 0.83415,
+      "HUF": 363.9,
+      "PLN": 4.3925,
+      "RON": 5.3403,
+      "SEK": 11.026,
+      "CHF": 0.9143,
       "ISK": 136.8,
-      "NOK": 10.4365,
+      "NOK": 10.526,
       "EUR": 1.0
     }
   },
@@ -260,7 +260,7 @@
       "url": "https://www.biallo.de/tagesgeld/",
       "tier": 2,
       "methode": "css_heuristik",
-      "treffer": 8,
+      "treffer": 7,
       "fehler": ""
     },
     {
@@ -340,7 +340,7 @@
       "url": "https://www.bankier.pl/gospodarka/wskazniki-finansowe/lokaty-i-konta-oszczednosciowe",
       "tier": 2,
       "methode": "css_heuristik",
-      "treffer": 7,
+      "treffer": 8,
       "fehler": ""
     },
     {
@@ -348,7 +348,7 @@
       "url": "https://www.compricer.se/sparkonto/",
       "tier": 2,
       "methode": "css_heuristik",
-      "treffer": 46,
+      "treffer": 47,
       "fehler": ""
     },
     {
@@ -420,7 +420,7 @@
       "url": "https://www.tagesgeld.info/",
       "tier": 2,
       "methode": "css_heuristik",
-      "treffer": 24,
+      "treffer": 25,
       "fehler": ""
     },
     {
@@ -434,10 +434,10 @@
     {
       "id": "verivox.de",
       "url": "https://www.verivox.de/tagesgeld/",
-      "tier": 2,
-      "methode": "css_heuristik",
-      "treffer": 15,
-      "fehler": ""
+      "tier": null,
+      "methode": "",
+      "treffer": 0,
+      "fehler": "HTTP 403"
     },
     {
       "id": "finanztip.de",
@@ -460,7 +460,7 @@
       "url": "https://www.compricer.se/sparkonto/",
       "tier": 2,
       "methode": "css_heuristik",
-      "treffer": 46,
+      "treffer": 47,
       "fehler": ""
     }
   ],
@@ -536,7 +536,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.3,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.82 % liegt 3.30 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
@@ -623,7 +623,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.82,
       "veraenderung_pp": 0.0
@@ -692,7 +692,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.24,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.76 % liegt 3.24 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
@@ -771,7 +771,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.75,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.80 % liegt 3.75 pp ueber dem EZB-Landesdurchschnitt (0.05 %, 2026-09)",
@@ -849,7 +849,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.23,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.75 % liegt 3.23 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
@@ -928,7 +928,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.23,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.75 % liegt 3.23 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
@@ -999,7 +999,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.03,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.55 % liegt 3.03 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
@@ -1070,7 +1070,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.03,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.55 % liegt 3.03 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
@@ -1141,7 +1141,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.03,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.55 % liegt 3.03 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
@@ -1176,14 +1176,6 @@
           "confidence": 0.5
         },
         {
-          "id": "verivox.de",
-          "url": "https://www.verivox.de/tagesgeld/",
-          "typ": "portal",
-          "extraction_tier": 2,
-          "extraction_method": "css_heuristik",
-          "confidence": 0.5
-        },
-        {
           "id": "finanztip.de",
           "url": "https://www.finanztip.de/tagesgeld/",
           "typ": "portal",
@@ -1204,17 +1196,12 @@
           "differenz_pp": 0.1
         },
         {
-          "quelle": "verivox.de",
-          "zinssatz_pct": 2.4,
-          "differenz_pp": 1.1
-        },
-        {
           "quelle": "finanztip.de",
           "zinssatz_pct": 2.4,
           "differenz_pp": 1.1
         }
       ],
-      "quellen_anzahl": 3,
+      "quellen_anzahl": 2,
       "brutto_12m_pct": 3.5,
       "folgezins_geschaetzt": false,
       "qst_effektiv_mit_erstattung_pct": 0.0,
@@ -1245,7 +1232,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.98,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.5,
       "veraenderung_pp": 0.0
@@ -1314,10 +1301,77 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.98,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.5,
       "veraenderung_pp": 0.0
+    },
+    {
+      "bank": "KT Bank",
+      "produkt": "Tagesgeld",
+      "land": "DE",
+      "quell_land": "DE",
+      "zinssatz_pct": 3.5,
+      "zinstyp": "variabel",
+      "aktionsdauer_monate": 0,
+      "nur_neukunden": false,
+      "folgezins_pct": 3.5,
+      "mindestanlage": null,
+      "mindestanlage_eur": null,
+      "hoechstanlage": null,
+      "hoechstanlage_eur": null,
+      "waehrung": "EUR",
+      "waehrungsrisiko": false,
+      "einlagensicherung_land": "DE",
+      "land_quelle": "erkannt",
+      "quellen": [
+        {
+          "id": "tagesgeld.info",
+          "url": "https://www.tagesgeld.info/",
+          "typ": "portal",
+          "extraction_tier": 2,
+          "extraction_method": "css_heuristik",
+          "confidence": 0.5
+        }
+      ],
+      "extraction_tier": 2,
+      "extraction_method": "css_heuristik",
+      "confidence": 0.5,
+      "dedupe_key": "kt bank|tagesgeld|DE",
+      "override_key": "kt bank|tagesgeld|de",
+      "quellen_anzahl": 1,
+      "brutto_12m_pct": 3.5,
+      "folgezins_geschaetzt": false,
+      "qst_effektiv_mit_erstattung_pct": 0.0,
+      "qst_effektiv_ohne_erstattung_pct": 0.0,
+      "qst_begruendung_mit_erstattung": "Eine deutsche Bank behält keine ausländische Steuer ein. Die deutsche Abgeltungssteuer trifft alle Anbieter gleich und bleibt deshalb aus der Bewertung heraus.",
+      "qst_begruendung_ohne_erstattung": "Eine deutsche Bank behält keine ausländische Steuer ein. Die deutsche Abgeltungssteuer trifft alle Anbieter gleich und bleibt deshalb aus der Bewertung heraus.",
+      "qst_standard_pct": 25.0,
+      "qst_mit_dba_pct": 25.0,
+      "rueckerstattung_aufwand": "keiner",
+      "rueckerstattung_moeglich": false,
+      "rueckerstattung_formular": "Freistellungsauftrag / NV-Bescheinigung (Inlandsfall)",
+      "rueckerstattung_quelle": "https://www.bzst.de/DE/Privatpersonen/Kapitalertraege/kapitalertraege_node.html",
+      "qst_reibung": null,
+      "netto_12m_mit_erstattung_pct": 3.5,
+      "netto_12m_ohne_erstattung_pct": 3.5,
+      "staatsrating_sp": "AAA",
+      "staatsrating_moodys": "Aaa",
+      "rating_gruppe": "AAA",
+      "risiko_abschlag_pp": 0.0,
+      "score_mit_erstattung": 3.5,
+      "score_ohne_erstattung": 3.5,
+      "einlagensicherung_betrag_eur": 100000,
+      "sicherungssystem_name": "Entschädigungseinrichtung deutscher Banken GmbH (EdB)",
+      "sicherung_quelle": "https://www.edb-banken.de/",
+      "land_waehrung": "EUR",
+      "netto_nach_abgeltungssteuer_mit_erstattung_pct": 2.5769,
+      "netto_nach_abgeltungssteuer_ohne_erstattung_pct": 2.5769,
+      "ezb_landesdurchschnitt_pct": 0.52,
+      "ezb_periode": "2026-09",
+      "differenz_zu_ezb_pp": 2.98,
+      "stand": "2026-11-07",
+      "stale": false
     },
     {
       "bank": "Saldo Bank",
@@ -1383,10 +1437,79 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
-      "vortag_zins_pct": 3.3,
-      "veraenderung_pp": 0.15
+      "vortag_zins_pct": 3.45,
+      "veraenderung_pp": 0.0
+    },
+    {
+      "bank": "Arktika Spar",
+      "produkt": "Tagesgeld",
+      "land": "SE",
+      "quell_land": "SE",
+      "zinssatz_pct": 3.41,
+      "zinstyp": "variabel",
+      "aktionsdauer_monate": 0,
+      "nur_neukunden": false,
+      "folgezins_pct": 3.41,
+      "mindestanlage": null,
+      "mindestanlage_eur": null,
+      "hoechstanlage": null,
+      "hoechstanlage_eur": null,
+      "waehrung": "SEK",
+      "waehrungsrisiko": true,
+      "einlagensicherung_land": "SE",
+      "land_quelle": "erkannt",
+      "quellen": [
+        {
+          "id": "compricer.se",
+          "url": "https://www.compricer.se/sparkonto/",
+          "typ": "portal",
+          "extraction_tier": 2,
+          "extraction_method": "css_heuristik",
+          "confidence": 0.5
+        }
+      ],
+      "extraction_tier": 2,
+      "extraction_method": "css_heuristik",
+      "confidence": 0.5,
+      "dedupe_key": "arktika spar|tagesgeld|SE",
+      "override_key": "arktika spar|tagesgeld|se",
+      "quellen_anzahl": 1,
+      "brutto_12m_pct": 3.41,
+      "folgezins_geschaetzt": false,
+      "qst_effektiv_mit_erstattung_pct": 0.0,
+      "qst_effektiv_ohne_erstattung_pct": 0.0,
+      "qst_begruendung_mit_erstattung": "Schweden behält auf Zinsen deutscher Anleger nichts ein.",
+      "qst_begruendung_ohne_erstattung": "Schweden behält auf Zinsen deutscher Anleger nichts ein.",
+      "qst_standard_pct": 0.0,
+      "qst_mit_dba_pct": 0.0,
+      "rueckerstattung_aufwand": "keiner",
+      "rueckerstattung_moeglich": false,
+      "rueckerstattung_formular": "Nicht erforderlich (0 % auf Zinsen an Gebietsfremde)",
+      "rueckerstattung_quelle": "https://www.skatteverket.se/privat/ettforetag/skattatabeller.4.html",
+      "qst_reibung": null,
+      "netto_12m_mit_erstattung_pct": 3.41,
+      "netto_12m_ohne_erstattung_pct": 3.41,
+      "staatsrating_sp": "AAA",
+      "staatsrating_moodys": "Aaa",
+      "rating_gruppe": "AAA",
+      "risiko_abschlag_pp": 0.0,
+      "score_mit_erstattung": 3.41,
+      "score_ohne_erstattung": 3.41,
+      "einlagensicherung_betrag_eur": 92000,
+      "sicherungssystem_name": "Riksgälden / Insättningsgarantin (1.050.000 SEK)",
+      "sicherung_quelle": "https://www.riksgalden.se/en/our-operations/deposit-guarantee/",
+      "land_waehrung": "SEK",
+      "netto_nach_abgeltungssteuer_mit_erstattung_pct": 2.5106,
+      "netto_nach_abgeltungssteuer_ohne_erstattung_pct": 2.5106,
+      "ezb_landesdurchschnitt_pct": null,
+      "ezb_periode": null,
+      "differenz_zu_ezb_pp": null,
+      "stand": "2026-11-07",
+      "stale": false,
+      "vortag_zins_pct": 2.75,
+      "veraenderung_pp": 0.66
     },
     {
       "bank": "SIGNAL IDUNA",
@@ -1538,7 +1661,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.4,
       "veraenderung_pp": 0.0
@@ -1678,7 +1801,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.4,
       "veraenderung_pp": 0.0
@@ -1747,7 +1870,7 @@
       "ezb_landesdurchschnitt_pct": 0.16,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.09,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.25 % liegt 3.09 pp ueber dem EZB-Landesdurchschnitt (0.16 %, 2026-09)",
@@ -1818,7 +1941,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.35,
       "veraenderung_pp": 0.0
@@ -1966,7 +2089,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.35,
       "veraenderung_pp": 0.0
@@ -2114,146 +2237,6 @@
       "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
-      "bank": "Kommunalkredit Invest",
-      "produkt": "Tagesgeld",
-      "land": "AT",
-      "quell_land": "DE",
-      "zinssatz_pct": 3.4,
-      "zinstyp": "variabel",
-      "aktionsdauer_monate": 0,
-      "nur_neukunden": false,
-      "folgezins_pct": 3.4,
-      "mindestanlage": null,
-      "mindestanlage_eur": null,
-      "hoechstanlage": null,
-      "hoechstanlage_eur": null,
-      "waehrung": "EUR",
-      "waehrungsrisiko": false,
-      "einlagensicherung_land": "AT",
-      "land_quelle": "erkannt",
-      "quellen": [
-        {
-          "id": "tagesgeld.info",
-          "url": "https://www.tagesgeld.info/",
-          "typ": "portal",
-          "extraction_tier": 2,
-          "extraction_method": "css_heuristik",
-          "confidence": 0.5
-        }
-      ],
-      "extraction_tier": 2,
-      "extraction_method": "css_heuristik",
-      "confidence": 0.5,
-      "dedupe_key": "kommunalkredit invest|tagesgeld|AT",
-      "override_key": "kommunalkredit invest|tagesgeld|at",
-      "quellen_anzahl": 1,
-      "brutto_12m_pct": 3.4,
-      "folgezins_geschaetzt": false,
-      "qst_effektiv_mit_erstattung_pct": 0.0,
-      "qst_effektiv_ohne_erstattung_pct": 0.0,
-      "qst_begruendung_mit_erstattung": "Österreich zieht zunächst 27,5 % ab, gibt sie deutschen Anlegern wegen des Steuerabkommens aber zurück. Gerechnet wird deshalb ohne Abzug.",
-      "qst_begruendung_ohne_erstattung": "Österreich zieht zunächst 27,5 % ab, gibt sie deutschen Anlegern wegen des Steuerabkommens aber zurück. Gerechnet wird deshalb ohne Abzug.",
-      "qst_standard_pct": 27.5,
-      "qst_mit_dba_pct": 0.0,
-      "rueckerstattung_aufwand": "niedrig",
-      "rueckerstattung_moeglich": true,
-      "rueckerstattung_formular": "Ansässigkeitsbescheinigung IS-QU1 / ZS-QU1",
-      "rueckerstattung_quelle": "https://www.bmf.gv.at/themen/steuern/internationales-steuerrecht/doppelbesteuerungsabkommen.html",
-      "qst_reibung": null,
-      "netto_12m_mit_erstattung_pct": 3.4,
-      "netto_12m_ohne_erstattung_pct": 3.4,
-      "staatsrating_sp": "AA+",
-      "staatsrating_moodys": "Aa1",
-      "rating_gruppe": "AA",
-      "risiko_abschlag_pp": 0.05,
-      "score_mit_erstattung": 3.35,
-      "score_ohne_erstattung": 3.35,
-      "einlagensicherung_betrag_eur": 100000,
-      "sicherungssystem_name": "Einlagensicherung AUSTRIA Ges.m.b.H. (ESA)",
-      "sicherung_quelle": "https://www.einlagensicherung.at/",
-      "land_waehrung": "EUR",
-      "netto_nach_abgeltungssteuer_mit_erstattung_pct": 2.5032,
-      "netto_nach_abgeltungssteuer_ohne_erstattung_pct": 2.5032,
-      "ezb_landesdurchschnitt_pct": 0.45,
-      "ezb_periode": "2026-08",
-      "differenz_zu_ezb_pp": 2.95,
-      "stand": "2026-10-23",
-      "stale": true,
-      "vortag_zins_pct": 3.4,
-      "veraenderung_pp": 0.0,
-      "stale_seit": "2026-10-23",
-      "stale_grund": "In diesem Lauf nicht mehr gefunden"
-    },
-    {
-      "bank": "Nordax Bank 1,80",
-      "produkt": "Tagesgeld",
-      "land": "SE",
-      "quell_land": "SE",
-      "zinssatz_pct": 3.35,
-      "zinstyp": "variabel",
-      "aktionsdauer_monate": 0,
-      "nur_neukunden": false,
-      "folgezins_pct": 3.35,
-      "mindestanlage": null,
-      "mindestanlage_eur": null,
-      "hoechstanlage": null,
-      "hoechstanlage_eur": null,
-      "waehrung": "SEK",
-      "waehrungsrisiko": true,
-      "einlagensicherung_land": "SE",
-      "land_quelle": "erkannt",
-      "quellen": [
-        {
-          "id": "compricer.se",
-          "url": "https://www.compricer.se/sparkonto/",
-          "typ": "portal",
-          "extraction_tier": 2,
-          "extraction_method": "css_heuristik",
-          "confidence": 0.5
-        }
-      ],
-      "extraction_tier": 2,
-      "extraction_method": "css_heuristik",
-      "confidence": 0.5,
-      "dedupe_key": "nordax bank 1 80|tagesgeld|SE",
-      "override_key": "nordax bank 1,80|tagesgeld|se",
-      "quellen_anzahl": 1,
-      "brutto_12m_pct": 3.35,
-      "folgezins_geschaetzt": false,
-      "qst_effektiv_mit_erstattung_pct": 0.0,
-      "qst_effektiv_ohne_erstattung_pct": 0.0,
-      "qst_begruendung_mit_erstattung": "Schweden behält auf Zinsen deutscher Anleger nichts ein.",
-      "qst_begruendung_ohne_erstattung": "Schweden behält auf Zinsen deutscher Anleger nichts ein.",
-      "qst_standard_pct": 0.0,
-      "qst_mit_dba_pct": 0.0,
-      "rueckerstattung_aufwand": "keiner",
-      "rueckerstattung_moeglich": false,
-      "rueckerstattung_formular": "Nicht erforderlich (0 % auf Zinsen an Gebietsfremde)",
-      "rueckerstattung_quelle": "https://www.skatteverket.se/privat/ettforetag/skattatabeller.4.html",
-      "qst_reibung": null,
-      "netto_12m_mit_erstattung_pct": 3.35,
-      "netto_12m_ohne_erstattung_pct": 3.35,
-      "staatsrating_sp": "AAA",
-      "staatsrating_moodys": "Aaa",
-      "rating_gruppe": "AAA",
-      "risiko_abschlag_pp": 0.0,
-      "score_mit_erstattung": 3.35,
-      "score_ohne_erstattung": 3.35,
-      "einlagensicherung_betrag_eur": 92000,
-      "sicherungssystem_name": "Riksgälden / Insättningsgarantin (1.050.000 SEK)",
-      "sicherung_quelle": "https://www.riksgalden.se/en/our-operations/deposit-guarantee/",
-      "land_waehrung": "SEK",
-      "netto_nach_abgeltungssteuer_mit_erstattung_pct": 2.4664,
-      "netto_nach_abgeltungssteuer_ohne_erstattung_pct": 2.4664,
-      "ezb_landesdurchschnitt_pct": null,
-      "ezb_periode": null,
-      "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
-      "stale": false,
-      "vortag_zins_pct": 3.35,
-      "veraenderung_pp": 0.0
-    },
-    {
       "bank": "Multitude Bank",
       "produkt": "Tagesgeld",
       "land": "MT",
@@ -2388,7 +2371,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.4,
       "veraenderung_pp": 0.0
@@ -2457,10 +2440,79 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.3,
       "veraenderung_pp": 0.0
+    },
+    {
+      "bank": "Nordax Bank 1,80",
+      "produkt": "Tagesgeld",
+      "land": "SE",
+      "quell_land": "SE",
+      "zinssatz_pct": 3.3,
+      "zinstyp": "variabel",
+      "aktionsdauer_monate": 0,
+      "nur_neukunden": false,
+      "folgezins_pct": 3.3,
+      "mindestanlage": null,
+      "mindestanlage_eur": null,
+      "hoechstanlage": null,
+      "hoechstanlage_eur": null,
+      "waehrung": "SEK",
+      "waehrungsrisiko": true,
+      "einlagensicherung_land": "SE",
+      "land_quelle": "erkannt",
+      "quellen": [
+        {
+          "id": "compricer.se",
+          "url": "https://www.compricer.se/sparkonto/",
+          "typ": "portal",
+          "extraction_tier": 2,
+          "extraction_method": "css_heuristik",
+          "confidence": 0.5
+        }
+      ],
+      "extraction_tier": 2,
+      "extraction_method": "css_heuristik",
+      "confidence": 0.5,
+      "dedupe_key": "nordax bank 1 80|tagesgeld|SE",
+      "override_key": "nordax bank 1,80|tagesgeld|se",
+      "quellen_anzahl": 1,
+      "brutto_12m_pct": 3.3,
+      "folgezins_geschaetzt": false,
+      "qst_effektiv_mit_erstattung_pct": 0.0,
+      "qst_effektiv_ohne_erstattung_pct": 0.0,
+      "qst_begruendung_mit_erstattung": "Schweden behält auf Zinsen deutscher Anleger nichts ein.",
+      "qst_begruendung_ohne_erstattung": "Schweden behält auf Zinsen deutscher Anleger nichts ein.",
+      "qst_standard_pct": 0.0,
+      "qst_mit_dba_pct": 0.0,
+      "rueckerstattung_aufwand": "keiner",
+      "rueckerstattung_moeglich": false,
+      "rueckerstattung_formular": "Nicht erforderlich (0 % auf Zinsen an Gebietsfremde)",
+      "rueckerstattung_quelle": "https://www.skatteverket.se/privat/ettforetag/skattatabeller.4.html",
+      "qst_reibung": null,
+      "netto_12m_mit_erstattung_pct": 3.3,
+      "netto_12m_ohne_erstattung_pct": 3.3,
+      "staatsrating_sp": "AAA",
+      "staatsrating_moodys": "Aaa",
+      "rating_gruppe": "AAA",
+      "risiko_abschlag_pp": 0.0,
+      "score_mit_erstattung": 3.3,
+      "score_ohne_erstattung": 3.3,
+      "einlagensicherung_betrag_eur": 92000,
+      "sicherungssystem_name": "Riksgälden / Insättningsgarantin (1.050.000 SEK)",
+      "sicherung_quelle": "https://www.riksgalden.se/en/our-operations/deposit-guarantee/",
+      "land_waehrung": "SEK",
+      "netto_nach_abgeltungssteuer_mit_erstattung_pct": 2.4296,
+      "netto_nach_abgeltungssteuer_ohne_erstattung_pct": 2.4296,
+      "ezb_landesdurchschnitt_pct": null,
+      "ezb_periode": null,
+      "differenz_zu_ezb_pp": null,
+      "stand": "2026-11-07",
+      "stale": false,
+      "vortag_zins_pct": 3.35,
+      "veraenderung_pp": -0.05
     },
     {
       "bank": "Qred",
@@ -2526,7 +2578,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.3,
       "veraenderung_pp": 0.0
@@ -2595,7 +2647,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.15,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.30 % liegt 3.15 pp ueber dem EZB-Landesdurchschnitt (0.15 %, 2026-09)",
@@ -2666,7 +2718,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.3,
       "veraenderung_pp": 0.0
@@ -2770,14 +2822,6 @@
           "extraction_tier": 2,
           "extraction_method": "css_heuristik",
           "confidence": 0.5
-        },
-        {
-          "id": "verivox.de",
-          "url": "https://www.verivox.de/tagesgeld/",
-          "typ": "portal",
-          "extraction_tier": 2,
-          "extraction_method": "css_heuristik",
-          "confidence": 0.5
         }
       ],
       "extraction_tier": 2,
@@ -2785,7 +2829,7 @@
       "confidence": 0.5,
       "dedupe_key": "trading|tagesgeld|DE",
       "override_key": "trading|tagesgeld|de",
-      "quellen_anzahl": 2,
+      "quellen_anzahl": 1,
       "brutto_12m_pct": 3.2667,
       "folgezins_geschaetzt": false,
       "qst_effektiv_mit_erstattung_pct": 0.0,
@@ -2816,7 +2860,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.68,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "4.20 % liegt 3.68 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
@@ -2887,7 +2931,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.3,
       "veraenderung_pp": 0.0
@@ -3027,7 +3071,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.15,
       "veraenderung_pp": 0.0
@@ -3175,7 +3219,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.15,
       "veraenderung_pp": 0.0
@@ -3315,7 +3359,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.0,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.15,
       "veraenderung_pp": 0.0
@@ -3384,7 +3428,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.96,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.11,
       "veraenderung_pp": 0.0
@@ -3453,10 +3497,77 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.1,
       "veraenderung_pp": 0.0
+    },
+    {
+      "bank": "Fedelta",
+      "produkt": "Tagesgeld",
+      "land": "SE",
+      "quell_land": "SE",
+      "zinssatz_pct": 3.05,
+      "zinstyp": "variabel",
+      "aktionsdauer_monate": 0,
+      "nur_neukunden": false,
+      "folgezins_pct": 3.05,
+      "mindestanlage": null,
+      "mindestanlage_eur": null,
+      "hoechstanlage": null,
+      "hoechstanlage_eur": null,
+      "waehrung": "SEK",
+      "waehrungsrisiko": true,
+      "einlagensicherung_land": "SE",
+      "land_quelle": "erkannt",
+      "quellen": [
+        {
+          "id": "compricer.se",
+          "url": "https://www.compricer.se/sparkonto/",
+          "typ": "portal",
+          "extraction_tier": 2,
+          "extraction_method": "css_heuristik",
+          "confidence": 0.5
+        }
+      ],
+      "extraction_tier": 2,
+      "extraction_method": "css_heuristik",
+      "confidence": 0.5,
+      "dedupe_key": "fedelta|tagesgeld|SE",
+      "override_key": "fedelta|tagesgeld|se",
+      "quellen_anzahl": 1,
+      "brutto_12m_pct": 3.05,
+      "folgezins_geschaetzt": false,
+      "qst_effektiv_mit_erstattung_pct": 0.0,
+      "qst_effektiv_ohne_erstattung_pct": 0.0,
+      "qst_begruendung_mit_erstattung": "Schweden behält auf Zinsen deutscher Anleger nichts ein.",
+      "qst_begruendung_ohne_erstattung": "Schweden behält auf Zinsen deutscher Anleger nichts ein.",
+      "qst_standard_pct": 0.0,
+      "qst_mit_dba_pct": 0.0,
+      "rueckerstattung_aufwand": "keiner",
+      "rueckerstattung_moeglich": false,
+      "rueckerstattung_formular": "Nicht erforderlich (0 % auf Zinsen an Gebietsfremde)",
+      "rueckerstattung_quelle": "https://www.skatteverket.se/privat/ettforetag/skattatabeller.4.html",
+      "qst_reibung": null,
+      "netto_12m_mit_erstattung_pct": 3.05,
+      "netto_12m_ohne_erstattung_pct": 3.05,
+      "staatsrating_sp": "AAA",
+      "staatsrating_moodys": "Aaa",
+      "rating_gruppe": "AAA",
+      "risiko_abschlag_pp": 0.0,
+      "score_mit_erstattung": 3.05,
+      "score_ohne_erstattung": 3.05,
+      "einlagensicherung_betrag_eur": 92000,
+      "sicherungssystem_name": "Riksgälden / Insättningsgarantin (1.050.000 SEK)",
+      "sicherung_quelle": "https://www.riksgalden.se/en/our-operations/deposit-guarantee/",
+      "land_waehrung": "SEK",
+      "netto_nach_abgeltungssteuer_mit_erstattung_pct": 2.2456,
+      "netto_nach_abgeltungssteuer_ohne_erstattung_pct": 2.2456,
+      "ezb_landesdurchschnitt_pct": null,
+      "ezb_periode": null,
+      "differenz_zu_ezb_pp": null,
+      "stand": "2026-11-07",
+      "stale": false
     },
     {
       "bank": "Serafim Finans 2,35",
@@ -3593,7 +3704,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.58,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "4.10 % liegt 3.58 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
@@ -3664,7 +3775,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.28,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.80 % liegt 3.28 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
@@ -3735,7 +3846,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.86,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.01,
       "veraenderung_pp": 0.0
@@ -3804,7 +3915,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.48,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.0,
       "veraenderung_pp": 0.0
@@ -3873,7 +3984,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.85,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.0,
       "veraenderung_pp": 0.0
@@ -3954,7 +4065,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.48,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.0,
       "veraenderung_pp": 0.0
@@ -4023,7 +4134,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.85,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.0,
       "veraenderung_pp": 0.0
@@ -4092,7 +4203,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.0,
       "veraenderung_pp": 0.0
@@ -4176,7 +4287,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.85,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.0,
       "veraenderung_pp": 0.0
@@ -4245,7 +4356,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.0,
       "veraenderung_pp": 0.0
@@ -4314,7 +4425,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.85,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.0,
       "veraenderung_pp": 0.0
@@ -4383,7 +4494,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.48,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 3.0,
       "veraenderung_pp": 0.0
@@ -4453,11 +4564,13 @@
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 4.05,
       "stand": "2026-11-06",
-      "stale": false,
+      "stale": true,
       "flag": "pruefen",
       "flag_grund": "4.10 % liegt 4.05 pp ueber dem EZB-Landesdurchschnitt (0.05 %, 2026-09)",
       "vortag_zins_pct": 4.1,
-      "veraenderung_pp": 0.0
+      "veraenderung_pp": 0.0,
+      "stale_seit": "2026-11-06",
+      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
       "bank": "Aros Kapital",
@@ -4523,7 +4636,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.95,
       "veraenderung_pp": 0.0
@@ -4663,7 +4776,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.43,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.95 % liegt 3.43 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
@@ -4734,7 +4847,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.95,
       "veraenderung_pp": 0.0
@@ -4874,7 +4987,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.95,
       "veraenderung_pp": 0.0
@@ -5014,7 +5127,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.92,
       "veraenderung_pp": 0.0
@@ -5154,7 +5267,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.39,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.91,
       "veraenderung_pp": 0.0
@@ -5224,9 +5337,11 @@
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
       "stand": "2026-11-06",
-      "stale": false,
+      "stale": true,
       "vortag_zins_pct": 3.0,
-      "veraenderung_pp": 0.0
+      "veraenderung_pp": 0.0,
+      "stale_seit": "2026-11-06",
+      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
       "bank": "PSD Bank RheinNeckarSaar",
@@ -5292,7 +5407,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.38,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.9,
       "veraenderung_pp": 0.0
@@ -5361,7 +5476,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.9,
       "veraenderung_pp": 0.0
@@ -5430,7 +5545,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.85,
       "veraenderung_pp": 0.0
@@ -5570,7 +5685,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.85,
       "veraenderung_pp": 0.0
@@ -5655,7 +5770,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.48,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "4.00 % liegt 3.48 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
@@ -5742,7 +5857,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.82,
       "veraenderung_pp": 0.0
@@ -5882,7 +5997,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.38,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.90 % liegt 3.38 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
@@ -5961,7 +6076,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.8,
       "veraenderung_pp": 0.0
@@ -6030,76 +6145,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.23,
-      "stand": "2026-11-06",
-      "stale": false,
-      "vortag_zins_pct": 2.75,
-      "veraenderung_pp": 0.0
-    },
-    {
-      "bank": "Arktika Spar",
-      "produkt": "Tagesgeld",
-      "land": "SE",
-      "quell_land": "SE",
-      "zinssatz_pct": 2.75,
-      "zinstyp": "variabel",
-      "aktionsdauer_monate": 0,
-      "nur_neukunden": false,
-      "folgezins_pct": 2.75,
-      "mindestanlage": null,
-      "mindestanlage_eur": null,
-      "hoechstanlage": null,
-      "hoechstanlage_eur": null,
-      "waehrung": "SEK",
-      "waehrungsrisiko": true,
-      "einlagensicherung_land": "SE",
-      "land_quelle": "erkannt",
-      "quellen": [
-        {
-          "id": "compricer.se",
-          "url": "https://www.compricer.se/sparkonto/",
-          "typ": "portal",
-          "extraction_tier": 2,
-          "extraction_method": "css_heuristik",
-          "confidence": 0.5
-        }
-      ],
-      "extraction_tier": 2,
-      "extraction_method": "css_heuristik",
-      "confidence": 0.5,
-      "dedupe_key": "arktika spar|tagesgeld|SE",
-      "override_key": "arktika spar|tagesgeld|se",
-      "quellen_anzahl": 1,
-      "brutto_12m_pct": 2.75,
-      "folgezins_geschaetzt": false,
-      "qst_effektiv_mit_erstattung_pct": 0.0,
-      "qst_effektiv_ohne_erstattung_pct": 0.0,
-      "qst_begruendung_mit_erstattung": "Schweden behält auf Zinsen deutscher Anleger nichts ein.",
-      "qst_begruendung_ohne_erstattung": "Schweden behält auf Zinsen deutscher Anleger nichts ein.",
-      "qst_standard_pct": 0.0,
-      "qst_mit_dba_pct": 0.0,
-      "rueckerstattung_aufwand": "keiner",
-      "rueckerstattung_moeglich": false,
-      "rueckerstattung_formular": "Nicht erforderlich (0 % auf Zinsen an Gebietsfremde)",
-      "rueckerstattung_quelle": "https://www.skatteverket.se/privat/ettforetag/skattatabeller.4.html",
-      "qst_reibung": null,
-      "netto_12m_mit_erstattung_pct": 2.75,
-      "netto_12m_ohne_erstattung_pct": 2.75,
-      "staatsrating_sp": "AAA",
-      "staatsrating_moodys": "Aaa",
-      "rating_gruppe": "AAA",
-      "risiko_abschlag_pp": 0.0,
-      "score_mit_erstattung": 2.75,
-      "score_ohne_erstattung": 2.75,
-      "einlagensicherung_betrag_eur": 92000,
-      "sicherungssystem_name": "Riksgälden / Insättningsgarantin (1.050.000 SEK)",
-      "sicherung_quelle": "https://www.riksgalden.se/en/our-operations/deposit-guarantee/",
-      "land_waehrung": "SEK",
-      "netto_nach_abgeltungssteuer_mit_erstattung_pct": 2.0247,
-      "netto_nach_abgeltungssteuer_ohne_erstattung_pct": 2.0247,
-      "ezb_landesdurchschnitt_pct": null,
-      "ezb_periode": null,
-      "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.75,
       "veraenderung_pp": 0.0
@@ -6169,9 +6215,11 @@
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.23,
       "stand": "2026-11-06",
-      "stale": false,
+      "stale": true,
       "vortag_zins_pct": 2.75,
-      "veraenderung_pp": 0.0
+      "veraenderung_pp": 0.0,
+      "stale_seit": "2026-11-06",
+      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
       "bank": "Leaseplan Bank",
@@ -6237,7 +6285,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.48,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "4.00 % liegt 3.48 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
@@ -6339,7 +6387,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.48,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "4.00 % liegt 3.48 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
@@ -6410,7 +6458,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.66,
       "veraenderung_pp": 0.0
@@ -6479,8 +6527,10 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.13,
-      "stand": "2026-11-06",
-      "stale": false
+      "stand": "2026-11-07",
+      "stale": false,
+      "vortag_zins_pct": 2.65,
+      "veraenderung_pp": 0.0
     },
     {
       "bank": "Moank",
@@ -6516,14 +6566,6 @@
           "extraction_tier": 2,
           "extraction_method": "css_heuristik",
           "confidence": 0.5
-        },
-        {
-          "id": "verivox.de",
-          "url": "https://www.verivox.de/tagesgeld/",
-          "typ": "portal",
-          "extraction_tier": 2,
-          "extraction_method": "css_heuristik",
-          "confidence": 0.5
         }
       ],
       "extraction_tier": 2,
@@ -6538,17 +6580,12 @@
           "differenz_pp": 0.34
         },
         {
-          "quelle": "verivox.de",
-          "zinssatz_pct": 2.5,
-          "differenz_pp": 0.11
-        },
-        {
           "quelle": "compricer.se",
           "zinssatz_pct": 2.95,
           "differenz_pp": 0.34
         }
       ],
-      "quellen_anzahl": 3,
+      "quellen_anzahl": 2,
       "brutto_12m_pct": 2.61,
       "folgezins_geschaetzt": false,
       "qst_effektiv_mit_erstattung_pct": 0.0,
@@ -6579,10 +6616,10 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
-      "vortag_zins_pct": 2.59,
-      "veraenderung_pp": 0.02
+      "vortag_zins_pct": 2.61,
+      "veraenderung_pp": 0.0
     },
     {
       "bank": "Heder Bank",
@@ -6648,7 +6685,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.6,
       "veraenderung_pp": 0.0
@@ -6717,7 +6754,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.6,
       "veraenderung_pp": 0.0
@@ -6786,7 +6823,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.45,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.6,
       "veraenderung_pp": 0.0
@@ -6856,9 +6893,11 @@
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
       "stand": "2026-11-06",
-      "stale": false,
+      "stale": true,
       "vortag_zins_pct": 2.6,
-      "veraenderung_pp": 0.0
+      "veraenderung_pp": 0.0,
+      "stale_seit": "2026-11-06",
+      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
       "bank": "Raisin Bank",
@@ -6924,7 +6963,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.05,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.57,
       "veraenderung_pp": 0.0
@@ -6993,7 +7032,7 @@
       "ezb_landesdurchschnitt_pct": 0.16,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.84,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "4.00 % liegt 3.84 pp ueber dem EZB-Landesdurchschnitt (0.16 %, 2026-09)",
@@ -7080,10 +7119,10 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.55,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
-      "vortag_zins_pct": 2.5,
-      "veraenderung_pp": 0.1
+      "vortag_zins_pct": 2.6,
+      "veraenderung_pp": 0.0
     },
     {
       "bank": "Anyfin",
@@ -7169,10 +7208,10 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
-      "vortag_zins_pct": 2.3,
-      "veraenderung_pp": 0.21
+      "vortag_zins_pct": 2.51,
+      "veraenderung_pp": 0.0
     },
     {
       "bank": "FIMBank",
@@ -7238,7 +7277,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.61,
       "veraenderung_pp": 0.0
@@ -7307,7 +7346,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.99,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.51,
       "veraenderung_pp": 0.0
@@ -7376,7 +7415,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.99,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.51,
       "veraenderung_pp": 0.0
@@ -7445,7 +7484,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.5,
       "veraenderung_pp": 0.0
@@ -7514,7 +7553,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.5,
       "veraenderung_pp": 0.0
@@ -7583,7 +7622,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.98,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.5,
       "veraenderung_pp": 0.0
@@ -7660,7 +7699,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.5,
       "veraenderung_pp": 0.0
@@ -7729,7 +7768,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.5,
       "veraenderung_pp": 0.0
@@ -7823,9 +7862,11 @@
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
       "stand": "2026-11-06",
-      "stale": false,
+      "stale": true,
       "vortag_zins_pct": 3.35,
-      "veraenderung_pp": -0.87
+      "veraenderung_pp": -0.87,
+      "stale_seit": "2026-11-06",
+      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
       "bank": "Avarda Bank",
@@ -7899,7 +7940,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.3,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.45,
       "veraenderung_pp": 0.0
@@ -7968,7 +8009,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.45,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.5,
       "veraenderung_pp": 0.0
@@ -8015,6 +8056,14 @@
           "extraction_tier": 2,
           "extraction_method": "css_heuristik",
           "confidence": 0.5
+        },
+        {
+          "id": "moneyvox.fr",
+          "url": "https://www.moneyvox.fr/livret/comparatif/",
+          "typ": "portal",
+          "extraction_tier": 2,
+          "extraction_method": "css_heuristik",
+          "confidence": 0.5
         }
       ],
       "extraction_tier": 2,
@@ -8022,7 +8071,7 @@
       "confidence": 0.5,
       "dedupe_key": "lea bank|tagesgeld|SE",
       "override_key": "lea bank ab|tagesgeld|se",
-      "quellen_anzahl": 3,
+      "quellen_anzahl": 4,
       "brutto_12m_pct": 2.45,
       "folgezins_geschaetzt": false,
       "qst_effektiv_mit_erstattung_pct": 0.0,
@@ -8053,7 +8102,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.45,
       "veraenderung_pp": 0.0
@@ -8130,10 +8179,10 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.3,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
-      "vortag_zins_pct": 2.4,
-      "veraenderung_pp": 0.05
+      "vortag_zins_pct": 2.45,
+      "veraenderung_pp": 0.0
     },
     {
       "bank": "FCM Bank",
@@ -8199,7 +8248,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.28,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.43,
       "veraenderung_pp": 0.0
@@ -8339,7 +8388,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.89,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.41,
       "veraenderung_pp": 0.0
@@ -8416,7 +8465,7 @@
       "ezb_landesdurchschnitt_pct": 0.23,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.23,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.46,
       "veraenderung_pp": 0.0
@@ -8485,7 +8534,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.4,
       "veraenderung_pp": 0.0
@@ -8562,7 +8611,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.25,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.4,
       "veraenderung_pp": 0.0
@@ -8631,7 +8680,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.88,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.4,
       "veraenderung_pp": 0.0
@@ -8701,9 +8750,11 @@
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.88,
       "stand": "2026-11-06",
-      "stale": false,
+      "stale": true,
       "vortag_zins_pct": 2.4,
-      "veraenderung_pp": 0.0
+      "veraenderung_pp": 0.0,
+      "stale_seit": "2026-11-06",
+      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
       "bank": "Collector Bank",
@@ -8777,7 +8828,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.24,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.39,
       "veraenderung_pp": 0.0
@@ -8846,7 +8897,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.85,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.37,
       "veraenderung_pp": 0.0
@@ -8915,7 +8966,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.2,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.35,
       "veraenderung_pp": 0.0
@@ -8984,7 +9035,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.2,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.35,
       "veraenderung_pp": 0.0
@@ -9132,7 +9183,7 @@
       "ezb_landesdurchschnitt_pct": 0.25,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.3,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.55,
       "veraenderung_pp": 0.0
@@ -9201,7 +9252,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.3,
       "veraenderung_pp": 0.0
@@ -9248,14 +9299,6 @@
           "extraction_tier": 2,
           "extraction_method": "css_heuristik",
           "confidence": 0.5
-        },
-        {
-          "id": "moneyvox.fr",
-          "url": "https://www.moneyvox.fr/livret/comparatif/",
-          "typ": "portal",
-          "extraction_tier": 2,
-          "extraction_method": "css_heuristik",
-          "confidence": 0.5
         }
       ],
       "extraction_tier": 2,
@@ -9275,7 +9318,7 @@
           "differenz_pp": 0.08
         }
       ],
-      "quellen_anzahl": 4,
+      "quellen_anzahl": 3,
       "brutto_12m_pct": 2.28,
       "folgezins_geschaetzt": false,
       "qst_effektiv_mit_erstattung_pct": 0.0,
@@ -9306,7 +9349,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.28,
       "veraenderung_pp": 0.0
@@ -9375,7 +9418,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.11,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.26,
       "veraenderung_pp": 0.0
@@ -9523,7 +9566,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.1,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.25,
       "veraenderung_pp": 0.0
@@ -9601,11 +9644,13 @@
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.73,
       "stand": "2026-11-06",
-      "stale": false,
+      "stale": true,
       "flag": "pruefen",
       "flag_grund": "4.25 % liegt 3.73 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
       "vortag_zins_pct": 4.25,
-      "veraenderung_pp": 0.0
+      "veraenderung_pp": 0.0,
+      "stale_seit": "2026-11-06",
+      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
       "bank": "Alisa Bank Plc",
@@ -9679,7 +9724,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.27,
       "veraenderung_pp": 0.0
@@ -9756,7 +9801,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.7,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.22,
       "veraenderung_pp": 0.0
@@ -9837,7 +9882,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.05,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.2,
       "veraenderung_pp": 0.0
@@ -9992,7 +10037,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.6,
       "veraenderung_pp": 0.0
@@ -10061,7 +10106,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.58,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "4.10 % liegt 3.58 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
@@ -10141,9 +10186,11 @@
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
       "stand": "2026-11-06",
-      "stale": false,
+      "stale": true,
       "vortag_zins_pct": 4.1,
-      "veraenderung_pp": 0.0
+      "veraenderung_pp": 0.0,
+      "stale_seit": "2026-11-06",
+      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
       "bank": "Bank B",
@@ -10209,7 +10256,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.0,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.15,
       "veraenderung_pp": 0.0
@@ -10278,7 +10325,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.0,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.15,
       "veraenderung_pp": 0.0
@@ -10347,7 +10394,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.95,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.1,
       "veraenderung_pp": 0.0
@@ -10416,7 +10463,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.03,
       "veraenderung_pp": 0.0
@@ -10558,7 +10605,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.43,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "3.95 % liegt 3.43 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
@@ -10629,7 +10676,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.0,
       "veraenderung_pp": 0.0
@@ -10698,7 +10745,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.75,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.9,
       "veraenderung_pp": 0.0
@@ -10711,7 +10758,7 @@
       "zinssatz_pct": 1.85,
       "zinstyp": "variabel",
       "aktionsdauer_monate": 0,
-      "nur_neukunden": true,
+      "nur_neukunden": false,
       "folgezins_pct": 1.85,
       "mindestanlage": 186.6,
       "mindestanlage_eur": 186.6,
@@ -10733,14 +10780,6 @@
         {
           "id": "tagesgeld.info",
           "url": "https://www.tagesgeld.info/",
-          "typ": "portal",
-          "extraction_tier": 2,
-          "extraction_method": "css_heuristik",
-          "confidence": 0.5
-        },
-        {
-          "id": "verivox.de",
-          "url": "https://www.verivox.de/tagesgeld/",
           "typ": "portal",
           "extraction_tier": 2,
           "extraction_method": "css_heuristik",
@@ -10772,12 +10811,12 @@
           "differenz_pp": 1.5
         },
         {
-          "quelle": "verivox.de",
-          "zinssatz_pct": 4.0,
-          "differenz_pp": 2.15
+          "quelle": "tagesgeld.info",
+          "zinssatz_pct": 3.5,
+          "differenz_pp": 1.65
         }
       ],
-      "quellen_anzahl": 4,
+      "quellen_anzahl": 3,
       "brutto_12m_pct": 1.85,
       "folgezins_geschaetzt": false,
       "qst_effektiv_mit_erstattung_pct": 0.0,
@@ -10808,7 +10847,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.7,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.85,
       "veraenderung_pp": 0.0
@@ -10892,7 +10931,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.48,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "flag": "pruefen",
       "flag_grund": "4.00 % liegt 3.48 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
@@ -10963,7 +11002,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.65,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.8,
       "veraenderung_pp": 0.0
@@ -11032,7 +11071,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.65,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.8,
       "veraenderung_pp": 0.0
@@ -11101,7 +11140,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.75,
       "veraenderung_pp": 0.0
@@ -11170,7 +11209,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.7,
       "veraenderung_pp": 0.0
@@ -11239,7 +11278,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.55,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.7,
       "veraenderung_pp": 0.0
@@ -11308,7 +11347,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.45,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.5,
       "veraenderung_pp": 0.0
@@ -11377,7 +11416,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.45,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.5,
       "veraenderung_pp": 0.0
@@ -11446,7 +11485,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.65,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.7,
       "veraenderung_pp": 0.0
@@ -11515,7 +11554,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.65,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.7,
       "veraenderung_pp": 0.0
@@ -11584,7 +11623,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.65,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.7,
       "veraenderung_pp": 0.0
@@ -11665,7 +11704,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.45,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.6,
       "veraenderung_pp": 0.0
@@ -11734,7 +11773,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.45,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.6,
       "veraenderung_pp": 0.0
@@ -11803,7 +11842,7 @@
       "ezb_landesdurchschnitt_pct": 0.52,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 0.99,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.51,
       "veraenderung_pp": 0.0
@@ -11872,7 +11911,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.35,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.5,
       "veraenderung_pp": 0.0
@@ -11941,7 +11980,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.2,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.25,
       "veraenderung_pp": 0.0
@@ -12010,7 +12049,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.2,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.25,
       "veraenderung_pp": 0.0
@@ -12079,7 +12118,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.15,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.2,
       "veraenderung_pp": 0.0
@@ -12148,7 +12187,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.46,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.51,
       "veraenderung_pp": 0.0
@@ -12217,7 +12256,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.15,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.2,
       "veraenderung_pp": 0.0
@@ -12286,7 +12325,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 2.0,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.05,
       "veraenderung_pp": 0.0
@@ -12355,7 +12394,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.35,
       "veraenderung_pp": 0.0
@@ -12424,7 +12463,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.95,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.0,
       "veraenderung_pp": 0.0
@@ -12493,7 +12532,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.95,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 2.0,
       "veraenderung_pp": 0.0
@@ -12562,7 +12601,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.15,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.3,
       "veraenderung_pp": 0.0
@@ -12631,7 +12670,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.3,
       "veraenderung_pp": 0.0
@@ -12700,7 +12739,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.15,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.3,
       "veraenderung_pp": 0.0
@@ -12769,7 +12808,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.1,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.25,
       "veraenderung_pp": 0.0
@@ -12838,7 +12877,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.1,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.25,
       "veraenderung_pp": 0.0
@@ -12907,7 +12946,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.1,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.25,
       "veraenderung_pp": 0.0
@@ -12929,19 +12968,11 @@
       "waehrung": "EUR",
       "waehrungsrisiko": false,
       "einlagensicherung_land": "NL",
-      "land_quelle": "erkannt",
+      "land_quelle": "quellenland_angenommen",
       "quellen": [
         {
           "id": "spaarrente.nl",
           "url": "https://www.spaarrente.nl/spaarrekening/",
-          "typ": "portal",
-          "extraction_tier": 2,
-          "extraction_method": "css_heuristik",
-          "confidence": 0.5
-        },
-        {
-          "id": "tagesgeld.info",
-          "url": "https://www.tagesgeld.info/",
           "typ": "portal",
           "extraction_tier": 2,
           "extraction_method": "css_heuristik",
@@ -12953,14 +12984,7 @@
       "confidence": 0.5,
       "dedupe_key": "nexent bank|tagesgeld|NL",
       "override_key": "nexent bank|tagesgeld|nl",
-      "quellen_abweichung": [
-        {
-          "quelle": "tagesgeld.info",
-          "zinssatz_pct": 3.5,
-          "differenz_pp": 2.25
-        }
-      ],
-      "quellen_anzahl": 2,
+      "quellen_anzahl": 1,
       "brutto_12m_pct": 1.25,
       "folgezins_geschaetzt": false,
       "qst_effektiv_mit_erstattung_pct": 0.0,
@@ -12991,7 +13015,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.1,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.25,
       "veraenderung_pp": 0.0
@@ -13060,7 +13084,7 @@
       "ezb_landesdurchschnitt_pct": 0.15,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.1,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.25,
       "veraenderung_pp": 0.0
@@ -13130,9 +13154,11 @@
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
       "stand": "2026-11-06",
-      "stale": false,
+      "stale": true,
       "vortag_zins_pct": 2.81,
-      "veraenderung_pp": -1.47
+      "veraenderung_pp": -1.47,
+      "stale_seit": "2026-11-06",
+      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
       "bank": "Livret + de Fortuneo",
@@ -13198,7 +13224,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.75,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.8,
       "veraenderung_pp": 0.0
@@ -13267,7 +13293,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.75,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.8,
       "veraenderung_pp": 0.0
@@ -13336,7 +13362,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.65,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.7,
       "veraenderung_pp": 0.0
@@ -13406,11 +13432,13 @@
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 3.98,
       "stand": "2026-11-06",
-      "stale": false,
+      "stale": true,
       "flag": "pruefen",
       "flag_grund": "4.50 % liegt 3.98 pp ueber dem EZB-Landesdurchschnitt (0.52 %, 2026-09)",
       "vortag_zins_pct": 4.5,
-      "veraenderung_pp": 0.0
+      "veraenderung_pp": 0.0,
+      "stale_seit": "2026-11-06",
+      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
       "bank": "Livret Bfor+",
@@ -13476,7 +13504,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.45,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.5,
       "veraenderung_pp": 0.0
@@ -13545,7 +13573,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 1.45,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 1.5,
       "veraenderung_pp": 0.0
@@ -13615,9 +13643,11 @@
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
       "stand": "2026-11-06",
-      "stale": false,
+      "stale": true,
       "vortag_zins_pct": 0.7,
-      "veraenderung_pp": -0.06
+      "veraenderung_pp": -0.06,
+      "stale_seit": "2026-11-06",
+      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
       "bank": "ICA Banken",
@@ -13683,7 +13713,7 @@
       "ezb_landesdurchschnitt_pct": null,
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 0.4,
       "veraenderung_pp": 0.0
@@ -13753,9 +13783,11 @@
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
       "stand": "2026-11-06",
-      "stale": false,
+      "stale": true,
       "vortag_zins_pct": 1.0,
-      "veraenderung_pp": -0.53
+      "veraenderung_pp": -0.53,
+      "stale_seit": "2026-11-06",
+      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
       "bank": "Livret d'épargne évolutif Hello Plus",
@@ -13821,7 +13853,7 @@
       "ezb_landesdurchschnitt_pct": 0.05,
       "ezb_periode": "2026-09",
       "differenz_zu_ezb_pp": 0.5,
-      "stand": "2026-11-06",
+      "stand": "2026-11-07",
       "stale": false,
       "vortag_zins_pct": 0.55,
       "veraenderung_pp": 0.0
@@ -13891,9 +13923,11 @@
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
       "stand": "2026-11-06",
-      "stale": false,
+      "stale": true,
       "vortag_zins_pct": 0.56,
-      "veraenderung_pp": -0.17
+      "veraenderung_pp": -0.17,
+      "stale_seit": "2026-11-06",
+      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
       "bank": "ROPA",
@@ -13960,9 +13994,11 @@
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
       "stand": "2026-11-06",
-      "stale": false,
+      "stale": true,
       "vortag_zins_pct": 2.29,
-      "veraenderung_pp": -1.92
+      "veraenderung_pp": -1.92,
+      "stale_seit": "2026-11-06",
+      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
       "bank": "CHF/PLN",
@@ -14100,9 +14136,11 @@
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
       "stand": "2026-11-06",
-      "stale": false,
+      "stale": true,
       "vortag_zins_pct": 0.76,
-      "veraenderung_pp": -0.52
+      "veraenderung_pp": -0.52,
+      "stale_seit": "2026-11-06",
+      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     },
     {
       "bank": "EUR/PLN",
@@ -14169,9 +14207,11 @@
       "ezb_periode": null,
       "differenz_zu_ezb_pp": null,
       "stand": "2026-11-06",
-      "stale": false,
+      "stale": true,
       "vortag_zins_pct": 0.33,
-      "veraenderung_pp": -0.14
+      "veraenderung_pp": -0.14,
+      "stale_seit": "2026-11-06",
+      "stale_grund": "In diesem Lauf nicht mehr gefunden"
     }
   ]
 }
