@@ -1,6 +1,6 @@
-# Lauf-Report 2026-11-10
+# Lauf-Report 2026-11-11
 
-Erstellt: 2026-11-10T14:30:52+00:00
+Erstellt: 2026-11-11T13:41:45+00:00
 
 ## Zusammenfassung
 
@@ -10,17 +10,17 @@ Erstellt: 2026-11-10T14:30:52+00:00
 | Quellen mit Treffer | 20 |
 | Quellen durch robots.txt uebersprungen | 0 |
 | Quellen ohne Treffer | 8 |
-| Rohtreffer | 310 |
-| Angebote nach Dedupe | 190 |
-| Angebote im Ergebnis | 190 |
-| davon stale | 32 |
-| Laufzeit (s) | 249.6 |
+| Rohtreffer | 308 |
+| Angebote nach Dedupe | 192 |
+| Angebote im Ergebnis | 192 |
+| davon stale | 34 |
+| Laufzeit (s) | 148.2 |
 
 ### Extraktionsstufen
 
 | Stufe | Angebote |
 | --- | ---: |
-| Stufe 2 | 190 |
+| Stufe 2 | 192 |
 
 ### Welche Quelle lief auf welcher Stufe
 
@@ -29,10 +29,10 @@ Erstellt: 2026-11-10T14:30:52+00:00
 | weltsparen.de | 2 | css_heuristik | 12 |  |
 | check24.de | 2 | css_heuristik | 4 |  |
 | biallo.de | 2 | css_heuristik | 8 |  |
-| finanzfluss.de | 2 | css_heuristik | 15 |  |
+| finanzfluss.de | 2 | css_heuristik | 17 |  |
 | durchblicker.at | - | - | 0 | HTTP 403 |
 | bankenrechner.at | - | - | 0 | S1/json_endpoint: kein json_endpoint in sources.yaml; S1/jsonld: kein <script type=application/ld+json> gefund |
-| spaarrente.nl | 2 | css_heuristik | 49 |  |
+| spaarrente.nl | 2 | css_heuristik | 48 |  |
 | raisin.nl | 2 | css_heuristik | 10 |  |
 | moneyvox.fr | 2 | css_heuristik | 20 |  |
 | raisin.fr | 2 | css_heuristik | 8 |  |
@@ -52,7 +52,7 @@ Erstellt: 2026-11-10T14:30:52+00:00
 | tagesgeldvergleich.com | 2 | css_heuristik | 10 |  |
 | verivox.de | 2 | css_heuristik | 15 |  |
 | finanztip.de | 2 | css_heuristik | 10 |  |
-| spaarrente.nl | 2 | css_heuristik | 49 |  |
+| spaarrente.nl | 2 | css_heuristik | 48 |  |
 | compricer.se | 2 | css_heuristik | 47 |  |
 
 
@@ -61,14 +61,16 @@ Erstellt: 2026-11-10T14:30:52+00:00
 Uebernommene Vortagseintraege durchlaufen dieselben Qualitaetsfilter
 wie frische Treffer. Was dabei aufgefallen ist:
 
-* Land-Dopplungen im Altbestand aufgeloest: 4 Eintraege verschmolzen
+* Land-Dopplungen im Altbestand aufgeloest: 2 Eintraege verschmolzen
 
 ## Weit ueber EZB-Landesdurchschnitt - Flag 'pruefen' (24)
 
+- **xtb** (DE): 4.5 % vs. EZB 0.52 % (+3.98 pp)
 - **HVB** (DE): 3.76 % vs. EZB 0.52 % (+3.24 pp)
 - **Consorsbank** (FR): 3.8 % vs. EZB 0.05 % (+3.75 pp)
 - **ING Deutschland** (DE): 3.75 % vs. EZB 0.52 % (+3.23 pp)
 - **Volkswagen Bank** (DE): 3.75 % vs. EZB 0.52 % (+3.23 pp)
+- **SIGNAL IDUNA** (DE): 3.62 % vs. EZB 0.52 % (+3.1 pp)
 - **Cronbank** (DE): 3.55 % vs. EZB 0.52 % (+3.03 pp)
 - **SWK Bank** (DE): 3.55 % vs. EZB 0.52 % (+3.03 pp)
 - **pbb direkt** (DE): 3.55 % vs. EZB 0.52 % (+3.03 pp)
@@ -85,53 +87,52 @@ wie frische Treffer. Was dabei aufgefallen ist:
 - **Openbank** (ES): 4.0 % vs. EZB 0.16 % (+3.84 pp)
 - **Revolut** (DE): 4.25 % vs. EZB 0.52 % (+3.73 pp)
 - **Advanzia** (DE): 4.1 % vs. EZB 0.52 % (+3.58 pp)
-- **Ikano Bank** (DE): 3.91 % vs. EZB 0.52 % (+3.39 pp)
 - **Opel Bank** (DE): 3.95 % vs. EZB 0.52 % (+3.43 pp)
 - **ING** (DE): 4.0 % vs. EZB 0.52 % (+3.48 pp)
-- **XTB** (DE): 4.5 % vs. EZB 0.52 % (+3.98 pp)
 
-## Heute nicht gefunden - als stale behalten (32)
+## Heute nicht gefunden - als stale behalten (34)
 
-- **Saldo Bank** (SE), stale seit 2026-11-09 (1 Tage)
-- **SIGNAL IDUNA** (DE), stale seit 2026-10-27 (14 Tage)
-- **Multitude Bank** (SE), stale seit 2026-11-04 (6 Tage)
-- **Brocc Finance 0,05** (SE), stale seit 2026-10-31 (10 Tage)
-- **Ikano Bank** (SE), stale seit 2026-11-08 (2 Tage)
-- **Multitude Bank** (MT), stale seit 2026-11-04 (6 Tage)
-- **Qred** (SE), stale seit 2026-11-08 (2 Tage)
-- **Ferratum Bank** (DE), stale seit 2026-11-09 (1 Tage)
-- **Bankaktiebolaget Nordiska 2,10** (SE), stale seit 2026-10-31 (10 Tage)
-- **Northmill Bank** (SE), stale seit 2026-11-07 (3 Tage)
-- **Serafim Finans 2,35** (SE), stale seit 2026-10-31 (10 Tage)
-- **Suresse Direkt Bank** (DE), stale seit 2026-11-08 (2 Tage)
-- **Aros Kapital 2,00** (SE), stale seit 2026-10-31 (10 Tage)
-- **JAK Medlemsbank 1,50** (SE), stale seit 2026-10-31 (10 Tage)
-- **Svea Bank 1,80** (SE), stale seit 2026-10-29 (12 Tage)
-- **Bluestep Bank 0,45** (SE), stale seit 2026-10-31 (10 Tage)
-- **Serafim Finans 2,50** (SE), stale seit 2026-11-08 (2 Tage)
-- **Resurs Bank 2,35** (SE), stale seit 2026-10-31 (10 Tage)
-- **Instabank ASA** (NO), stale seit 2026-11-08 (2 Tage)
-- **0TO9** (SE), stale seit 2026-11-04 (6 Tage)
-- **Carrefour Banque** (NL), stale seit 2026-11-08 (2 Tage)
-- **Sambla** (SE), stale seit 2026-10-31 (10 Tage)
-- **Banca CF+** (IT), stale seit 2026-11-05 (5 Tage)
-- **DKB** (DE), stale seit 2026-11-04 (6 Tage)
-- **ZŁOTO** (PL), stale seit 2026-11-06 (4 Tage)
-- **EUR/USD** (PL), stale seit 2026-11-06 (4 Tage)
-- **USD/PLN** (PL), stale seit 2026-11-06 (4 Tage)
-- **MIEDŹ** (PL), stale seit 2026-11-06 (4 Tage)
-- **ROPA** (PL), stale seit 2026-11-06 (4 Tage)
-- **CHF/PLN** (PL), stale seit 2026-11-04 (6 Tage)
-- **BITCOIN** (PL), stale seit 2026-11-06 (4 Tage)
-- **EUR/PLN** (PL), stale seit 2026-11-06 (4 Tage)
+- **IKB** (DE), stale seit 2026-11-10 (1 Tage)
+- **Saldo Bank 2,80** (SE), stale seit 2026-11-10 (1 Tage)
+- **Multitude Bank** (SE), stale seit 2026-11-04 (7 Tage)
+- **Brocc Finance 0,05** (SE), stale seit 2026-10-31 (11 Tage)
+- **Ikano Bank 1,40** (SE), stale seit 2026-11-10 (1 Tage)
+- **Multitude Bank** (MT), stale seit 2026-11-04 (7 Tage)
+- **Qred** (SE), stale seit 2026-11-08 (3 Tage)
+- **SBAB Bank 1,25** (SE), stale seit 2026-11-10 (1 Tage)
+- **Ferratum Bank** (DE), stale seit 2026-11-09 (2 Tage)
+- **Bankaktiebolaget Nordiska** (SE), stale seit 2026-11-10 (1 Tage)
+- **Northmill Bank** (SE), stale seit 2026-11-07 (4 Tage)
+- **Serafim Finans 2,35** (SE), stale seit 2026-10-31 (11 Tage)
+- **Suresse Direkt Bank** (DE), stale seit 2026-11-08 (3 Tage)
+- **Aros Kapital 2,00** (SE), stale seit 2026-10-31 (11 Tage)
+- **JAK Medlemsbank 1,50** (SE), stale seit 2026-10-31 (11 Tage)
+- **Svea Bank 1,80** (SE), stale seit 2026-10-29 (13 Tage)
+- **Bluestep Bank 0,45** (SE), stale seit 2026-10-31 (11 Tage)
+- **Plus** (SE), stale seit 2026-11-10 (1 Tage)
+- **Serafim Finans** (SE), stale seit 2026-11-10 (1 Tage)
+- **Resurs Bank 2,35** (SE), stale seit 2026-10-31 (11 Tage)
+- **Instabank ASA** (NO), stale seit 2026-11-08 (3 Tage)
+- **0TO9** (SE), stale seit 2026-11-04 (7 Tage)
+- **Carrefour Banque** (NL), stale seit 2026-11-08 (3 Tage)
+- **Sambla** (SE), stale seit 2026-10-31 (11 Tage)
+- **Banca CF+** (IT), stale seit 2026-11-05 (6 Tage)
+- **DKB** (DE), stale seit 2026-11-04 (7 Tage)
+- **ZŁOTO** (PL), stale seit 2026-11-06 (5 Tage)
+- **EUR/USD** (PL), stale seit 2026-11-06 (5 Tage)
+- **USD/PLN** (PL), stale seit 2026-11-06 (5 Tage)
+- **MIEDŹ** (PL), stale seit 2026-11-06 (5 Tage)
+- **ROPA** (PL), stale seit 2026-11-06 (5 Tage)
+- **CHF/PLN** (PL), stale seit 2026-11-04 (7 Tage)
+- **BITCOIN** (PL), stale seit 2026-11-06 (5 Tage)
+- **EUR/PLN** (PL), stale seit 2026-11-06 (5 Tage)
 
-## Neu hinzugekommen (5)
+## Neu hinzugekommen (4)
 
-- **Saldo Bank 2,80** (SE): 3.45 %
-- **Banca CF+** (NL): 2.5 %
+- **SBAB Bank 1,45** (SE): 3.1 %
 - **Instabank** (DE): 2.45 %
+- **Banca Sistema** (IT): 2.63 %
 - **Northmill Bank** (DE): 2.3 %
-- **Ikano Bank** (DE): 3.91 %
 
 ---
 

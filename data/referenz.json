@@ -1,5 +1,5 @@
 {
-  "stand": "2026-11-10T14:28:59+00:00",
+  "stand": "2026-11-11T13:39:59+00:00",
   "quelle": "European Central Bank Data Portal (data-api.ecb.europa.eu) und eurofxref",
   "lizenz_hinweis": "EZB-Daten sind frei nutzbar mit Quellenangabe.",
   "ezb_mir": {
@@ -68,24 +68,267 @@
     }
   },
   "estr": {
-    "aktuell_pct": null,
-    "datum": null,
-    "reihe": [],
-    "trend": "unbekannt"
+    "aktuell_pct": 2.442,
+    "datum": "2026-11-10",
+    "veraenderung_30t_pp": 0.003,
+    "trend": "stabil",
+    "serie": "EST.B.EU000A2X2A25.WT",
+    "reihe": [
+      {
+        "datum": "2026-08-19",
+        "wert_pct": 2.188
+      },
+      {
+        "datum": "2026-08-20",
+        "wert_pct": 2.191
+      },
+      {
+        "datum": "2026-08-21",
+        "wert_pct": 2.189
+      },
+      {
+        "datum": "2026-08-24",
+        "wert_pct": 2.189
+      },
+      {
+        "datum": "2026-08-25",
+        "wert_pct": 2.189
+      },
+      {
+        "datum": "2026-08-26",
+        "wert_pct": 2.187
+      },
+      {
+        "datum": "2026-08-27",
+        "wert_pct": 2.188
+      },
+      {
+        "datum": "2026-08-28",
+        "wert_pct": 2.19
+      },
+      {
+        "datum": "2026-08-31",
+        "wert_pct": 2.185
+      },
+      {
+        "datum": "2026-09-01",
+        "wert_pct": 2.188
+      },
+      {
+        "datum": "2026-09-02",
+        "wert_pct": 2.188
+      },
+      {
+        "datum": "2026-09-03",
+        "wert_pct": 2.189
+      },
+      {
+        "datum": "2026-09-04",
+        "wert_pct": 2.189
+      },
+      {
+        "datum": "2026-09-07",
+        "wert_pct": 2.188
+      },
+      {
+        "datum": "2026-09-08",
+        "wert_pct": 2.188
+      },
+      {
+        "datum": "2026-09-09",
+        "wert_pct": 2.189
+      },
+      {
+        "datum": "2026-09-10",
+        "wert_pct": 2.19
+      },
+      {
+        "datum": "2026-09-11",
+        "wert_pct": 2.189
+      },
+      {
+        "datum": "2026-09-14",
+        "wert_pct": 2.19
+      },
+      {
+        "datum": "2026-09-15",
+        "wert_pct": 2.19
+      },
+      {
+        "datum": "2026-09-16",
+        "wert_pct": 2.441
+      },
+      {
+        "datum": "2026-09-17",
+        "wert_pct": 2.44
+      },
+      {
+        "datum": "2026-09-18",
+        "wert_pct": 2.441
+      },
+      {
+        "datum": "2026-09-21",
+        "wert_pct": 2.44
+      },
+      {
+        "datum": "2026-09-22",
+        "wert_pct": 2.44
+      },
+      {
+        "datum": "2026-09-23",
+        "wert_pct": 2.439
+      },
+      {
+        "datum": "2026-09-24",
+        "wert_pct": 2.44
+      },
+      {
+        "datum": "2026-09-25",
+        "wert_pct": 2.44
+      },
+      {
+        "datum": "2026-09-28",
+        "wert_pct": 2.44
+      },
+      {
+        "datum": "2026-09-29",
+        "wert_pct": 2.439
+      },
+      {
+        "datum": "2026-09-30",
+        "wert_pct": 2.437
+      },
+      {
+        "datum": "2026-10-01",
+        "wert_pct": 2.442
+      },
+      {
+        "datum": "2026-10-02",
+        "wert_pct": 2.44
+      },
+      {
+        "datum": "2026-10-05",
+        "wert_pct": 2.438
+      },
+      {
+        "datum": "2026-10-06",
+        "wert_pct": 2.439
+      },
+      {
+        "datum": "2026-10-07",
+        "wert_pct": 2.439
+      },
+      {
+        "datum": "2026-10-08",
+        "wert_pct": 2.439
+      },
+      {
+        "datum": "2026-10-09",
+        "wert_pct": 2.437
+      },
+      {
+        "datum": "2026-10-12",
+        "wert_pct": 2.439
+      },
+      {
+        "datum": "2026-10-13",
+        "wert_pct": 2.439
+      },
+      {
+        "datum": "2026-10-14",
+        "wert_pct": 2.44
+      },
+      {
+        "datum": "2026-10-15",
+        "wert_pct": 2.44
+      },
+      {
+        "datum": "2026-10-16",
+        "wert_pct": 2.441
+      },
+      {
+        "datum": "2026-10-19",
+        "wert_pct": 2.441
+      },
+      {
+        "datum": "2026-10-20",
+        "wert_pct": 2.44
+      },
+      {
+        "datum": "2026-10-21",
+        "wert_pct": 2.44
+      },
+      {
+        "datum": "2026-10-22",
+        "wert_pct": 2.442
+      },
+      {
+        "datum": "2026-10-23",
+        "wert_pct": 2.442
+      },
+      {
+        "datum": "2026-10-26",
+        "wert_pct": 2.441
+      },
+      {
+        "datum": "2026-10-27",
+        "wert_pct": 2.44
+      },
+      {
+        "datum": "2026-10-28",
+        "wert_pct": 2.439
+      },
+      {
+        "datum": "2026-10-29",
+        "wert_pct": 2.439
+      },
+      {
+        "datum": "2026-10-30",
+        "wert_pct": 2.44
+      },
+      {
+        "datum": "2026-11-02",
+        "wert_pct": 2.441
+      },
+      {
+        "datum": "2026-11-03",
+        "wert_pct": 2.445
+      },
+      {
+        "datum": "2026-11-04",
+        "wert_pct": 2.442
+      },
+      {
+        "datum": "2026-11-05",
+        "wert_pct": 2.442
+      },
+      {
+        "datum": "2026-11-06",
+        "wert_pct": 2.443
+      },
+      {
+        "datum": "2026-11-09",
+        "wert_pct": 2.442
+      },
+      {
+        "datum": "2026-11-10",
+        "wert_pct": 2.442
+      }
+    ]
   },
   "fx": {
-    "datum": "2026-11-09",
+    "datum": "2026-11-10",
     "kurse": {
-      "CZK": 24.365,
-      "DKK": 7.4753,
-      "GBP": 0.8343,
-      "HUF": 362.99,
-      "PLN": 4.3843,
-      "RON": 5.343,
-      "SEK": 10.996,
-      "CHF": 0.9164,
-      "ISK": 136.8,
-      "NOK": 10.5325,
+      "CZK": 24.337,
+      "DKK": 7.4754,
+      "GBP": 0.83545,
+      "HUF": 362.98,
+      "PLN": 4.387,
+      "RON": 5.3442,
+      "SEK": 10.991,
+      "CHF": 0.9203,
+      "ISK": 137.2,
+      "NOK": 10.6155,
       "EUR": 1.0
     },
     "quelle": "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml"
