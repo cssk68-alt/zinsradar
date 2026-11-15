@@ -1,6 +1,6 @@
-# Lauf-Report 2026-11-14
+# Lauf-Report 2026-11-15
 
-Erstellt: 2026-11-14T13:04:15+00:00
+Erstellt: 2026-11-15T13:31:50+00:00
 
 ## Zusammenfassung
 
@@ -11,16 +11,16 @@ Erstellt: 2026-11-14T13:04:15+00:00
 | Quellen durch robots.txt uebersprungen | 0 |
 | Quellen ohne Treffer | 8 |
 | Rohtreffer | 307 |
-| Angebote nach Dedupe | 198 |
-| Angebote im Ergebnis | 198 |
-| davon stale | 38 |
-| Laufzeit (s) | 153.9 |
+| Angebote nach Dedupe | 192 |
+| Angebote im Ergebnis | 192 |
+| davon stale | 32 |
+| Laufzeit (s) | 116.6 |
 
 ### Extraktionsstufen
 
 | Stufe | Angebote |
 | --- | ---: |
-| Stufe 2 | 198 |
+| Stufe 2 | 192 |
 
 ### Welche Quelle lief auf welcher Stufe
 
@@ -92,46 +92,49 @@ wie frische Treffer. Was dabei aufgefallen ist:
 - **ING** (DE): 4.0 % vs. EZB 0.52 % (+3.48 pp)
 - **XTB** (DE): 4.5 % vs. EZB 0.52 % (+3.98 pp)
 
-## Heute nicht gefunden - als stale behalten (38)
+## Heute nicht gefunden - als stale behalten (32)
 
-- **IKB** (DE), stale seit 2026-11-10 (4 Tage)
-- **Saldo Bank 2,80** (SE), stale seit 2026-11-10 (4 Tage)
-- **Multitude Bank** (SE), stale seit 2026-11-04 (10 Tage)
-- **Brocc Finance 0,05** (SE), stale seit 2026-10-31 (14 Tage)
-- **Ikano Bank** (SE), stale seit 2026-11-12 (2 Tage)
-- **Multitude Bank** (MT), stale seit 2026-11-04 (10 Tage)
-- **SBAB Bank 1,25** (SE), stale seit 2026-11-10 (4 Tage)
-- **RiverBank** (LU), stale seit 2026-11-12 (2 Tage)
-- **Ferratum Bank** (DE), stale seit 2026-11-09 (5 Tage)
-- **Bankaktiebolaget Nordiska** (SE), stale seit 2026-11-10 (4 Tage)
-- **Northmill Bank** (SE), stale seit 2026-11-07 (7 Tage)
-- **Northmill Bank 2,00** (SE), stale seit 2026-11-12 (2 Tage)
-- **Serafim Finans 2,35** (SE), stale seit 2026-10-31 (14 Tage)
-- **Svea Bank** (SE), stale seit 2026-11-12 (2 Tage)
-- **Suresse Direkt Bank** (DE), stale seit 2026-11-08 (6 Tage)
-- **Aros Kapital 2,00** (SE), stale seit 2026-10-31 (14 Tage)
-- **JAK Medlemsbank 1,50** (SE), stale seit 2026-10-31 (14 Tage)
-- **Bluestep Bank** (SE), stale seit 2026-11-11 (3 Tage)
-- **Plus** (SE), stale seit 2026-11-10 (4 Tage)
-- **Serafim Finans** (SE), stale seit 2026-11-10 (4 Tage)
-- **Resurs Bank 2,35** (SE), stale seit 2026-10-31 (14 Tage)
-- **Skandia** (SE), stale seit 2026-11-13 (1 Tage)
-- **Bank Norwegian** (SE), stale seit 2026-11-11 (3 Tage)
-- **Instabank ASA** (NO), stale seit 2026-11-08 (6 Tage)
-- **Qliro** (SE), stale seit 2026-11-12 (2 Tage)
-- **0TO9** (SE), stale seit 2026-11-04 (10 Tage)
-- **Carrefour Banque** (NL), stale seit 2026-11-08 (6 Tage)
-- **Sambla** (SE), stale seit 2026-10-31 (14 Tage)
-- **Banca CF+** (IT), stale seit 2026-11-05 (9 Tage)
-- **DKB** (DE), stale seit 2026-11-04 (10 Tage)
-- **ZŁOTO** (PL), stale seit 2026-11-06 (8 Tage)
-- **EUR/USD** (PL), stale seit 2026-11-06 (8 Tage)
-- **USD/PLN** (PL), stale seit 2026-11-06 (8 Tage)
-- **MIEDŹ** (PL), stale seit 2026-11-06 (8 Tage)
-- **ROPA** (PL), stale seit 2026-11-06 (8 Tage)
-- **CHF/PLN** (PL), stale seit 2026-11-04 (10 Tage)
-- **BITCOIN** (PL), stale seit 2026-11-06 (8 Tage)
-- **EUR/PLN** (PL), stale seit 2026-11-06 (8 Tage)
+- **IKB** (DE), stale seit 2026-11-10 (5 Tage)
+- **Saldo Bank 2,80** (SE), stale seit 2026-11-10 (5 Tage)
+- **Multitude Bank** (SE), stale seit 2026-11-04 (11 Tage)
+- **Ikano Bank** (SE), stale seit 2026-11-12 (3 Tage)
+- **Multitude Bank** (MT), stale seit 2026-11-04 (11 Tage)
+- **SBAB Bank 1,25** (SE), stale seit 2026-11-10 (5 Tage)
+- **RiverBank** (LU), stale seit 2026-11-12 (3 Tage)
+- **Ferratum Bank** (DE), stale seit 2026-11-09 (6 Tage)
+- **Bankaktiebolaget Nordiska** (SE), stale seit 2026-11-10 (5 Tage)
+- **Northmill Bank** (SE), stale seit 2026-11-07 (8 Tage)
+- **Northmill Bank 2,00** (SE), stale seit 2026-11-12 (3 Tage)
+- **Svea Bank** (SE), stale seit 2026-11-12 (3 Tage)
+- **Suresse Direkt Bank** (DE), stale seit 2026-11-08 (7 Tage)
+- **Bluestep Bank** (SE), stale seit 2026-11-11 (4 Tage)
+- **Plus** (SE), stale seit 2026-11-10 (5 Tage)
+- **Serafim Finans** (SE), stale seit 2026-11-10 (5 Tage)
+- **Skandia** (SE), stale seit 2026-11-13 (2 Tage)
+- **Bank Norwegian** (SE), stale seit 2026-11-11 (4 Tage)
+- **Instabank ASA** (NO), stale seit 2026-11-08 (7 Tage)
+- **Qliro** (SE), stale seit 2026-11-12 (3 Tage)
+- **0TO9** (SE), stale seit 2026-11-04 (11 Tage)
+- **Carrefour Banque** (NL), stale seit 2026-11-08 (7 Tage)
+- **Banca CF+** (IT), stale seit 2026-11-05 (10 Tage)
+- **DKB** (DE), stale seit 2026-11-04 (11 Tage)
+- **ZŁOTO** (PL), stale seit 2026-11-06 (9 Tage)
+- **EUR/USD** (PL), stale seit 2026-11-06 (9 Tage)
+- **USD/PLN** (PL), stale seit 2026-11-06 (9 Tage)
+- **MIEDŹ** (PL), stale seit 2026-11-06 (9 Tage)
+- **ROPA** (PL), stale seit 2026-11-06 (9 Tage)
+- **CHF/PLN** (PL), stale seit 2026-11-04 (11 Tage)
+- **BITCOIN** (PL), stale seit 2026-11-06 (9 Tage)
+- **EUR/PLN** (PL), stale seit 2026-11-06 (9 Tage)
+
+## Zu lange stale - entfernt (6)
+
+- **Brocc Finance 0,05**
+- **Serafim Finans 2,35**
+- **Aros Kapital 2,00**
+- **JAK Medlemsbank 1,50**
+- **Resurs Bank 2,35**
+- **Sambla**
 
 ## Neu hinzugekommen (3)
 
